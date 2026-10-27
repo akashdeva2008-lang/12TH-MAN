@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">12THMAN</string>
+    <string name="app_tagline">Cricket Players, Umpires &amp; Tournament Hub</string>
+
+    <!-- Navigation Titles -->
+    <string name="nav_home">Home</string>
+    <string name="nav_players">Players</string>
+    <string name="nav_umpires">Umpires</string>
+    <string name="nav_tournaments">Tournaments</string>
+    <string name="nav_bookings">Bookings</string>
+
+    <!-- Actions -->
+    <string name="action_book_now">Book Now</string>
+    <string name="action_hire_umpire">Hire Umpire</string>
+    <string name="action_host_tournament">Host Tournament</string>
+    <string name="action_register_team">Register Team</string>
+    <string name="action_view_details">View Details</string>
+    <string name="action_confirm_booking">Confirm Booking</string>
+    <string name="action_login">Log In</string>
+    <string name="action_register">Sign Up</string>
+    <string name="action_logout">Log Out</string>
+</resources>

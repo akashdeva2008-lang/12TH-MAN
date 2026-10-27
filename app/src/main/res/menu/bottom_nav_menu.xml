@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/playersFragment"
+        android:icon="@drawable/ic_cricket_bat"
+        android:title="@string/nav_players" />
+    <item
+        android:id="@+id/umpiresFragment"
+        android:icon="@drawable/ic_umpire"
+        android:title="@string/nav_umpires" />
+    <item
+        android:id="@+id/tournamentsFragment"
+        android:icon="@drawable/ic_trophy"
+        android:title="@string/nav_tournaments" />
+    <item
+        android:id="@+id/bookingsFragment"
+        android:icon="@drawable/ic_booking"
+        android:title="@string/nav_bookings" />
+</menu>

@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment">
+
+    <!-- 1. Splash Screen -->
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.twelveman.ui.splash.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/action_splash_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splash_to_register"
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_splash_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 2. Login Screen -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.twelveman.ui.auth.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_login_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 3. Registration Screen -->
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.twelveman.ui.auth.RegisterFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_to_role"
+            app:destination="@id/roleSelectionFragment" />
+    </fragment>
+
+    <!-- 3.5 Role Selection Screen -->
+    <fragment
+        android:id="@+id/roleSelectionFragment"
+        android:name="com.example.twelveman.ui.auth.RoleSelectionFragment"
+        android:label="Select Role"
+        tools:layout="@layout/fragment_role_selection">
+        <action
+            android:id="@+id/action_role_to_home"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 4. Home Dashboard -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.twelveman.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_players"
+            app:destination="@id/playersFragment" />
+        <action
+            android:id="@+id/action_home_to_umpires"
+            app:destination="@id/umpiresFragment" />
+        <action
+            android:id="@+id/action_home_to_tournaments"
+            app:destination="@id/tournamentsFragment" />
+        <action
+            android:id="@+id/action_home_to_bookings"
+            app:destination="@id/bookingsFragment" />
+        <action
+            android:id="@+id/action_home_to_player_details"
+            app:destination="@id/playerDetailsFragment" />
+        <action
+            android:id="@+id/action_home_to_umpire_details"
+            app:destination="@id/umpireDetailsFragment" />
+        <action
+            android:id="@+id/action_home_to_tournament_details"
+            app:destination="@id/tournamentDetailsFragment" />
+        <action
+            android:id="@+id/action_home_to_profile"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <!-- 5. Player Listing -->
+    <fragment
+        android:id="@+id/playersFragment"
+        android:name="com.example.twelveman.ui.players.PlayersFragment"
+        android:label="Players"
+        tools:layout="@layout/fragment_players">
+        <action
+            android:id="@+id/action_players_to_details"
+            app:destination="@id/playerDetailsFragment" />
+    </fragment>
+
+    <!-- 6. Player Details -->
+    <fragment
+        android:id="@+id/playerDetailsFragment"
+        android:name="com.example.twelveman.ui.players.PlayerDetailsFragment"
+        android:label="Player Details"
+        tools:layout="@layout/fragment_player_details">
+        <argument
+            android:name="playerId"
+            app:argType="string"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/action_player_details_to_booking"
+            app:destination="@id/bookingFormFragment" />
+    </fragment>
+
+    <!-- 7. Umpire Listing -->
+    <fragment
+        android:id="@+id/umpiresFragment"
+        android:name="com.example.twelveman.ui.umpires.UmpiresFragment"
+        android:label="Umpires"
+        tools:layout="@layout/fragment_umpires">
+        <action
+            android:id="@+id/action_umpires_to_details"
+            app:destination="@id/umpireDetailsFragment" />
+    </fragment>
+
+    <!-- 8. Umpire Details -->
+    <fragment
+        android:id="@+id/umpireDetailsFragment"
+        android:name="com.example.twelveman.ui.umpires.UmpireDetailsFragment"
+        android:label="Umpire Details"
+        tools:layout="@layout/fragment_umpire_details">
+        <argument
+            android:name="umpireId"
+            app:argType="string"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/action_umpire_details_to_booking"
+            app:destination="@id/bookingFormFragment" />
+    </fragment>
+
+    <!-- 9. Booking Form -->
+    <fragment
+        android:id="@+id/bookingFormFragment"
+        android:name="com.example.twelveman.ui.bookings.BookingFormFragment"
+        android:label="Booking Form"
+        tools:layout="@layout/fragment_booking_form">
+        <argument
+            android:name="itemId"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="itemType"
+            app:argType="string"
+            android:defaultValue="PLAYER" />
+        <action
+            android:id="@+id/action_booking_form_to_bookings"
+            app:destination="@id/bookingsFragment"
+            app:popUpTo="@id/homeFragment" />
+    </fragment>
+
+    <!-- 10. My Bookings -->
+    <fragment
+        android:id="@+id/bookingsFragment"
+        android:name="com.example.twelveman.ui.bookings.BookingsFragment"
+        android:label="My Bookings"
+        tools:layout="@layout/fragment_bookings" />
+
+    <!-- 11. Tournament Listing -->
+    <fragment
+        android:id="@+id/tournamentsFragment"
+        android:name="com.example.twelveman.ui.tournaments.TournamentsFragment"
+        android:label="Tournaments"
+        tools:layout="@layout/fragment_tournaments">
+        <action
+            android:id="@+id/action_tournaments_to_details"
+            app:destination="@id/tournamentDetailsFragment" />
+        <action
+            android:id="@+id/action_tournaments_to_create"
+            app:destination="@id/createTournamentFragment" />
+    </fragment>
+
+    <!-- 12. Create Tournament -->
+    <fragment
+        android:id="@+id/createTournamentFragment"
+        android:name="com.example.twelveman.ui.tournaments.CreateTournamentFragment"
+        android:label="Create Tournament"
+        tools:layout="@layout/fragment_create_tournament">
+        <action
+            android:id="@+id/action_create_to_tournaments"
+            app:destination="@id/tournamentsFragment"
+            app:popUpTo="@id/tournamentsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 13. Tournament Details -->
+    <fragment
+        android:id="@+id/tournamentDetailsFragment"
+        android:name="com.example.twelveman.ui.tournaments.TournamentDetailsFragment"
+        android:label="Tournament Details"
+        tools:layout="@layout/fragment_tournament_details">
+        <argument
+            android:name="tournamentId"
+            app:argType="string"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/action_tournament_details_to_register_team"
+            app:destination="@id/teamRegistrationFragment" />
+        <action
+            android:id="@+id/action_tournament_details_to_fixtures"
+            app:destination="@id/matchFixturesFragment" />
+    </fragment>
+
+    <!-- 14. Team Registration -->
+    <fragment
+        android:id="@+id/teamRegistrationFragment"
+        android:name="com.example.twelveman.ui.tournaments.TeamRegistrationFragment"
+        android:label="Team Registration"
+        tools:layout="@layout/fragment_team_registration">
+        <argument
+            android:name="tournamentId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <!-- 15. Match Fixtures -->
+    <fragment
+        android:id="@+id/matchFixturesFragment"
+        android:name="com.example.twelveman.ui.tournaments.MatchFixturesFragment"
+        android:label="Match Fixtures"
+        tools:layout="@layout/fragment_match_fixtures">
+        <argument
+            android:name="tournamentId"
+            app:argType="string"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/action_fixtures_to_match_details"
+            app:destination="@id/matchDetailsFragment" />
+    </fragment>
+
+    <!-- 16. Match Details -->
+    <fragment
+        android:id="@+id/matchDetailsFragment"
+        android:name="com.example.twelveman.ui.tournaments.MatchDetailsFragment"
+        android:label="Match Details"
+        tools:layout="@layout/fragment_match_details">
+        <argument
+            android:name="matchId"
+            app:argType="string"
+            android:defaultValue="" />
+        <action
+            android:id="@+id/action_match_details_to_scoring"
+            app:destination="@id/matchScoringFragment" />
+    </fragment>
+
+    <!-- 16.5 Match Scoring Screen -->
+    <fragment
+        android:id="@+id/matchScoringFragment"
+        android:name="com.example.twelveman.ui.tournaments.MatchScoringFragment"
+        android:label="Live Match Scoring"
+        tools:layout="@layout/fragment_match_scoring">
+        <argument
+            android:name="matchId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <!-- 17. User Profile -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.twelveman.ui.profile.ProfileFragment"
+        android:label="User Profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profile_to_settings"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_profile_to_login"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 18. Settings -->
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.twelveman.ui.profile.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>
