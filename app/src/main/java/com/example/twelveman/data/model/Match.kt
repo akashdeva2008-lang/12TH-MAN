@@ -1,5 +1,17 @@
 package com.example.twelveman.data.model
 
+data class MatchStateSnapshot(
+    val runsA: Int,
+    val wicketsA: Int,
+    val oversA: Double,
+    val runsB: Int,
+    val wicketsB: Int,
+    val oversB: Double,
+    val currentInnings: Int,
+    val scoreA: String,
+    val scoreB: String
+)
+
 data class Match(
     val id: String,
     val tournamentId: String,
@@ -21,5 +33,6 @@ data class Match(
     var wicketsB: Int = 0,
     var oversB: Double = 0.0,
     var currentInnings: Int = 1, // 1 for Team A batting, 2 for Team B batting
-    val commentary: MutableList<String> = mutableListOf("Match scheduled. Ready for live scoring.")
+    val commentary: MutableList<String> = mutableListOf("Match scheduled. Ready for live scoring."),
+    val historyStack: MutableList<MatchStateSnapshot> = mutableListOf()
 )

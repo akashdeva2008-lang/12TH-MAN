@@ -108,7 +108,7 @@
             android:layout_height="48dp"
             android:layout_columnWeight="1"
             android:text="0 Run"
-            app:backgroundTint="@color/primary_navy"
+            app:backgroundTint="@color/primary_variant"
             app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -117,7 +117,7 @@
             android:layout_height="48dp"
             android:layout_columnWeight="1"
             android:text="1 Run"
-            app:backgroundTint="@color/primary_navy"
+            app:backgroundTint="@color/primary_variant"
             app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -126,7 +126,7 @@
             android:layout_height="48dp"
             android:layout_columnWeight="1"
             android:text="2 Runs"
-            app:backgroundTint="@color/primary_navy"
+            app:backgroundTint="@color/primary_variant"
             app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -135,7 +135,7 @@
             android:layout_height="48dp"
             android:layout_columnWeight="1"
             android:text="3 Runs"
-            app:backgroundTint="@color/primary_navy"
+            app:backgroundTint="@color/primary_variant"
             app:cornerRadius="8dp" />
 
         <com.google.android.material.button.MaterialButton
@@ -201,16 +201,28 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSwitchInnings"
+            android:id="@+id/btnUndo"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginEnd="4dp"
             android:layout_weight="1"
-            android:text="Switch Innings"
-            android:textColor="@color/primary_navy"
+            android:text="Undo Ball"
+            android:textColor="@color/accent_green"
             app:cornerRadius="8dp"
-            app:strokeColor="@color/primary_navy" />
+            app:strokeColor="@color/accent_green" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSwitchInnings"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_weight="1"
+            android:text="Switch Innings"
+            android:textColor="@color/text_primary"
+            app:cornerRadius="8dp"
+            app:strokeColor="@color/card_border" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnCompleteMatch"
@@ -218,7 +230,7 @@
             android:layout_height="48dp"
             android:layout_marginStart="4dp"
             android:layout_weight="1"
-            android:text="Conclude Match"
+            android:text="Conclude"
             app:backgroundTint="@color/accent_green_dark"
             app:cornerRadius="8dp" />
     </LinearLayout>

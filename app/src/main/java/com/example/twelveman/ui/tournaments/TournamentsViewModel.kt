@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.twelveman.data.model.Match
+import com.example.twelveman.data.model.MatchStateSnapshot
 import com.example.twelveman.data.model.Team
 import com.example.twelveman.data.model.Tournament
 import com.example.twelveman.data.repository.TournamentRepository
@@ -105,21 +106,39 @@ class TournamentsViewModel : ViewModel() {
 
     fun recordBall(matchId: String, runs: Int, isWicket: Boolean, extraType: String) {
         val match = repository.getMatchById(matchId) ?: return
+        
+        // Save snapshot for Undo
+        match.historyStack.add(
+            MatchStateSnapshot(
+                runsA = match.runsA,
+                wicketsA = match.wicketsA,
+                oversA = match.oversA,
+                runsB = match.runsB,
+                wicketsB = match.wicketsB,
+                oversB = match.oversB,
+                currentInnings = match.currentInnings,
+                scoreA = match.scoreA,
+                scoreB = match.scoreB
+            )
+        )
+
         match.status = "LIVE"
+        val isLegalDelivery = extraType.isBlank() || extraType.contains("Bye")
 
         if (match.currentInnings == 1) {
             match.runsA += runs
             if (isWicket) match.wicketsA += 1
-            // increment overs by 0.1
-            var balls = (match.oversA * 10).toInt() + 1
-            if (balls % 10 >= 6) {
-                match.oversA = (match.oversA.toInt() + 1).toDouble()
-            } else {
-                match.oversA += 0.1
+            if (isLegalDelivery) {
+                val currentOversInt = match.oversA.toInt()
+                val currentBallsInt = Math.round((match.oversA - currentOversInt) * 10).toInt()
+                val newBalls = currentBallsInt + 1
+                if (newBalls >= 6) {
+                    match.oversA = (currentOversInt + 1).toDouble()
+                } else {
+                    match.oversA = currentOversInt + (newBalls / 10.0)
+                }
             }
-            // round to 1 decimal place to prevent float drift
-            match.oversA = String.format(Locale.US, "%.1f", match.oversA).toDouble()
-            match.scoreA = "${match.runsA}/${match.wicketsA} (${match.oversA})"
+            match.scoreA = "${match.runsA}/${match.wicketsA} (${String.format(Locale.US, "%.1f", match.oversA)} ov)"
             
             val commentaryText = buildString {
                 append("Innings 1: ")
@@ -131,14 +150,17 @@ class TournamentsViewModel : ViewModel() {
         } else {
             match.runsB += runs
             if (isWicket) match.wicketsB += 1
-            var balls = (match.oversB * 10).toInt() + 1
-            if (balls % 10 >= 6) {
-                match.oversB = (match.oversB.toInt() + 1).toDouble()
-            } else {
-                match.oversB += 0.1
+            if (isLegalDelivery) {
+                val currentOversInt = match.oversB.toInt()
+                val currentBallsInt = Math.round((match.oversB - currentOversInt) * 10).toInt()
+                val newBalls = currentBallsInt + 1
+                if (newBalls >= 6) {
+                    match.oversB = (currentOversInt + 1).toDouble()
+                } else {
+                    match.oversB = currentOversInt + (newBalls / 10.0)
+                }
             }
-            match.oversB = String.format(Locale.US, "%.1f", match.oversB).toDouble()
-            match.scoreB = "${match.runsB}/${match.wicketsB} (${match.oversB})"
+            match.scoreB = "${match.runsB}/${match.wicketsB} (${String.format(Locale.US, "%.1f", match.oversB)} ov)"
 
             val commentaryText = buildString {
                 append("Innings 2: ")
@@ -152,6 +174,29 @@ class TournamentsViewModel : ViewModel() {
         _selectedMatch.value = match
     }
 
+    fun undoLastBall(matchId: String): Boolean {
+        val match = repository.getMatchById(matchId) ?: return false
+        if (match.historyStack.isNotEmpty()) {
+            val lastState = match.historyStack.removeAt(match.historyStack.size - 1)
+            match.runsA = lastState.runsA
+            match.wicketsA = lastState.wicketsA
+            match.oversA = lastState.oversA
+            match.runsB = lastState.runsB
+            match.wicketsB = lastState.wicketsB
+            match.oversB = lastState.oversB
+            match.currentInnings = lastState.currentInnings
+            match.scoreA = lastState.scoreA
+            match.scoreB = lastState.scoreB
+            if (match.commentary.isNotEmpty()) {
+                match.commentary.removeAt(0)
+            }
+            match.commentary.add(0, "Undo performed: Restored previous delivery state.")
+            _selectedMatch.value = match
+            return true
+        }
+        return false
+    }
+
     fun switchInnings(matchId: String) {
         val match = repository.getMatchById(matchId) ?: return
         match.currentInnings = 2
@@ -163,7 +208,7 @@ class TournamentsViewModel : ViewModel() {
         val match = repository.getMatchById(matchId) ?: return
         match.status = "COMPLETED"
         match.result = if (match.runsA > match.runsB) "${match.teamA} won by ${match.runsA - match.runsB} runs"
-        else if (match.runsB > match.runsA) "${match.teamB} won"
+        else if (match.runsB > match.runsA) "${match.teamB} won by ${match.wicketsB.let { 10 - it }} wickets"
         else "Match Tied"
         match.commentary.add(0, "Match Concluded: ${match.result}")
         _selectedMatch.value = match

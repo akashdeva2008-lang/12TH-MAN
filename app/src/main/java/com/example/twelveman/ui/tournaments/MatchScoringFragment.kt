@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.twelveman.databinding.FragmentMatchScoringBinding
 
 class MatchScoringFragment : Fragment() {
@@ -33,6 +35,8 @@ class MatchScoringFragment : Fragment() {
             matchId = it.getString("matchId", "M501")
         }
 
+        binding.rvCommentary.layoutManager = LinearLayoutManager(requireContext())
+
         viewModel.loadMatchDetails(matchId)
 
         viewModel.selectedMatch.observe(viewLifecycleOwner) { match ->
@@ -48,7 +52,8 @@ class MatchScoringFragment : Fragment() {
                 binding.tvInningsIndicator.text = "Batting: $battingTeam (Innings ${m.currentInnings})"
 
                 val commentAdapter = ArrayAdapter(requireContext(), R.layout.simple_list_item_1, m.commentary)
-                binding.rvCommentary.adapter = null // simple list adapter or list view
+                binding.rvCommentary.adapter = null
+                // We can also display commentary in a ListView or adapter if needed, or simple list view
             }
         }
 
@@ -60,8 +65,15 @@ class MatchScoringFragment : Fragment() {
         binding.btnRun6.setOnClickListener { viewModel.recordBall(matchId, 6, false, "SIXER! (6)") }
 
         binding.btnWicket.setOnClickListener {
-            viewModel.recordBall(matchId, 0, true, "Wicket")
-            Toast.makeText(requireContext(), "Wicket fallen!", Toast.LENGTH_SHORT).show()
+            val dismissalTypes = arrayOf("Bowled", "Caught", "LBW", "Run Out", "Stumped")
+            AlertDialog.Builder(requireContext())
+                .setTitle("Select Wicket Dismissal Type")
+                .setItems(dismissalTypes) { _, which ->
+                    val dismissal = dismissalTypes[which]
+                    viewModel.recordBall(matchId, 0, true, "Wicket ($dismissal)")
+                    Toast.makeText(requireContext(), "Wicket Fall: $dismissal", Toast.LENGTH_SHORT).show()
+                }
+                .show()
         }
 
         binding.btnWide.setOnClickListener {
@@ -72,14 +84,30 @@ class MatchScoringFragment : Fragment() {
             viewModel.recordBall(matchId, 1, false, "No Ball (+1)")
         }
 
+        binding.btnUndo.setOnClickListener {
+            val success = viewModel.undoLastBall(matchId)
+            if (success) {
+                Toast.makeText(requireContext(), "Last ball undone", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "Nothing to undo", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.btnSwitchInnings.setOnClickListener {
             viewModel.switchInnings(matchId)
             Toast.makeText(requireContext(), "Innings Switched", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnCompleteMatch.setOnClickListener {
-            viewModel.completeMatch(matchId)
-            Toast.makeText(requireContext(), "Match Concluded!", Toast.LENGTH_SHORT).show()
+            AlertDialog.Builder(requireContext())
+                .setTitle("Conclude Match")
+                .setMessage("Are you sure you want to end this match and declare the final result?")
+                .setPositiveButton("Yes") { _, _ ->
+                    viewModel.completeMatch(matchId)
+                    Toast.makeText(requireContext(), "Match Concluded!", Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
     }
 
