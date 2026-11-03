@@ -1,28 +1,28 @@
 package com.example.twelveman.data.model
 
 data class MatchStateSnapshot(
-    val runsA: Int,
-    val wicketsA: Int,
-    val oversA: Double,
-    val runsB: Int,
-    val wicketsB: Int,
-    val oversB: Double,
-    val currentInnings: Int,
-    val scoreA: String,
-    val scoreB: String
+    val runsA: Int = 0,
+    val wicketsA: Int = 0,
+    val oversA: Double = 0.0,
+    val runsB: Int = 0,
+    val wicketsB: Int = 0,
+    val oversB: Double = 0.0,
+    val currentInnings: Int = 1,
+    val scoreA: String = "",
+    val scoreB: String = ""
 )
 
 data class Match(
-    val id: String,
-    val tournamentId: String,
-    val matchNumber: Int,
-    val teamA: String,
-    val teamB: String,
-    val date: String,
-    val time: String,
-    val venue: String,
-    val stage: String, // "Group Stage", "Semi Final", "Final"
-    var status: String, // "UPCOMING", "LIVE", "COMPLETED"
+    val id: String = "",
+    val tournamentId: String = "",
+    val matchNumber: Int = 0,
+    val teamA: String = "",
+    val teamB: String = "",
+    val date: String = "",
+    val time: String = "",
+    val venue: String = "",
+    val stage: String = "", // "Group Stage", "Semi Final", "Final"
+    var status: String = "UPCOMING", // "UPCOMING", "LIVE", "COMPLETED"
     var result: String = "",
     var scoreA: String = "0/0 (0.0)",
     var scoreB: String = "0/0 (0.0)",
