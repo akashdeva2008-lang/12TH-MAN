@@ -14,7 +14,7 @@
         <!-- Banner Header -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="240dp"
             android:background="@drawable/bg_card_gradient"
             android:padding="20dp">
 
@@ -26,8 +26,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:src="@drawable/ic_trophy"
                     app:tint="@color/accent_gold" />
 
@@ -35,11 +35,11 @@
                     android:id="@+id/tvTournamentDetailTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="14dp"
                     android:gravity="center"
                     android:text="Premier Corporate T20 Cup"
                     android:textColor="@color/text_white"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -49,7 +49,8 @@
                     android:layout_marginTop="4dp"
                     android:text="Wankhede Stadium Turf, Mumbai"
                     android:textColor="@color/accent_gold"
-                    android:textSize="13sp" />
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -59,9 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:strokeColor="@color/card_border"
-            app:strokeWidth="1dp">
+            app:strokeWidth="1.5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -86,16 +87,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="T20"
-                            android:textColor="@color/primary_navy"
-                            android:textSize="18sp"
+                            android:textColor="@color/accent_blue"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
                             android:text="Format"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -110,16 +112,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="12/16"
-                            android:textColor="@color/primary_navy"
-                            android:textSize="18sp"
+                            android:textColor="@color/text_primary"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
                             android:text="Teams Reg."
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -134,23 +137,24 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="₹1.5L"
-                            android:textColor="@color/accent_green_dark"
-                            android:textSize="18sp"
+                            android:textColor="@color/accent_green"
+                            android:textSize="22sp"
                             android:textStyle="bold" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
                             android:text="Prize Pool"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="16dp"
+                    android:layout_marginVertical="18dp"
                     android:background="@color/card_border" />
 
                 <TextView
@@ -158,17 +162,17 @@
                     android:layout_height="wrap_content"
                     android:text="Tournament Overview"
                     android:textColor="@color/text_primary"
-                    android:textSize="15sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTournamentDetailDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     android:text="Grand T20 tournament open for corporate and private clubs with live streaming and official umpires."
                     android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -183,28 +187,29 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegisterTeam"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="58dp"
                 android:layout_marginEnd="6dp"
                 android:layout_weight="1"
                 android:text="Register Team"
-                android:textSize="14sp"
+                android:textColor="@color/primary_navy"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/accent_green_dark"
-                app:cornerRadius="12dp" />
+                app:backgroundTint="@color/accent_green"
+                app:cornerRadius="14dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnViewFixtures"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="58dp"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
                 android:text="View Fixtures"
-                android:textColor="@color/primary_navy"
-                android:textSize="14sp"
+                android:textColor="@color/text_white"
+                android:textSize="16sp"
                 android:textStyle="bold"
-                app:cornerRadius="12dp"
-                app:strokeColor="@color/primary_navy"
+                app:cornerRadius="14dp"
+                app:strokeColor="@color/accent_green"
                 app:strokeWidth="1.5dp" />
         </LinearLayout>
     </LinearLayout>

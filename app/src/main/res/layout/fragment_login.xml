@@ -13,28 +13,28 @@
         android:padding="24dp">
 
         <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="32dp"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="36dp"
             android:src="@drawable/ic_cricket_bat"
             app:tint="@color/accent_green" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="Welcome Back!"
             android:textColor="@color/text_primary"
-            android:textSize="28sp"
+            android:textSize="32sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:text="Sign in to book players, hire umpires &amp; organize tournaments"
             android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -43,10 +43,10 @@
             android:layout_marginTop="32dp"
             android:hint="Email Address"
             app:boxBackgroundColor="@color/surface_white"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="14dp"
+            app:boxCornerRadiusBottomStart="14dp"
+            app:boxCornerRadiusTopEnd="14dp"
+            app:boxCornerRadiusTopStart="14dp"
             app:boxStrokeColor="@color/accent_green"
             app:hintTextColor="@color/accent_green">
 
@@ -56,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:text="user@example.com"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -66,10 +67,10 @@
             android:layout_marginTop="16dp"
             android:hint="Password"
             app:boxBackgroundColor="@color/surface_white"
-            app:boxCornerRadiusBottomEnd="12dp"
-            app:boxCornerRadiusBottomStart="12dp"
-            app:boxCornerRadiusTopEnd="12dp"
-            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusBottomEnd="14dp"
+            app:boxCornerRadiusBottomStart="14dp"
+            app:boxCornerRadiusTopEnd="14dp"
+            app:boxCornerRadiusTopStart="14dp"
             app:boxStrokeColor="@color/accent_green"
             app:hintTextColor="@color/accent_green"
             app:passwordToggleEnabled="true"
@@ -81,33 +82,35 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:text="password"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="28dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="32dp"
             android:text="Log In"
             android:textColor="@color/primary_navy"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:backgroundTint="@color/accent_green"
-            app:cornerRadius="12dp" />
+            app:cornerRadius="14dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="24dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Don't have an account? "
-                android:textColor="@color/text_secondary" />
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tvGoToRegister"
@@ -115,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sign Up"
                 android:textColor="@color/accent_green"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>

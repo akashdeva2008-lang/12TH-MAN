@@ -7,9 +7,9 @@
     android:layout_marginHorizontal="8dp"
     android:layout_marginVertical="6dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp"
+    app:cardElevation="3dp"
     app:strokeColor="@color/card_border"
-    app:strokeWidth="1dp">
+    app:strokeWidth="1.5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,17 +25,17 @@
 
             <ImageView
                 android:id="@+id/ivPlayerAvatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:background="@drawable/bg_badge_blue"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:src="@drawable/ic_person"
                 app:tint="@color/accent_blue" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="14dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="Virat Sharma" />
 
@@ -52,8 +52,9 @@
                     android:id="@+id/tvPlayerLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="Mumbai, MH" />
             </LinearLayout>
 
@@ -62,10 +63,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_badge_green"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="4dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="5dp"
                 android:textColor="@color/status_green_text"
-                android:textSize="12sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 tools:text="Batsman" />
         </LinearLayout>
@@ -73,7 +74,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="12dp"
+            android:layout_marginVertical="14dp"
             android:background="@color/card_border" />
 
         <LinearLayout
@@ -92,14 +93,15 @@
                     android:layout_height="wrap_content"
                     android:text="Matches / Runs"
                     android:textColor="@color/text_secondary"
-                    android:textSize="11sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvPlayerStats"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:textColor="@color/text_primary"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="85 M / 3420 R" />
             </LinearLayout>
@@ -115,14 +117,15 @@
                     android:layout_height="wrap_content"
                     android:text="Fee per Match"
                     android:textColor="@color/text_secondary"
-                    android:textSize="11sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvPlayerPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/accent_green_dark"
-                    android:textSize="14sp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/accent_green"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     tools:text="₹1,800" />
             </LinearLayout>
@@ -140,9 +143,10 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:src="@drawable/ic_star" />
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_star"
+                        app:tint="@color/accent_gold" />
 
                     <TextView
                         android:id="@+id/tvPlayerRating"
@@ -150,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
                         android:textColor="@color/text_primary"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         tools:text="4.9" />
                 </LinearLayout>
@@ -161,7 +165,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:textColor="@color/status_green_text"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
                     tools:text="Available" />
             </LinearLayout>
         </LinearLayout>

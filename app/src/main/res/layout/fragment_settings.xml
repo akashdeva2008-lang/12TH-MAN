@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="Settings"
             android:textColor="@color/text_primary"
-            android:textSize="24sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <com.google.android.material.card.MaterialCardView
@@ -25,15 +25,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:strokeColor="@color/card_border"
-            app:strokeWidth="1dp">
+            app:strokeWidth="1.5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="18dp">
 
                 <!-- Profile Option -->
                 <LinearLayout
@@ -43,22 +43,22 @@
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="8dp">
+                    android:paddingVertical="10dp">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
                         android:src="@drawable/ic_person"
-                        app:tint="@color/primary_navy" />
+                        app:tint="@color/accent_blue" />
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="14dp"
                         android:layout_weight="1"
                         android:text="User Profile &amp; Account"
                         android:textColor="@color/text_primary"
-                        android:textSize="15sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -73,7 +73,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -81,7 +82,7 @@
                         android:layout_weight="1"
                         android:text="Push Notifications"
                         android:textColor="@color/text_primary"
-                        android:textSize="15sp" />
+                        android:textSize="17sp" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switchNotifications"
@@ -101,7 +102,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -109,7 +111,7 @@
                         android:layout_weight="1"
                         android:text="Dark Theme Mode"
                         android:textColor="@color/text_primary"
-                        android:textSize="15sp" />
+                        android:textSize="17sp" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switchDarkMode"
@@ -129,7 +131,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -137,7 +140,7 @@
                         android:layout_weight="1"
                         android:text="Location Services"
                         android:textColor="@color/text_primary"
-                        android:textSize="15sp" />
+                        android:textSize="17sp" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switchLocation"
@@ -160,7 +163,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="4dp">
+                    android:paddingVertical="6dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -168,15 +171,15 @@
                         android:layout_weight="1"
                         android:text="Currency Preference"
                         android:textColor="@color/text_primary"
-                        android:textSize="15sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:id="@+id/tvCurrencyValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="INR (₹)"
-                        android:textColor="@color/text_secondary"
-                        android:textSize="14sp"
+                        android:textColor="@color/accent_gold"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -194,7 +197,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="4dp">
+                    android:paddingVertical="6dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -202,14 +205,14 @@
                         android:layout_weight="1"
                         android:text="Clear App Cache"
                         android:textColor="@color/text_primary"
-                        android:textSize="15sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="14.2 MB"
                         android:textColor="@color/text_secondary"
-                        android:textSize="13sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <View
@@ -226,7 +229,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="4dp">
+                    android:paddingVertical="6dp">
 
                     <TextView
                         android:layout_width="0dp"
@@ -234,7 +237,7 @@
                         android:layout_weight="1"
                         android:text="Terms &amp; Conditions"
                         android:textColor="@color/text_primary"
-                        android:textSize="15sp" />
+                        android:textSize="17sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -242,19 +245,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="28dp"
             android:text="App Info"
             android:textColor="@color/text_primary"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="24dp"
             android:text="12THMAN Cricket App v1.0.0\nDeveloped for Cricket Players, Umpires &amp; Organizers"
             android:textColor="@color/text_secondary"
-            android:textSize="14sp"
-            android:paddingBottom="24dp" />
+            android:textSize="15sp" />
     </LinearLayout>
 </ScrollView>

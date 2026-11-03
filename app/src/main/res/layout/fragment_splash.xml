@@ -15,8 +15,8 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:src="@drawable/ic_trophy"
             app:tint="@color/accent_gold" />
 
@@ -24,46 +24,47 @@
             android:id="@+id/tvAppName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="@string/app_name"
             android:textColor="@color/text_white"
-            android:textSize="36sp"
+            android:textSize="42sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvTagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:text="@string/app_tagline"
             android:textColor="@color/accent_green"
-            android:textSize="14sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGetStarted"
-            android:layout_width="240dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="48dp"
+            android:layout_width="260dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="52dp"
             android:text="Get Started (Sign Up)"
             android:textColor="@color/primary_navy"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             app:backgroundTint="@color/accent_green"
-            app:cornerRadius="28dp" />
+            app:cornerRadius="30dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLoginSplash"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="240dp"
-            android:layout_height="56dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="260dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="18dp"
             android:text="I already have an account (Log In)"
             android:textColor="@color/text_white"
-            android:textSize="13sp"
+            android:textSize="15sp"
             android:textStyle="bold"
-            app:cornerRadius="28dp"
+            app:cornerRadius="30dp"
             app:strokeColor="@color/accent_green"
-            app:strokeWidth="1.5dp" />
+            app:strokeWidth="2dp" />
     </LinearLayout>
 </RelativeLayout>

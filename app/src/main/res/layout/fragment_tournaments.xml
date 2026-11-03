@@ -14,10 +14,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="20dp"
             android:text="Tournaments"
             android:textColor="@color/text_primary"
-            android:textSize="24sp"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -34,9 +34,12 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="20dp"
+        android:paddingHorizontal="16dp"
         android:text="Host Tournament"
-        android:textColor="@color/text_white"
-        app:backgroundTint="@color/primary_navy"
+        android:textColor="@color/primary_navy"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/accent_green"
         app:icon="@drawable/ic_add"
-        app:iconTint="@color/text_white" />
+        app:iconTint="@color/primary_navy" />
 </RelativeLayout>

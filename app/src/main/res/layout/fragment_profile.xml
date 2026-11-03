@@ -14,7 +14,7 @@
         <!-- Top Profile Header -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp"
+            android:layout_height="240dp"
             android:background="@drawable/bg_card_gradient"
             android:padding="20dp">
 
@@ -26,31 +26,32 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
                     android:background="@drawable/bg_badge_gold"
-                    android:padding="16dp"
+                    android:padding="18dp"
                     android:src="@drawable/ic_person"
-                    app:tint="@color/primary_navy" />
+                    app:tint="@color/accent_gold" />
 
                 <TextView
                     android:id="@+id/tvProfileName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="14dp"
                     android:text="Rahul Dravid"
                     android:textColor="@color/text_white"
-                    android:textSize="22sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvProfileRole"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:text="Tournament Organizer"
                     android:textColor="@color/accent_gold"
-                    android:textSize="14sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -60,9 +61,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
+            app:cardElevation="3dp"
             app:strokeColor="@color/card_border"
-            app:strokeWidth="1dp">
+            app:strokeWidth="1.5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,26 +76,26 @@
                     android:layout_height="wrap_content"
                     android:text="Account Details"
                     android:textColor="@color/text_primary"
-                    android:textSize="16sp"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvProfileEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="14dp"
                     android:text="Email: user@example.com"
                     android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvProfilePhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     android:text="Phone: +91 99000 11222"
                     android:textColor="@color/text_secondary"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -103,28 +104,31 @@
             android:id="@+id/btnGoToSettings"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="58dp"
             android:layout_marginHorizontal="16dp"
             android:text="App Settings"
-            android:textColor="@color/primary_navy"
-            android:textSize="15sp"
-            app:cornerRadius="12dp"
+            android:textColor="@color/text_white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:cornerRadius="14dp"
             app:icon="@drawable/ic_settings"
-            app:iconTint="@color/primary_navy"
-            app:strokeColor="@color/card_border" />
+            app:iconTint="@color/accent_green"
+            app:strokeColor="@color/accent_green"
+            app:strokeWidth="1.5dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="58dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="14dp"
             android:layout_marginBottom="24dp"
             android:text="Log Out"
-            android:textSize="15sp"
-            app:backgroundTint="@color/status_red_text"
-            app:cornerRadius="12dp"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/status_red_bg"
+            app:cornerRadius="14dp"
             app:icon="@drawable/ic_logout"
-            app:iconTint="@color/text_white" />
+            app:iconTint="@color/status_red_text" />
     </LinearLayout>
 </ScrollView>
