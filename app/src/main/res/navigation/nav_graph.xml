@@ -14,16 +14,22 @@
         <action
             android:id="@+id/action_splash_to_login"
             app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splash_to_register"
             app:destination="@id/registerFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_splash_to_home"
             app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -36,10 +42,16 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_login_to_register"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -52,7 +64,11 @@
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_register_to_role"
-            app:destination="@id/roleSelectionFragment" />
+            app:destination="@id/roleSelectionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 3.5 Role Selection Screen -->
@@ -64,6 +80,8 @@
         <action
             android:id="@+id/action_role_to_home"
             app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -76,28 +94,52 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_home_to_players"
-            app:destination="@id/playersFragment" />
+            app:destination="@id/playersFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_home_to_umpires"
-            app:destination="@id/umpiresFragment" />
+            app:destination="@id/umpiresFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_home_to_tournaments"
-            app:destination="@id/tournamentsFragment" />
+            app:destination="@id/tournamentsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_home_to_bookings"
-            app:destination="@id/bookingsFragment" />
+            app:destination="@id/bookingsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_home_to_player_details"
-            app:destination="@id/playerDetailsFragment" />
+            app:destination="@id/playerDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_home_to_umpire_details"
-            app:destination="@id/umpireDetailsFragment" />
+            app:destination="@id/umpireDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_home_to_tournament_details"
-            app:destination="@id/tournamentDetailsFragment" />
+            app:destination="@id/tournamentDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_home_to_profile"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 5. Player Listing -->
@@ -108,7 +150,11 @@
         tools:layout="@layout/fragment_players">
         <action
             android:id="@+id/action_players_to_details"
-            app:destination="@id/playerDetailsFragment" />
+            app:destination="@id/playerDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 6. Player Details -->
@@ -123,7 +169,11 @@
             android:defaultValue="" />
         <action
             android:id="@+id/action_player_details_to_booking"
-            app:destination="@id/bookingFormFragment" />
+            app:destination="@id/bookingFormFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 7. Umpire Listing -->
@@ -134,7 +184,11 @@
         tools:layout="@layout/fragment_umpires">
         <action
             android:id="@+id/action_umpires_to_details"
-            app:destination="@id/umpireDetailsFragment" />
+            app:destination="@id/umpireDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 8. Umpire Details -->
@@ -149,7 +203,11 @@
             android:defaultValue="" />
         <action
             android:id="@+id/action_umpire_details_to_booking"
-            app:destination="@id/bookingFormFragment" />
+            app:destination="@id/bookingFormFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 9. Booking Form -->
@@ -169,6 +227,8 @@
         <action
             android:id="@+id/action_booking_form_to_bookings"
             app:destination="@id/bookingsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/homeFragment" />
     </fragment>
 
@@ -187,10 +247,18 @@
         tools:layout="@layout/fragment_tournaments">
         <action
             android:id="@+id/action_tournaments_to_details"
-            app:destination="@id/tournamentDetailsFragment" />
+            app:destination="@id/tournamentDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_tournaments_to_create"
-            app:destination="@id/createTournamentFragment" />
+            app:destination="@id/createTournamentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 12. Create Tournament -->
@@ -202,6 +270,8 @@
         <action
             android:id="@+id/action_create_to_tournaments"
             app:destination="@id/tournamentsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/tournamentsFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -218,10 +288,18 @@
             android:defaultValue="" />
         <action
             android:id="@+id/action_tournament_details_to_register_team"
-            app:destination="@id/teamRegistrationFragment" />
+            app:destination="@id/teamRegistrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_tournament_details_to_fixtures"
-            app:destination="@id/matchFixturesFragment" />
+            app:destination="@id/matchFixturesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 14. Team Registration -->
@@ -248,7 +326,11 @@
             android:defaultValue="" />
         <action
             android:id="@+id/action_fixtures_to_match_details"
-            app:destination="@id/matchDetailsFragment" />
+            app:destination="@id/matchDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 16. Match Details -->
@@ -263,7 +345,11 @@
             android:defaultValue="" />
         <action
             android:id="@+id/action_match_details_to_scoring"
-            app:destination="@id/matchScoringFragment" />
+            app:destination="@id/matchScoringFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 16.5 Match Scoring Screen -->
@@ -286,10 +372,16 @@
         tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profile_to_settings"
-            app:destination="@id/settingsFragment" />
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_profile_to_login"
             app:destination="@id/loginFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>

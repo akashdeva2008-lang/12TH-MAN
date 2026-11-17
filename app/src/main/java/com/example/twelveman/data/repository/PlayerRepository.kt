@@ -1,54 +1,39 @@
 package com.example.twelveman.data.repository
 
+import com.example.twelveman.data.api.RetrofitClient
 import com.example.twelveman.data.local.MockData
 import com.example.twelveman.data.model.Player
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 class PlayerRepository {
-    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
-    fun getPlayers(): Flow<List<Player>> = callbackFlow {
+    private val apiService = RetrofitClient.getApiService()
+
+    fun getPlayers(): Flow<List<Player>> = flow {
+        // Emit cached data immediately for zero latency
+        emit(MockData.players)
+
         try {
-            val listener = db.collection("players").addSnapshotListener { snapshot, error ->
-                if (error != null || snapshot == null || snapshot.isEmpty) {
-                    if (snapshot != null && snapshot.isEmpty) {
-                        seedPlayers()
-                    }
-                    trySend(MockData.players)
-                    return@addSnapshotListener
-                }
-
-                val playersList = snapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Player::class.java)
-                }
-                if (playersList.isNotEmpty()) {
+            val response = apiService.getPlayers()
+            if (response.isSuccessful && response.body()?.data != null) {
+                val remotePlayers = response.body()!!.data!!
+                if (remotePlayers.isNotEmpty()) {
                     MockData.players.clear()
-                    MockData.players.addAll(playersList)
-                    trySend(playersList)
-                } else {
-                    trySend(MockData.players)
+                    MockData.players.addAll(remotePlayers)
+                    emit(remotePlayers)
                 }
             }
-            awaitClose { listener.remove() }
         } catch (e: Exception) {
-            trySend(MockData.players)
-            awaitClose { }
+            // Gracefully retain cache on network exception
         }
-    }
-
-    private fun seedPlayers() {
-        try {
-            for (player in MockData.players) {
-                db.collection("players").document(player.id).set(player)
-            }
-        } catch (ignored: Exception) { }
-    }
+    }.flowOn(Dispatchers.IO)
 
     fun getPlayerById(id: String): Player? {
-        return MockData.players.find { it.id == id }
+        return MockData.players.find { it.id.equals(id, ignoreCase = true) }
     }
 
     fun searchPlayers(query: String, roleFilter: String): List<Player> {

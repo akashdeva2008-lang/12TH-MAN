@@ -41,6 +41,8 @@ class ProfileFragment : Fragment() {
         }
 
         binding.btnLogout.setOnClickListener {
+            viewModel.logout()
+
             findNavController().navigate(R.id.action_profile_to_login)
         }
     }

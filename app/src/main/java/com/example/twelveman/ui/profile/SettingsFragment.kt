@@ -61,7 +61,7 @@ class SettingsFragment : Fragment() {
         }
 
         binding.layoutClearCache.setOnClickListener {
-            Toast.makeText(requireContext(), "App Cache Cleared (14.2 MB freed)", Toast.LENGTH_SHORT).show()
+            com.example.twelveman.utils.ServerConfigDialog.show(requireContext())
         }
 
         binding.layoutTerms.setOnClickListener {

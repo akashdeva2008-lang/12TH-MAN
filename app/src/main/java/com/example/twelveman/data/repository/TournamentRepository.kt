@@ -1,66 +1,52 @@
 package com.example.twelveman.data.repository
 
+import com.example.twelveman.data.api.RetrofitClient
 import com.example.twelveman.data.local.MockData
 import com.example.twelveman.data.model.Match
 import com.example.twelveman.data.model.Team
 import com.example.twelveman.data.model.Tournament
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 class TournamentRepository {
-    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
-    fun getTournaments(): Flow<List<Tournament>> = callbackFlow {
+    private val apiService = RetrofitClient.getApiService()
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    fun getTournaments(): Flow<List<Tournament>> = flow {
+        // Emit cached data immediately
+        emit(MockData.tournaments)
+
         try {
-            val listener = db.collection("tournaments").addSnapshotListener { snapshot, error ->
-                if (error != null || snapshot == null || snapshot.isEmpty) {
-                    if (snapshot != null && snapshot.isEmpty) {
-                        seedTournaments()
-                    }
-                    trySend(MockData.tournaments)
-                    return@addSnapshotListener
-                }
-
-                val list = snapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Tournament::class.java)
-                }
-                if (list.isNotEmpty()) {
+            val response = apiService.getTournaments()
+            if (response.isSuccessful && response.body()?.data != null) {
+                val remoteList = response.body()!!.data!!
+                if (remoteList.isNotEmpty()) {
                     MockData.tournaments.clear()
-                    MockData.tournaments.addAll(list)
-                    trySend(list)
-                } else {
-                    trySend(MockData.tournaments)
+                    MockData.tournaments.addAll(remoteList)
+                    emit(remoteList)
                 }
             }
-            awaitClose { listener.remove() }
         } catch (e: Exception) {
-            trySend(MockData.tournaments)
-            awaitClose { }
+            // Retain cache on network exception
         }
-    }
-
-    private fun seedTournaments() {
-        try {
-            for (tournament in MockData.tournaments) {
-                db.collection("tournaments").document(tournament.id).set(tournament)
-            }
-            for (match in MockData.matches) {
-                db.collection("matches").document(match.id).set(match)
-            }
-        } catch (ignored: Exception) { }
-    }
+    }.flowOn(Dispatchers.IO)
 
     fun getTournamentById(id: String): Tournament? {
-        return MockData.tournaments.find { it.id == id }
+        return MockData.tournaments.find { it.id.equals(id, ignoreCase = true) }
     }
 
     fun createTournament(tournament: Tournament) {
         MockData.tournaments.add(0, tournament)
-        try {
-            db.collection("tournaments").document(tournament.id).set(tournament)
-        } catch (ignored: Exception) { }
+        scope.launch {
+            try {
+                apiService.createTournament(tournament)
+            } catch (ignored: Exception) { }
+        }
     }
 
     fun registerTeam(team: Team) {
@@ -71,18 +57,59 @@ class TournamentRepository {
                 registeredTeamsCount = tournament.registeredTeamsCount + 1
             )
             MockData.tournaments[index] = updated
+        }
+        scope.launch {
             try {
-                db.collection("teams").document(team.id).set(team)
-                db.collection("tournaments").document(updated.id).set(updated)
+                apiService.registerTeam(team)
             } catch (ignored: Exception) { }
         }
     }
 
     fun getMatchesForTournament(tournamentId: String): List<Match> {
-        return MockData.matches.filter { it.tournamentId == tournamentId || tournamentId.isEmpty() }
+        scope.launch {
+            try {
+                val response = apiService.getMatches(tournamentId)
+                if (response.isSuccessful && response.body()?.data != null) {
+                    val remoteMatches = response.body()!!.data!!
+                    if (remoteMatches.isNotEmpty()) {
+                        for (remote in remoteMatches) {
+                            val existingIndex = MockData.matches.indexOfFirst { it.id == remote.id }
+                            if (existingIndex != -1) {
+                                val current = MockData.matches[existingIndex]
+                                MockData.matches[existingIndex] = current.copy(
+                                    scoreA = remote.scoreA,
+                                    scoreB = remote.scoreB,
+                                    status = remote.status,
+                                    result = remote.result
+                                )
+                            } else {
+                                MockData.matches.add(remote)
+                            }
+                        }
+                    }
+                }
+            } catch (ignored: Exception) { }
+        }
+
+        return MockData.matches.filter { it.tournamentId.equals(tournamentId, ignoreCase = true) || tournamentId.isEmpty() }
     }
 
     fun getMatchById(matchId: String): Match? {
-        return MockData.matches.find { it.id == matchId }
+        return MockData.matches.find { it.id.equals(matchId, ignoreCase = true) }
+    }
+
+    fun syncMatchUpdate(match: Match) {
+        scope.launch {
+            try {
+                val payload = mapOf(
+                    "id" to match.id,
+                    "status" to match.status,
+                    "result" to match.result,
+                    "scoreA" to match.scoreA,
+                    "scoreB" to match.scoreB
+                )
+                apiService.updateMatch(payload)
+            } catch (ignored: Exception) { }
+        }
     }
 }

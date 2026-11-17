@@ -1,54 +1,38 @@
 package com.example.twelveman.data.repository
 
+import com.example.twelveman.data.api.RetrofitClient
 import com.example.twelveman.data.local.MockData
 import com.example.twelveman.data.model.Umpire
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class UmpireRepository {
-    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
-    fun getUmpires(): Flow<List<Umpire>> = callbackFlow {
+    private val apiService = RetrofitClient.getApiService()
+
+    fun getUmpires(): Flow<List<Umpire>> = flow {
+        // Emit cached data immediately
+        emit(MockData.umpires)
+
         try {
-            val listener = db.collection("umpires").addSnapshotListener { snapshot, error ->
-                if (error != null || snapshot == null || snapshot.isEmpty) {
-                    if (snapshot != null && snapshot.isEmpty) {
-                        seedUmpires()
-                    }
-                    trySend(MockData.umpires)
-                    return@addSnapshotListener
-                }
-
-                val umpiresList = snapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Umpire::class.java)
-                }
-                if (umpiresList.isNotEmpty()) {
+            val response = apiService.getUmpires()
+            if (response.isSuccessful && response.body()?.data != null) {
+                val remoteUmpires = response.body()!!.data!!
+                if (remoteUmpires.isNotEmpty()) {
                     MockData.umpires.clear()
-                    MockData.umpires.addAll(umpiresList)
-                    trySend(umpiresList)
-                } else {
-                    trySend(MockData.umpires)
+                    MockData.umpires.addAll(remoteUmpires)
+                    emit(remoteUmpires)
                 }
             }
-            awaitClose { listener.remove() }
         } catch (e: Exception) {
-            trySend(MockData.umpires)
-            awaitClose { }
+            // Gracefully retain cache on network exception
         }
-    }
-
-    private fun seedUmpires() {
-        try {
-            for (umpire in MockData.umpires) {
-                db.collection("umpires").document(umpire.id).set(umpire)
-            }
-        } catch (ignored: Exception) { }
-    }
+    }.flowOn(Dispatchers.IO)
 
     fun getUmpireById(id: String): Umpire? {
-        return MockData.umpires.find { it.id == id }
+        return MockData.umpires.find { it.id.equals(id, ignoreCase = true) }
     }
 
     fun searchUmpires(query: String): List<Umpire> {

@@ -1,15 +1,18 @@
 package com.example.twelveman.ui.bookings
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.twelveman.data.local.SessionManager
 import com.example.twelveman.data.model.Booking
 import com.example.twelveman.data.repository.BookingRepository
 import kotlinx.coroutines.launch
 
-class BookingsViewModel : ViewModel() {
+class BookingsViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = BookingRepository()
+    private val sessionManager = SessionManager.getInstance(application)
 
     private val _bookings = MutableLiveData<List<Booking>>()
     val bookings: LiveData<List<Booking>> = _bookings
@@ -40,12 +43,13 @@ class BookingsViewModel : ViewModel() {
         amount: Int,
         notes: String
     ) {
+        val userEmail = sessionManager.getCurrentUser()?.email ?: "user@example.com"
         val newBooking = Booking(
             id = "B" + (100..999).random(),
             bookingType = type,
             itemId = itemId,
             itemName = itemName,
-            userEmail = "user@example.com",
+            userEmail = userEmail,
             date = date,
             timeSlot = time,
             venue = venue,

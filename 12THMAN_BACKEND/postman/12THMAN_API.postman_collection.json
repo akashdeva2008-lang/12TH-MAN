@@ -1,0 +1,282 @@
+{
+	"info": {
+		"_postman_id": "9b12a884-635b-4ec5-b6d8-12thmanbackend",
+		"name": "12THMAN Full Ecosystem API Collection",
+		"description": "Complete Postman collection for 12THMAN Cricket Ecosystem: Auth, Players, Umpires, Tournaments, Live Matches, and Bookings (PHP + MySQL + Retrofit).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost/12THMAN_BACKEND",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "01. Database Diagnostic",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{base_url}}/test_db.php",
+							"host": ["{{base_url}}"],
+							"path": ["test_db.php"]
+						}
+					}
+				},
+				{
+					"name": "02. Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Test User\",\n    \"email\": \"testuser2026@example.com\",\n    \"phone\": \"9876543210\",\n    \"password\": \"Test@123456\",\n    \"role\": \"PLAYER\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/register.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "register.php"]
+						}
+					}
+				},
+				{
+					"name": "03. Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testuser2026@example.com\",\n    \"password\": \"Test@123456\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login.php"]
+						}
+					}
+				},
+				{
+					"name": "04. User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{auth_token}}" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/profile.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "profile.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Players",
+			"item": [
+				{
+					"name": "Get All Players",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{base_url}}/api/players/get_players.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "players", "get_players.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Umpires",
+			"item": [
+				{
+					"name": "Get All Umpires",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{base_url}}/api/umpires/get_umpires.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "umpires", "get_umpires.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Tournaments & Matches",
+			"item": [
+				{
+					"name": "Get Tournaments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{base_url}}/api/tournaments/get_tournaments.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tournaments", "get_tournaments.php"]
+						}
+					}
+				},
+				{
+					"name": "Create Tournament",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Championship T20 Cup\",\n    \"format\": \"T20\",\n    \"location\": \"Wankhede, Mumbai\",\n    \"startDate\": \"25 Mar 2026\",\n    \"endDate\": \"30 Mar 2026\",\n    \"totalTeams\": 16,\n    \"entryFee\": 10000,\n    \"prizeMoney\": 100000,\n    \"organizerName\": \"MCA\",\n    \"organizerContact\": \"+91 9900011222\",\n    \"description\": \"State championship\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tournaments/create_tournament.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tournaments", "create_tournament.php"]
+						}
+					}
+				},
+				{
+					"name": "Register Team",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tournamentId\": \"T301\",\n    \"teamName\": \"Phoenix Warriors\",\n    \"captainName\": \"Rahul Sen\",\n    \"captainPhone\": \"+91 9888877777\",\n    \"captainEmail\": \"rahul.sen@example.com\",\n    \"playerNames\": [\"Rahul Sen\", \"Karan Mehta\", \"Vikram Roy\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tournaments/register_team.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tournaments", "register_team.php"]
+						}
+					}
+				},
+				{
+					"name": "Get Tournament Matches",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{base_url}}/api/tournaments/get_matches.php?tournament_id=T301",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tournaments", "get_matches.php"],
+							"query": [
+								{ "key": "tournament_id", "value": "T301" }
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Live Match Score",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"M501\",\n    \"status\": \"LIVE\",\n    \"scoreA\": \"45/1 (5.2)\",\n    \"scoreB\": \"0/0 (0.0)\",\n    \"result\": \"In Progress\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/tournaments/update_match.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "tournaments", "update_match.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Get All Bookings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"url": {
+							"raw": "{{base_url}}/api/bookings/get_bookings.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "bookings", "get_bookings.php"]
+						}
+					}
+				},
+				{
+					"name": "Create Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"bookingType\": \"PLAYER\",\n    \"itemId\": \"P101\",\n    \"itemName\": \"Virat Sharma (Batsman)\",\n    \"userEmail\": \"testuser2026@example.com\",\n    \"date\": \"20 Nov 2026\",\n    \"timeSlot\": \"05:00 PM - 08:00 PM\",\n    \"venue\": \"Brabourne Stadium, Mumbai\",\n    \"matchType\": \"T20\",\n    \"amount\": 1800,\n    \"notes\": \"Opening batsman needed for finals\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bookings/create_booking.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "bookings", "create_booking.php"]
+						}
+					}
+				},
+				{
+					"name": "Cancel Booking",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Accept", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"B401\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/bookings/cancel_booking.php",
+							"host": ["{{base_url}}"],
+							"path": ["api", "bookings", "cancel_booking.php"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

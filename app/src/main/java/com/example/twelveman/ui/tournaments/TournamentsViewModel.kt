@@ -172,6 +172,7 @@ class TournamentsViewModel : ViewModel() {
         }
 
         _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
     }
 
     fun undoLastBall(matchId: String): Boolean {
@@ -202,6 +203,7 @@ class TournamentsViewModel : ViewModel() {
         match.currentInnings = 2
         match.commentary.add(0, "Innings break. Team B is now batting.")
         _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
     }
 
     fun completeMatch(matchId: String) {
@@ -212,5 +214,6 @@ class TournamentsViewModel : ViewModel() {
         else "Match Tied"
         match.commentary.add(0, "Match Concluded: ${match.result}")
         _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
     }
 }

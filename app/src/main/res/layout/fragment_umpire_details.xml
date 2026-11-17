@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light"
-    android:fillViewport="true">
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingBottom="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -194,6 +196,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="24dp"
+            android:foreground="?attr/selectableItemBackground"
             android:text="Hire Umpire Now"
             android:textColor="@color/primary_navy"
             android:textSize="18sp"

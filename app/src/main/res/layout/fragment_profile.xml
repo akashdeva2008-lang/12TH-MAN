@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light"
-    android:fillViewport="true">
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingBottom="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:text="Rahul Dravid"
+                    android:text="User Profile"
                     android:textColor="@color/text_white"
                     android:textSize="26sp"
                     android:textStyle="bold" />
@@ -48,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Tournament Organizer"
+                    android:text="Cricket Enthusiast"
                     android:textColor="@color/accent_gold"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -106,6 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_marginHorizontal="16dp"
+            android:foreground="?attr/selectableItemBackground"
             android:text="App Settings"
             android:textColor="@color/text_white"
             android:textSize="17sp"
@@ -113,6 +116,7 @@
             app:cornerRadius="14dp"
             app:icon="@drawable/ic_settings"
             app:iconTint="@color/accent_green"
+            app:rippleColor="@color/accent_green"
             app:strokeColor="@color/accent_green"
             app:strokeWidth="1.5dp" />
 
@@ -123,6 +127,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="24dp"
+            android:foreground="?attr/selectableItemBackground"
             android:text="Log Out"
             android:textSize="17sp"
             android:textStyle="bold"

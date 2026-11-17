@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.twelveman.R
+import com.example.twelveman.data.repository.PlayerRepository
+import com.example.twelveman.data.repository.UmpireRepository
 import com.example.twelveman.databinding.FragmentBookingFormBinding
 
 class BookingFormFragment : Fragment() {
@@ -18,6 +20,7 @@ class BookingFormFragment : Fragment() {
 
     private var itemId: String = ""
     private var itemType: String = "PLAYER"
+    private var itemName: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +39,16 @@ class BookingFormFragment : Fragment() {
             itemType = it.getString("itemType", "PLAYER")
         }
 
-        binding.tvTargetItemName.text = "Booking Ref: $itemId ($itemType)"
+        val resolvedName = if (itemType == "UMPIRE") {
+            val umpire = UmpireRepository().getUmpireById(itemId)
+            if (umpire != null) "${umpire.name} (${umpire.certificationLevel})" else "Suresh Menon (Umpire)"
+        } else {
+            val player = PlayerRepository().getPlayerById(itemId)
+            if (player != null) "${player.name} (${player.role})" else "Virat Sharma (Player)"
+        }
+        itemName = resolvedName
+
+        binding.tvTargetItemName.text = "Booking: $itemName"
 
         binding.btnSubmitBooking.setOnClickListener {
             val date = binding.etBookingDate.text.toString().trim()
@@ -50,7 +62,7 @@ class BookingFormFragment : Fragment() {
                 viewModel.createBooking(
                     type = itemType,
                     itemId = itemId,
-                    itemName = if (itemType == "UMPIRE") "Suresh Menon (Umpire)" else "Virat Sharma (Player)",
+                    itemName = itemName,
                     date = date,
                     time = time,
                     venue = venue,

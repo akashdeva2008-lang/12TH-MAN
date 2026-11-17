@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12THMAN - Download & Install App</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            margin: 0;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .card {
+            background-color: #1e293b;
+            border-radius: 20px;
+            padding: 28px;
+            max-width: 440px;
+            width: 100%;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            border: 1px solid #334155;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .badge {
+            background-color: #22c55e22;
+            color: #22c55e;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 16px;
+            border: 1px solid #22c55e44;
+        }
+        h1 {
+            font-size: 26px;
+            margin: 0 0 8px 0;
+            color: #f1f5f9;
+        }
+        p {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.5;
+            margin: 0 0 24px 0;
+        }
+        .btn-download {
+            display: block;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 16px 24px;
+            border-radius: 14px;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(34, 197, 94, 0.4);
+            transition: transform 0.15s ease;
+            margin-bottom: 14px;
+        }
+        .btn-download:active {
+            transform: scale(0.98);
+        }
+        .btn-test {
+            display: block;
+            background-color: #334155;
+            color: #cbd5e1;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            border: 1px solid #475569;
+            margin-bottom: 24px;
+        }
+        .info-box {
+            background-color: #0f172a;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: left;
+            font-size: 13px;
+            color: #94a3b8;
+            border: 1px solid #1e293b;
+        }
+        .info-box strong {
+            color: #e2e8f0;
+        }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-align: left;
+        }
+        .step-num {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <span class="badge">● MySQL Backend Active</span>
+        <h1>12THMAN Cricket App</h1>
+        <p>Connected to XAMPP Backend (<code>172.23.51.147</code>)</p>
+
+        <a href="12thman.apk" class="btn-download">
+            ⬇️ Download Updated App (APK)
+        </a>
+
+        <a href="test_db.php" class="btn-test">
+            🔍 Test MySQL DB Connection
+        </a>
+
+        <div style="margin-top: 10px; margin-bottom: 20px;">
+            <div class="step">
+                <span class="step-num">1</span>
+                <span>Tap <strong>Download Updated App</strong> above.</span>
+            </div>
+            <div class="step">
+                <span class="step-num">2</span>
+                <span>Tap the downloaded file and choose <strong>Install / Update</strong>.</span>
+            </div>
+            <div class="step">
+                <span class="step-num">3</span>
+                <span>Open the app and <strong>Create Account</strong>. It will immediately save into phpMyAdmin!</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>Server IP:</strong> 172.23.51.147<br>
+            <strong>Database:</strong> 12thman_db<br>
+            <strong>Port:</strong> 80 (Apache)
+        </div>
+    </div>
+</body>
+</html>
+

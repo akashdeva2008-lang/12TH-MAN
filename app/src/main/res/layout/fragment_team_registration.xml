@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light"
-    android:fillViewport="true">
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:paddingBottom="36dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,6 +40,8 @@
                 android:id="@+id/etTeamName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:text="Mumbai Warriors"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
@@ -61,6 +65,8 @@
                 android:id="@+id/etCaptainName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:text="Rahul Dravid"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
@@ -84,7 +90,9 @@
                 android:id="@+id/etCaptainPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
                 android:inputType="phone"
+                android:singleLine="true"
                 android:text="+91 98200 11223"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
@@ -108,9 +116,10 @@
                 android:id="@+id/etPlayerList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:minLines="3"
-                android:text="Virat, Rohit, Hardik, Jasprit, Rishabh, Ravindra, Suryakumar"
+                android:text="Rahul Dravid, Virat Sharma, Jasprit Patel, Hardik Verma, Rishabh Singh"
                 android:textColor="@color/text_primary"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -120,6 +129,7 @@
             android:layout_width="match_parent"
             android:layout_height="58dp"
             android:layout_marginTop="28dp"
+            android:foreground="?attr/selectableItemBackground"
             android:text="Submit Team Registration"
             android:textColor="@color/primary_navy"
             android:textSize="18sp"

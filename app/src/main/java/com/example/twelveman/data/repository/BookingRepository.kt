@@ -1,57 +1,46 @@
 package com.example.twelveman.data.repository
 
+import com.example.twelveman.data.api.RetrofitClient
 import com.example.twelveman.data.local.MockData
 import com.example.twelveman.data.model.Booking
-import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 
 class BookingRepository {
-    private val db: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
-    fun getBookings(): Flow<List<Booking>> = callbackFlow {
+    private val apiService = RetrofitClient.getApiService()
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    fun getBookings(): Flow<List<Booking>> = flow {
+        // Emit cached data immediately
+        emit(MockData.bookings)
+
         try {
-            val listener = db.collection("bookings").addSnapshotListener { snapshot, error ->
-                if (error != null || snapshot == null || snapshot.isEmpty) {
-                    if (snapshot != null && snapshot.isEmpty) {
-                        seedBookings()
-                    }
-                    trySend(MockData.bookings)
-                    return@addSnapshotListener
-                }
-
-                val list = snapshot.documents.mapNotNull { doc ->
-                    doc.toObject(Booking::class.java)
-                }
-                if (list.isNotEmpty()) {
+            val response = apiService.getBookings()
+            if (response.isSuccessful && response.body()?.data != null) {
+                val remoteBookings = response.body()!!.data!!
+                if (remoteBookings.isNotEmpty()) {
                     MockData.bookings.clear()
-                    MockData.bookings.addAll(list)
-                    trySend(list)
-                } else {
-                    trySend(MockData.bookings)
+                    MockData.bookings.addAll(remoteBookings)
+                    emit(remoteBookings)
                 }
             }
-            awaitClose { listener.remove() }
         } catch (e: Exception) {
-            trySend(MockData.bookings)
-            awaitClose { }
+            // Retain cache on network exception
         }
-    }
-
-    private fun seedBookings() {
-        try {
-            for (booking in MockData.bookings) {
-                db.collection("bookings").document(booking.id).set(booking)
-            }
-        } catch (ignored: Exception) { }
-    }
+    }.flowOn(Dispatchers.IO)
 
     fun addBooking(booking: Booking) {
         MockData.bookings.add(0, booking)
-        try {
-            db.collection("bookings").document(booking.id).set(booking)
-        } catch (ignored: Exception) { }
+        scope.launch {
+            try {
+                apiService.createBooking(booking)
+            } catch (ignored: Exception) { }
+        }
     }
 
     fun cancelBooking(bookingId: String): Boolean {
@@ -59,9 +48,11 @@ class BookingRepository {
         if (index != -1) {
             val updated = MockData.bookings[index].copy(status = "CANCELLED")
             MockData.bookings[index] = updated
-            try {
-                db.collection("bookings").document(bookingId).set(updated)
-            } catch (ignored: Exception) { }
+            scope.launch {
+                try {
+                    apiService.cancelBooking(mapOf("id" to bookingId))
+                } catch (ignored: Exception) { }
+            }
             return true
         }
         return false

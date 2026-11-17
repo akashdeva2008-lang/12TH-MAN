@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.twelveman.R
+import com.example.twelveman.data.local.SessionManager
 import com.example.twelveman.databinding.FragmentRoleSelectionBinding
 
 class RoleSelectionFragment : Fragment() {
@@ -43,6 +44,11 @@ class RoleSelectionFragment : Fragment() {
         }
 
         binding.btnContinue.setOnClickListener {
+            val sessionManager = SessionManager.getInstance(requireContext())
+            val user = sessionManager.getCurrentUser()
+            if (user != null) {
+                sessionManager.saveUser(user.copy(role = selectedRole))
+            }
             findNavController().navigate(R.id.action_role_to_home)
         }
     }
