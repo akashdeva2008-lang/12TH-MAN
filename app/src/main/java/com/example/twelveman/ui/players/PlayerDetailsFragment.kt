@@ -51,6 +51,10 @@ class PlayerDetailsFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_player_details_to_booking, bundle)
         }
+
+        binding.ivPlayerDetailBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,30 +7,233 @@
     android:background="@color/bg_light"
     android:clipToPadding="false"
     android:fillViewport="true"
-    android:paddingBottom="24dp">
+    android:paddingBottom="28dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <!-- Scoreboard Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Dark Top Bar Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/header_black"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <ImageView
+                android:id="@+id/ivScoringBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Back"
+                android:focusable="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/pure_white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:text="Live Scoring"
+                android:textColor="@color/pure_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivScoringSettings"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Settings"
+                android:focusable="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_settings"
+                app:tint="@color/pure_white" />
+        </LinearLayout>
+
+        <!-- Dark Stadium Scoreboard Hero Section -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1.5dp">
+            android:background="@drawable/bg_hero_dark"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_gradient"
-                android:orientation="vertical"
-                android:padding="22dp">
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
+                <!-- Match Stage / Header -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_shield"
+                        app:tint="@color/primary_red" />
+
+                    <TextView
+                        android:id="@+id/tvScoringTeams"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="Red Warriors vs Blue Strikers"
+                        android:textColor="@color/pure_white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Huge Live Score Display -->
+                <TextView
+                    android:id="@+id/tvCurrentScoreDisplay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="68/2 (7.4)"
+                    android:textColor="@color/pure_white"
+                    android:textSize="38sp"
+                    android:textStyle="bold" />
+
+                <!-- Equation / Target Indicator -->
+                <TextView
+                    android:id="@+id/tvInningsIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Need 73 runs in 62 balls"
+                    android:textColor="#E0E0E0"
+                    android:textSize="13sp" />
+
+                <!-- Toss Information -->
+                <TextView
+                    android:id="@+id/tvScoringMatchTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Toss: won by Red Warriors, elected to bat"
+                    android:textColor="#B0BEC5"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvScoringStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/bg_badge_red"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="3dp"
+                    android:text="LIVE"
+                    android:textColor="@color/pure_white"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <!-- Team Comparison Shields Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <!-- Team A (Active Batting) -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/primary_red" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Red Warriors"
+                            android:textColor="@color/pure_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="68/2 (7.4)"
+                            android:textColor="#E0E0E0"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Team B -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="#9E9E9E" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Blue Strikers"
+                            android:textColor="@color/pure_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0/0 (0.0)"
+                            android:textColor="#E0E0E0"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Batsmen and Bowler Live Stats Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <!-- Batsman 1 (Striker) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,279 +241,425 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tvScoringMatchTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="Match 1 • Group Stage"
-                        android:textColor="@color/accent_gold"
-                        android:textSize="15sp"
+                        android:text="R. Sharma*"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/tvScoringStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_badge_green"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="4dp"
-                        android:textColor="@color/status_green_text"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        tools:text="LIVE" />
+                        android:text="32 (22)"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvScoringTeams"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:text="Mumbai Warriors vs Strikers XI"
-                    android:textColor="@color/text_white"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvCurrentScoreDisplay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="Score: 0/0 (0.0)"
-                    android:textColor="@color/accent_green"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvInningsIndicator"
-                    android:layout_width="wrap_content"
+                <!-- Batsman 2 (Non-Striker) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Batting: Team A (Innings 1)"
-                    android:textColor="@color/text_white"
-                    android:textSize="15sp" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="V. Kohli"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="18 (14)"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@color/border_grey" />
+
+                <!-- Bowler Figures -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_cricket_ball"
+                        app:tint="@color/primary_red" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:text="J. Anderson"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1/12 (1.4)"
+                        android:textColor="@color/primary_red"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Interactive Scoring Keypad -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Live Scoring Actions"
-            android:textColor="@color/text_primary"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:columnCount="3"
-            android:rowCount="2"
-            android:useDefaultMargins="true">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRun0"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_columnWeight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="0 Run"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/primary_variant"
-                app:cornerRadius="10dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRun1"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_columnWeight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="1 Run"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/primary_variant"
-                app:cornerRadius="10dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRun2"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_columnWeight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="2 Runs"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/primary_variant"
-                app:cornerRadius="10dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRun3"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_columnWeight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="3 Runs"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/primary_variant"
-                app:cornerRadius="10dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRun4"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_columnWeight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="4 • FOUR"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/accent_blue"
-                app:cornerRadius="10dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRun6"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_columnWeight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="6 • SIX!"
-                android:textColor="@color/primary_navy"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/accent_green"
-                app:cornerRadius="10dp" />
-        </GridLayout>
-
+        <!-- Bowling Angle Options Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnWicket"
+            <!-- Round the Wicket -->
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginEnd="4dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="WICKET"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/status_red_bg"
-                app:cornerRadius="10dp" />
+                android:gravity="center"
+                android:orientation="vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnWide"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="WIDE (+1)"
-                android:textColor="@color/primary_navy"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/accent_gold"
-                app:cornerRadius="10dp" />
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_circle_light"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_wickets"
+                    app:tint="@color/header_black" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNoBall"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Round the Wicket"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Between the Wicket -->
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginStart="4dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="NO BALL"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/primary_variant"
-                app:cornerRadius="10dp" />
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_circle_light"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_wickets"
+                    app:tint="@color/header_black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Between the Wicket"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Over the Wicket (Active Highlighted) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_badge_red_outline"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_wickets"
+                    app:tint="@color/primary_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Over the Wicket"
+                    android:textColor="@color/primary_red"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <!-- Scoring Keypad Grid -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="3dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnUndo"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="Undo Ball"
-                android:textColor="@color/accent_green"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:cornerRadius="10dp"
-                app:strokeColor="@color/accent_green"
-                app:strokeWidth="1.5dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSwitchInnings"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
-                android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="Switch"
-                android:textColor="@color/text_white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:cornerRadius="10dp"
-                app:strokeColor="@color/card_border"
-                app:strokeWidth="1.5dp" />
+                <!-- Row 1: 0, 1, 2, UNDO -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCompleteMatch"
-                android:layout_width="0dp"
-                android:layout_height="52dp"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
-                android:text="Conclude"
-                android:textColor="@color/primary_navy"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/accent_green"
-                app:cornerRadius="10dp" />
-        </LinearLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRun0"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="0"
+                        android:textColor="@color/header_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
 
-        <!-- Commentary / Ball Log -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRun1"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="1"
+                        android:textColor="@color/header_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRun2"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="2"
+                        android:textColor="@color/header_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnUndo"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="UNDO"
+                        android:textColor="@color/primary_red"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+
+                <!-- Row 2: 3, 4, 6, OUT -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRun3"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="3"
+                        android:textColor="@color/header_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRun4"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="4"
+                        android:textColor="@color/header_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRun6"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="6"
+                        android:textColor="@color/header_black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnWicket"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_action"
+                        android:text="OUT"
+                        android:textColor="@color/pure_white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+
+                <!-- Row 3: WD, NB, BYE, LB -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnWide"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="WD"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNoBall"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="NB"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnBye"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="BYE"
+                        android:textColor="@color/header_black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnLegBye"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_keypad_button"
+                        android:text="LB"
+                        android:textColor="@color/header_black"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+                </LinearLayout>
+
+                <!-- Conclude & Switch Buttons -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSwitchInnings"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_weight="1"
+                        android:text="Switch Innings"
+                        android:textColor="@color/primary_red"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:cornerRadius="10dp"
+                        app:strokeColor="@color/primary_red"
+                        app:strokeWidth="1.5dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnCompleteMatch"
+                        android:layout_width="0dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_weight="1"
+                        android:text="Conclude Match"
+                        android:textColor="@color/pure_white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primary_red"
+                        app:cornerRadius="10dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Commentary Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
             android:text="Ball-by-Ball Commentary"
-            android:textColor="@color/text_primary"
-            android:textSize="18sp"
+            android:textColor="@color/header_black"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCommentary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:nestedScrollingEnabled="false"
             tools:listitem="@android:id/text1" />
-
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

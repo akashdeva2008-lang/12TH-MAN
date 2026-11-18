@@ -28,6 +28,10 @@ class CreateTournamentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.ivCreateMatchBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.btnPublishTournament.setOnClickListener {
             val name = binding.etTournamentName.text.toString().trim()
             val format = binding.etFormat.text.toString().trim()

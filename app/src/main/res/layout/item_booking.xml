@@ -9,10 +9,11 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/surface_white"
     app:cardCornerRadius="16dp"
-    app:cardElevation="3dp"
-    app:strokeColor="@color/card_border"
-    app:strokeWidth="1.5dp">
+    app:cardElevation="2dp"
+    app:strokeColor="@color/border_grey"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,10 +31,10 @@
                 android:id="@+id/ivBookingTypeIcon"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
-                android:background="@drawable/bg_badge_blue"
+                android:background="@drawable/bg_circle_light"
                 android:padding="10dp"
                 android:src="@drawable/ic_booking"
-                app:tint="@color/accent_blue" />
+                app:tint="@color/primary_red" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -48,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/text_primary"
-                    android:textSize="17sp"
+                    android:textColor="@color/header_black"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="Virat Sharma (Batsman)" />
 
@@ -61,7 +62,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/text_secondary"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     tools:text="MCC Turf Ground, Chembur" />
             </LinearLayout>
 
@@ -69,11 +70,11 @@
                 android:id="@+id/tvBookingStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_badge_green"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="5dp"
-                android:textColor="@color/status_green_text"
-                android:textSize="13sp"
+                android:background="@drawable/bg_badge_red_outline"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/primary_red"
+                android:textSize="11sp"
                 android:textStyle="bold"
                 tools:text="CONFIRMED" />
         </LinearLayout>
@@ -82,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginVertical="12dp"
-            android:background="@color/card_border" />
+            android:background="@color/border_grey" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -96,15 +97,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 tools:text="18 Mar 2026 • 04:00 PM" />
 
             <TextView
                 android:id="@+id/tvBookingAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/accent_green"
-                android:textSize="17sp"
+                android:textColor="@color/primary_red"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 tools:text="₹1,800" />
         </LinearLayout>

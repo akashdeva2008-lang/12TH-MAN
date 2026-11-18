@@ -1,23 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light"
     android:clipToPadding="false"
     android:fillViewport="true"
-    android:paddingBottom="24dp">
+    android:paddingBottom="32dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Banner Header -->
+        <!-- Top Header Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/header_black"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <ImageView
+                android:id="@+id/ivTournamentDetailBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Back"
+                android:focusable="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/pure_white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:text="Tournament Details"
+                android:textColor="@color/pure_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Dark Banner Hero -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:background="@drawable/bg_card_gradient"
+            android:layout_height="180dp"
+            android:background="@drawable/bg_hero_dark"
             android:padding="20dp">
 
             <LinearLayout
@@ -28,8 +61,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/ic_trophy"
                     app:tint="@color/accent_gold" />
 
@@ -37,22 +70,21 @@
                     android:id="@+id/tvTournamentDetailTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="Premier Corporate T20 Cup"
-                    android:textColor="@color/text_white"
-                    android:textSize="26sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/pure_white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Premier Corporate T20 Cup" />
 
                 <TextView
                     android:id="@+id/tvTournamentDetailLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="Wankhede Stadium Turf, Mumbai"
-                    android:textColor="@color/accent_gold"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="2dp"
+                    android:textColor="#E0E0E0"
+                    android:textSize="13sp"
+                    tools:text="Wankhede Stadium Turf, Mumbai" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -60,11 +92,13 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="-20dp"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="18dp"
             app:cardElevation="3dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1.5dp">
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -88,10 +122,10 @@
                             android:id="@+id/tvDetailFormat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="T20"
-                            android:textColor="@color/accent_blue"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textColor="@color/primary_red"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:text="T20" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -99,8 +133,14 @@
                             android:layout_marginTop="2dp"
                             android:text="Format"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/border_grey" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -113,10 +153,10 @@
                             android:id="@+id/tvDetailTeams"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="12/16"
-                            android:textColor="@color/text_primary"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textColor="@color/header_black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:text="12/16" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -124,8 +164,14 @@
                             android:layout_marginTop="2dp"
                             android:text="Teams Reg."
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/border_grey" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -138,10 +184,10 @@
                             android:id="@+id/tvDetailPrize"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="₹1.5L"
                             android:textColor="@color/accent_green"
-                            android:textSize="22sp"
-                            android:textStyle="bold" />
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            tools:text="₹1.5L" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -149,32 +195,33 @@
                             android:layout_marginTop="2dp"
                             android:text="Prize Pool"
                             android:textColor="@color/text_secondary"
-                            android:textSize="14sp" />
+                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginVertical="18dp"
-                    android:background="@color/card_border" />
+                    android:layout_marginVertical="16dp"
+                    android:background="@color/border_grey" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tournament Overview"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
+                    android:textColor="@color/header_black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTournamentDetailDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Grand T20 tournament open for corporate and private clubs with live streaming and official umpires."
+                    android:layout_marginTop="6dp"
+                    android:lineSpacingExtra="3dp"
                     android:textColor="@color/text_secondary"
-                    android:textSize="16sp" />
+                    android:textSize="14sp"
+                    tools:text="Grand T20 tournament open for corporate and private clubs with live streaming and official umpires." />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -183,38 +230,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegisterTeam"
                 android:layout_width="0dp"
-                android:layout_height="58dp"
+                android:layout_height="52dp"
                 android:layout_marginEnd="6dp"
-                android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
+                android:layout_weight="1.2"
                 android:text="Register Team"
-                android:textColor="@color/primary_navy"
-                android:textSize="16sp"
+                android:textColor="@color/pure_white"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/accent_green"
-                app:cornerRadius="14dp" />
+                app:backgroundTint="@color/primary_red"
+                app:cornerRadius="12dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnViewFixtures"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="58dp"
+                android:layout_height="52dp"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
-                android:foreground="?attr/selectableItemBackground"
                 android:text="View Fixtures"
-                android:textColor="@color/text_white"
-                android:textSize="16sp"
+                android:textColor="@color/primary_red"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                app:cornerRadius="14dp"
-                app:strokeColor="@color/accent_green"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/primary_red"
                 app:strokeWidth="1.5dp" />
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

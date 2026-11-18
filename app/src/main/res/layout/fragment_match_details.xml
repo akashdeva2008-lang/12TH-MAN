@@ -1,120 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light"
     android:clipToPadding="false"
     android:fillViewport="true"
-    android:paddingBottom="24dp">
+    android:paddingBottom="32dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Header Card -->
-        <RelativeLayout
+        <!-- Top Header Bar -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:background="@drawable/bg_card_gradient"
-            android:padding="20dp">
+            android:layout_height="56dp"
+            android:background="@color/header_black"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <ImageView
+                android:id="@+id/ivMatchDetailBack"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Back"
+                android:focusable="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_arrow_back"
+                app:tint="@color/pure_white" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:text="Match Details"
+                android:textColor="@color/pure_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivMatchDetailEdit"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Edit"
+                android:focusable="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_edit"
+                app:tint="@color/pure_white" />
+        </LinearLayout>
+
+        <!-- Teams Matchup Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="3dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <TextView
                     android:id="@+id/tvMatchDetailStage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Match 5 • Quarter Final"
-                    android:textColor="@color/accent_gold"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primary_red"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    tools:text="Match 5 • Quarter Final" />
 
+                <!-- Matchup Row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/tvMatchDetailTeamA"
+                    <!-- Team A -->
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Bangalore Blasters"
-                        android:textColor="@color/text_white"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_circle_light"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/primary_red" />
+
+                        <TextView
+                            android:id="@+id/tvMatchDetailTeamA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/header_black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="Red Warriors" />
+                    </LinearLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginHorizontal="14dp"
                         android:text="VS"
-                        android:textColor="@color/accent_gold"
-                        android:textSize="18sp"
+                        android:textColor="@color/header_black"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tvMatchDetailTeamB"
+                    <!-- Team B -->
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="Techie Eleven"
-                        android:textColor="@color/text_white"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_circle_light"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/header_black" />
+
+                        <TextView
+                            android:id="@+id/tvMatchDetailTeamB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/header_black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            tools:text="Blue Strikers" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/tvMatchDetailResult"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="Bangalore Blasters won by 14 runs"
+                    android:layout_marginTop="12dp"
                     android:textColor="@color/accent_green"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="Red Warriors won by 14 runs" />
             </LinearLayout>
-        </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Dark Banner: Date, Time & Venue -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/header_dark_grey"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/primary_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="Apr 26, 2025  |  5:00 PM"
+                        android:textColor="@color/pure_white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_location"
+                        app:tint="#B0BEC5" />
+
+                    <TextView
+                        android:id="@+id/tvMatchVenueInfo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:textColor="#E0E0E0"
+                        android:textSize="13sp"
+                        tools:text="Green Park Stadium" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Two Cards: Toss & Squad Grid -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <!-- Toss Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/surface_white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:background="@drawable/bg_circle_light"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_shield"
+                        app:tint="@color/header_black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Toss"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Red Warriors won and elected to bat"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Squad Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                app:cardBackgroundColor="@color/surface_white"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:background="@drawable/bg_circle_light"
+                        android:padding="6dp"
+                        android:src="@drawable/ic_groups"
+                        app:tint="@color/header_black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Squad"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Both teams announced"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
         <!-- Scorecard Summary Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1.5dp">
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Scorecard Summary"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
+                    android:textColor="@color/header_black"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
+                <!-- Innings 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="12dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -122,24 +375,30 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Bangalore Blasters:"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp" />
+                        android:text="Red Warriors (1st Innings)"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvScoreA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="98/4 (8.0 overs)"
-                        android:textColor="@color/accent_green"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/primary_red"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:text="98/4 (8.0)" />
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/border_grey" />
+
+                <!-- Innings 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -147,58 +406,57 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Techie Eleven:"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp" />
+                        android:text="Blue Strikers (2nd Innings)"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvScoreB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="84/6 (8.0 overs)"
-                        android:textColor="@color/accent_gold"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/header_black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        tools:text="84/6 (8.0)" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="18dp"
-                    android:background="@color/card_border" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Match Information"
-                    android:textColor="@color/text_primary"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvMatchVenueInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Venue: PlayArena Arena 1, Sarjapur\nDate: 02 Mar 2026 • 07:00 PM\nUmpire: Suresh Menon (ICC Accredited)"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="15sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Conduct / Live Score Action Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnOpenScoring"
+        <!-- Bottom Action Buttons Row -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="24dp"
-            android:foreground="?attr/selectableItemBackground"
-            android:text="Conduct / Live Score Match"
-            android:textColor="@color/primary_navy"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/accent_green"
-            app:cornerRadius="14dp" />
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEditDetails"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:text="Edit Details"
+                android:textColor="@color/primary_red"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:strokeColor="@color/primary_red"
+                app:strokeWidth="1.5dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenScoring"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1.2"
+                android:text="▶ Start Scoring"
+                android:textColor="@color/pure_white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/primary_red"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

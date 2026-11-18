@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_light"
     android:clipToPadding="false"
     android:fillViewport="true"
-    android:paddingBottom="24dp">
+    android:paddingBottom="36dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,53 +17,54 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:text="Select Your Role"
-            android:textColor="@color/text_primary"
-            android:textSize="30sp"
+            android:textColor="@color/header_black"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Choose how you want to use 12THMAN"
+            android:text="Choose how you want to participate in 12THMAN"
             android:textColor="@color/text_secondary"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <!-- Role 1: Player -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardRolePlayer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="24dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1.5dp">
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="22dp">
+                android:padding="18dp">
 
                 <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:background="@drawable/bg_badge_blue"
-                    android:padding="12dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_circle_light"
+                    android:padding="10dp"
                     android:src="@drawable/ic_cricket_bat"
-                    app:tint="@color/accent_blue" />
+                    app:tint="@color/primary_red" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -71,18 +72,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cricket Player"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
+                        android:textColor="@color/header_black"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Register your skills &amp; get booked for matches"
+                        android:layout_marginTop="3dp"
+                        android:text="Showcase your skills &amp; get booked for tournaments"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/text_secondary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -91,34 +98,35 @@
             android:id="@+id/cardRoleUmpire"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="14dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1.5dp">
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="22dp">
+                android:padding="18dp">
 
                 <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:background="@drawable/bg_badge_gold"
-                    android:padding="12dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_circle_light"
+                    android:padding="10dp"
                     android:src="@drawable/ic_umpire"
-                    app:tint="@color/accent_gold" />
+                    app:tint="@color/header_black" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -126,18 +134,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Cricket Umpire"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
+                        android:textColor="@color/header_black"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Offer referee &amp; officiating services for tournaments"
+                        android:layout_marginTop="3dp"
+                        android:text="Officiate matches, earn fees &amp; build reputation"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/text_secondary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -146,34 +160,35 @@
             android:id="@+id/cardRoleOrganizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="14dp"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/surface_white"
             app:cardCornerRadius="16dp"
-            app:cardElevation="3dp"
-            app:strokeColor="@color/card_border"
-            app:strokeWidth="1.5dp">
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="22dp">
+                android:padding="18dp">
 
                 <ImageView
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:background="@drawable/bg_badge_green"
-                    android:padding="12dp"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_circle_light"
+                    android:padding="10dp"
                     android:src="@drawable/ic_trophy"
-                    app:tint="@color/accent_green" />
+                    app:tint="@color/accent_gold" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
+                    android:layout_marginStart="16dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -181,32 +196,37 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tournament Organizer"
-                        android:textColor="@color/text_primary"
-                        android:textSize="20sp"
+                        android:textColor="@color/header_black"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="Host leagues, create fixtures &amp; manage teams"
+                        android:layout_marginTop="3dp"
+                        android:text="Host tournaments, live score &amp; register teams"
                         android:textColor="@color/text_secondary"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/text_secondary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnContinue"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:layout_marginTop="36dp"
-            android:foreground="?attr/selectableItemBackground"
+            android:layout_height="54dp"
+            android:layout_marginTop="32dp"
             android:text="Continue to Dashboard"
-            android:textColor="@color/primary_navy"
-            android:textSize="18sp"
+            android:textColor="@color/pure_white"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:backgroundTint="@color/accent_green"
+            app:backgroundTint="@color/primary_red"
             app:cornerRadius="14dp" />
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

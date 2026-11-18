@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">12THMAN</string>
-    <string name="app_tagline">Cricket Players, Umpires &amp; Tournament Hub</string>
+    <string name="app_tagline">Cricket Management &amp; Tournament Hub</string>
 
     <!-- Navigation Titles -->
     <string name="nav_home">Home</string>
+    <string name="nav_my_matches">My Matches</string>
     <string name="nav_players">Players</string>
-    <string name="nav_umpires">Umpires</string>
     <string name="nav_tournaments">Tournaments</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_umpires">Umpires</string>
     <string name="nav_bookings">Bookings</string>
 
     <!-- Actions -->

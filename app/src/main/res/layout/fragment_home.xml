@@ -14,22 +14,209 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Top Header Banner -->
+        <!-- Top App Bar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/pure_white"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
+
+            <!-- Profile Avatar (Left) -->
+            <ImageView
+                android:id="@+id/ivHeaderProfile"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_circle_dark"
+                android:clickable="true"
+                android:contentDescription="Profile"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="8dp"
+                android:src="@drawable/ic_person"
+                app:tint="@color/pure_white" />
+
+            <!-- App Logo (Center) -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:contentDescription="12THMAN Logo"
+                    android:src="@drawable/ic_cricket_batsman" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:letterSpacing="0.05"
+                    android:text="12TH"
+                    android:textColor="@color/header_black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.05"
+                    android:text="MAN"
+                    android:textColor="@color/primary_red"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Notifications Bell (Right) -->
+            <ImageView
+                android:id="@+id/ivHeaderNotification"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Notifications"
+                android:focusable="true"
+                android:padding="6dp"
+                android:src="@drawable/ic_bell"
+                app:tint="@color/header_black" />
+        </LinearLayout>
+
+        <!-- Live Match Banner (Hero Card) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp"
-            app:strokeColor="@color/card_border"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="4dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_gradient"
+                android:padding="18dp">
+
+                <!-- Left Content -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/ivBatsmanHero"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_badge_red"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp"
+                        android:text="• Live Match"
+                        android:textColor="@color/pure_white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Red Warriors vs Blue Strikers"
+                        android:textColor="@color/pure_white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="T20 • Green Park Stadium"
+                        android:textColor="#E0E0E0"
+                        android:textSize="13sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnQuickHost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="14dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:paddingHorizontal="18dp"
+                        android:text="View Live"
+                        android:textColor="@color/pure_white"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primary_red"
+                        app:cornerRadius="19dp" />
+                </LinearLayout>
+
+                <!-- Batsman Silhouette Graphic (Right) -->
+                <ImageView
+                    android:id="@+id/ivBatsmanHero"
+                    android:layout_width="76dp"
+                    android:layout_height="95dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:alpha="0.85"
+                    android:contentDescription="Batsman"
+                    android:src="@drawable/ic_cricket_batsman"
+                    app:tint="@color/pure_white" />
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Upcoming Matches Section Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Upcoming Matches"
+                android:textColor="@color/header_black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="4dp"
+                android:text="View All →"
+                android:textColor="@color/primary_red"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Upcoming Match Featured Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_grey"
             app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card_gradient"
                 android:orientation="vertical"
-                android:padding="22dp">
+                android:padding="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -37,165 +224,215 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
+                    <!-- Team 1 -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Welcome to 12THMAN"
-                            android:textColor="@color/accent_gold"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_circle_light"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/primary_red" />
 
                         <TextView
-                            android:id="@+id/tvHeaderTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Book Players, Umpires &amp; Organize Leagues"
-                            android:textColor="@color/text_white"
-                            android:textSize="24sp"
+                            android:layout_marginTop="6dp"
+                            android:text="Red Warriors"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/ivHeaderProfile"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="@drawable/bg_badge_gold"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_person"
-                        app:tint="@color/accent_gold" />
+                    <!-- VS Badge -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="12dp"
+                        android:text="VS"
+                        android:textColor="@color/header_black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <!-- Team 2 -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_circle_light"
+                            android:padding="6dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/header_black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="Blue Strikers"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnQuickHost"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"
-                    android:text="Host Tournament Now"
-                    android:textColor="@color/primary_navy"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/accent_gold"
-                    app:cornerRadius="20dp" />
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:text="Apr 26, 2025 • 5:00 PM"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:gravity="center"
+                    android:text="Green Park Stadium"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Quick Actions Row -->
+        <!-- Recent Results Section Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Recent Results"
+                android:textColor="@color/header_black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="4dp"
+                android:text="View All →"
+                android:textColor="@color/primary_red"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Recent Result Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="10dp"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="2dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="14dp">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/ic_shield"
+                    app:tint="@color/primary_red" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Red Warriors"
+                    android:textColor="@color/header_black"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Won by 6 Runs"
+                    android:textColor="@color/accent_green"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Blue Strikers"
+                    android:textColor="@color/header_black"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/ic_shield"
+                    app:tint="@color/header_black" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Quick Actions Header -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="22dp"
             android:text="Quick Actions"
-            android:textColor="@color/text_primary"
-            android:textSize="22sp"
+            android:textColor="@color/header_black"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
+        <!-- 3 Quick Action Cards Row (Start Match, Live Scoring, Find Players) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingHorizontal="12dp">
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardBookPlayer"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:strokeColor="@color/card_border"
-                app:strokeWidth="1.5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_cricket_bat"
-                        app:tint="@color/accent_blue" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Book Player"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardHireUmpire"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_margin="4dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:strokeColor="@color/card_border"
-                app:strokeWidth="1.5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_umpire"
-                        app:tint="@color/accent_gold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="Hire Umpire"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
+            <!-- Start Match (Navigates to Tournaments / Match Creation) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardTournaments"
                 android:layout_width="0dp"
-                android:layout_height="110dp"
+                android:layout_height="115dp"
                 android:layout_margin="4dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_white"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="3dp"
-                app:strokeColor="@color/card_border"
-                app:strokeWidth="1.5dp">
+                app:cardElevation="2dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -204,18 +441,102 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_circle_light"
+                        android:padding="8dp"
                         android:src="@drawable/ic_trophy"
-                        app:tint="@color/accent_green" />
+                        app:tint="@color/primary_red" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Tournaments"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
+                        android:text="Start Match"
+                        android:textColor="@color/header_black"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Live Scoring (Navigates to Umpires / Scoring) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHireUmpire"
+                android:layout_width="0dp"
+                android:layout_height="115dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_circle_light"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_live_waves"
+                        app:tint="@color/primary_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Live Scoring"
+                        android:textColor="@color/header_black"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Find Players (Navigates to Players) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardBookPlayer"
+                android:layout_width="0dp"
+                android:layout_height="115dp"
+                android:layout_margin="4dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:background="@drawable/bg_circle_light"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_groups"
+                        app:tint="@color/primary_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Find Players"
+                        android:textColor="@color/header_black"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -226,7 +547,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -235,8 +556,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Featured Players"
-                android:textColor="@color/text_primary"
-                android:textSize="22sp"
+                android:textColor="@color/header_black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -247,9 +568,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="6dp"
-                android:text="See All"
-                android:textColor="@color/accent_blue"
-                android:textSize="16sp"
+                android:text="See All →"
+                android:textColor="@color/primary_red"
+                android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -266,7 +587,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -275,8 +596,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Top Rated Umpires"
-                android:textColor="@color/text_primary"
-                android:textSize="22sp"
+                android:textColor="@color/header_black"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -287,9 +608,9 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="6dp"
-                android:text="See All"
-                android:textColor="@color/accent_blue"
-                android:textSize="16sp"
+                android:text="See All →"
+                android:textColor="@color/primary_red"
+                android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -300,5 +621,6 @@
             android:layout_marginTop="10dp"
             android:nestedScrollingEnabled="false"
             tools:listitem="@layout/item_umpire" />
+
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

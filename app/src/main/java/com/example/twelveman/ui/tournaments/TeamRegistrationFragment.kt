@@ -32,6 +32,10 @@ class TeamRegistrationFragment : Fragment() {
             tournamentId = it.getString("tournamentId", "T301")
         }
 
+        binding.ivTeamRegBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.btnSubmitTeamReg.setOnClickListener {
             val teamName = binding.etTeamName.text.toString().trim()
             val captainName = binding.etCaptainName.text.toString().trim()

@@ -49,6 +49,10 @@ class MatchDetailsFragment : Fragment() {
             val bundle = Bundle().apply { putString("matchId", matchId) }
             findNavController().navigate(R.id.action_match_details_to_scoring, bundle)
         }
+
+        binding.ivMatchDetailBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

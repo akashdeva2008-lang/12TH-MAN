@@ -31,7 +31,8 @@ open class MainActivity : AppCompatActivity() {
                 R.id.playersFragment,
                 R.id.umpiresFragment,
                 R.id.tournamentsFragment,
-                R.id.bookingsFragment -> {
+                R.id.bookingsFragment,
+                R.id.profileFragment -> {
                     binding.bottomNavigation.visibility = View.VISIBLE
                 }
                 else -> {

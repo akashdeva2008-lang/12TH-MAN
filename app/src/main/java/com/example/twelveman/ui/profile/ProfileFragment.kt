@@ -40,6 +40,14 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_profile_to_settings)
         }
 
+        binding.ivProfileBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.ivProfileTopSettings.setOnClickListener {
+            findNavController().navigate(R.id.action_profile_to_settings)
+        }
+
         binding.btnLogout.setOnClickListener {
             viewModel.logout()
 

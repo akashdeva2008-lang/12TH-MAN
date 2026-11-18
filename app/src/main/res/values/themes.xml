@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.TwelveMan" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Color Scheme -->
-        <item name="colorPrimary">@color/accent_green</item>
-        <item name="colorPrimaryVariant">@color/primary_variant</item>
-        <item name="colorOnPrimary">@color/primary_navy</item>
-        <item name="colorSecondary">@color/accent_gold</item>
-        <item name="colorOnSecondary">@color/primary_navy</item>
-        <item name="colorTertiary">@color/accent_blue</item>
-        <item name="colorOnTertiary">@color/text_white</item>
+    <style name="Theme.TwelveMan" parent="Theme.Material3.Light.NoActionBar">
+        <!-- RED + WHITE + BLACK Color Scheme -->
+        <item name="colorPrimary">@color/primary_red</item>
+        <item name="colorPrimaryVariant">@color/primary_dark_red</item>
+        <item name="colorOnPrimary">@color/pure_white</item>
+        <item name="colorSecondary">@color/header_black</item>
+        <item name="colorOnSecondary">@color/pure_white</item>
+        <item name="colorTertiary">@color/primary_red</item>
+        <item name="colorOnTertiary">@color/pure_white</item>
         <item name="colorSurface">@color/surface_white</item>
         <item name="colorOnSurface">@color/text_primary</item>
-        <item name="android:statusBarColor">@color/primary_navy</item>
-        <item name="android:navigationBarColor">@color/primary_navy</item>
+        <item name="android:statusBarColor">@color/header_black</item>
+        <item name="android:navigationBarColor">@color/pure_white</item>
         <item name="android:windowBackground">@color/bg_light</item>
 
         <!-- Typography & Text Styling -->

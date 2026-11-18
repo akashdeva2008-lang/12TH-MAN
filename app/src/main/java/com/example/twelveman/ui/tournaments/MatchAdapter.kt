@@ -37,6 +37,7 @@ class MatchAdapter(
             binding.tvMatchVenueDate.text = "${match.date} • ${match.time} • ${match.venue}"
 
             binding.root.setOnClickListener { onItemClick(match) }
+            binding.btnViewMatchDetails.setOnClickListener { onItemClick(match) }
         }
     }
 }

@@ -9,10 +9,11 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/surface_white"
     app:cardCornerRadius="16dp"
-    app:cardElevation="3dp"
-    app:strokeColor="@color/card_border"
-    app:strokeWidth="1.5dp">
+    app:cardElevation="2dp"
+    app:strokeColor="@color/border_grey"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,12 +29,12 @@
 
             <ImageView
                 android:id="@+id/ivUmpireAvatar"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
-                android:background="@drawable/bg_badge_gold"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_circle_light"
                 android:padding="10dp"
                 android:src="@drawable/ic_umpire"
-                app:tint="@color/accent_gold" />
+                app:tint="@color/header_black" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -48,8 +49,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/text_primary"
-                    android:textSize="18sp"
+                    android:textColor="@color/header_black"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="Suresh Menon" />
 
@@ -61,7 +62,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="@color/text_secondary"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     tools:text="Mumbai, MH" />
             </LinearLayout>
 
@@ -69,11 +70,11 @@
                 android:id="@+id/tvCertification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_badge_gold"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="5dp"
-                android:textColor="@color/status_amber_text"
-                android:textSize="13sp"
+                android:background="@drawable/bg_badge_red_outline"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="3dp"
+                android:textColor="@color/primary_red"
+                android:textSize="11sp"
                 android:textStyle="bold"
                 tools:text="ICC Accredited" />
         </LinearLayout>
@@ -81,8 +82,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="14dp"
-            android:background="@color/card_border" />
+            android:layout_marginVertical="12dp"
+            android:background="@color/border_grey" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:text="Exp / Matches"
                     android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvUmpireExp"
@@ -109,8 +110,8 @@
                     android:layout_marginTop="2dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp"
+                    android:textColor="@color/header_black"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="12 Yrs / 240 M" />
             </LinearLayout>
@@ -124,9 +125,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Price per Match"
+                    android:text="Fee per Match"
                     android:textColor="@color/text_secondary"
-                    android:textSize="13sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvUmpirePrice"
@@ -135,8 +136,8 @@
                     android:layout_marginTop="2dp"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="@color/accent_green"
-                    android:textSize="17sp"
+                    android:textColor="@color/primary_red"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     tools:text="₹3,000" />
             </LinearLayout>
@@ -154,8 +155,8 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
                         android:src="@drawable/ic_star"
                         app:tint="@color/accent_gold" />
 
@@ -164,8 +165,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="4dp"
-                        android:textColor="@color/text_primary"
-                        android:textSize="15sp"
+                        android:textColor="@color/header_black"
+                        android:textSize="13sp"
                         android:textStyle="bold"
                         tools:text="4.9" />
                 </LinearLayout>
@@ -175,8 +176,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textColor="@color/status_green_text"
-                    android:textSize="13sp"
+                    android:textColor="@color/accent_green"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     tools:text="Available" />
             </LinearLayout>

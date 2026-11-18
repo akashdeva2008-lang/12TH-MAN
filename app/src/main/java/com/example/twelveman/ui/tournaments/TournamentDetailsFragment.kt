@@ -44,6 +44,10 @@ class TournamentDetailsFragment : Fragment() {
             }
         }
 
+        binding.ivTournamentDetailBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.btnRegisterTeam.setOnClickListener {
             val bundle = Bundle().apply { putString("tournamentId", tournamentId) }
             findNavController().navigate(R.id.action_tournament_details_to_register_team, bundle)

@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.twelveman.databinding.FragmentMatchScoringBinding
 
@@ -82,6 +83,18 @@ class MatchScoringFragment : Fragment() {
 
         binding.btnNoBall.setOnClickListener {
             viewModel.recordBall(matchId, 1, false, "No Ball (+1)")
+        }
+
+        binding.btnBye.setOnClickListener {
+            viewModel.recordBall(matchId, 1, false, "Bye (+1)")
+        }
+
+        binding.btnLegBye.setOnClickListener {
+            viewModel.recordBall(matchId, 1, false, "Leg Bye (+1)")
+        }
+
+        binding.ivScoringBack.setOnClickListener {
+            findNavController().navigateUp()
         }
 
         binding.btnUndo.setOnClickListener {

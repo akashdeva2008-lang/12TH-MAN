@@ -51,6 +51,10 @@ class UmpireDetailsFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_umpire_details_to_booking, bundle)
         }
+
+        binding.ivUmpireDetailBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {

@@ -50,6 +50,10 @@ class BookingFormFragment : Fragment() {
 
         binding.tvTargetItemName.text = "Booking: $itemName"
 
+        binding.ivBookingFormBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         binding.btnSubmitBooking.setOnClickListener {
             val date = binding.etBookingDate.text.toString().trim()
             val time = binding.etTimeSlot.text.toString().trim()
