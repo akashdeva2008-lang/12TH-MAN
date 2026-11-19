@@ -168,6 +168,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_ai_assistant"
+            app:destination="@id/aiAssistantFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 5. Player Listing -->
@@ -455,5 +462,12 @@
         android:name="com.example.twelveman.ui.profile.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
+
+    <!-- 19. 12THMAN GPT-1 Cricket AI Assistant -->
+    <fragment
+        android:id="@+id/aiAssistantFragment"
+        android:name="com.example.twelveman.ui.ai.AiAssistantFragment"
+        android:label="12THMAN GPT-1"
+        tools:layout="@layout/fragment_ai_assistant" />
 
 </navigation>

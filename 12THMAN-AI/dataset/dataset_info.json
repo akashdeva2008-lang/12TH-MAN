@@ -1,0 +1,18 @@
+{
+  "dataset_name": "12THMAN Cricket Domain Corpus",
+  "version": "1.0",
+  "description": "Comprehensive cricket rules, tactics, formats, dismissals, and terminology created for training 12THMAN GPT-1 from scratch.",
+  "num_articles": 8,
+  "num_qa_pairs": 15,
+  "license": "Custom Proprietary for 12THMAN Cricket Platform",
+  "topics_covered": [
+    "Cricket Rules & MCC Laws",
+    "Dismissal Modes (LBW, Bowled, Run Out, Stumped)",
+    "Batting Strokes (Cover Drive, Pull, Hook, Sweep)",
+    "Bowling Techniques (Pace, Swing, Spin, Yorker, Bouncer)",
+    "Fielding Positions (Slips, Gully, Point, Cover)",
+    "Extras & Free Hit Rules (Wides, No-Balls, Byes)",
+    "Tournament Formats (T20, ODI, Test, Box Cricket)",
+    "Scorecard Statistics (Run Rate, Economy, Strike Rate, Average)"
+  ]
+}

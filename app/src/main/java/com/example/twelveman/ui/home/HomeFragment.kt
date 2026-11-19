@@ -107,6 +107,11 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_home_to_players)
         }
 
+        // 4. 12THMAN GPT-1 Cricket AI Assistant
+        binding.cardAiAssistant.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_ai_assistant)
+        }
+
         // Upcoming Matches section
         binding.tvSeeAllUpcoming.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_bookings)
