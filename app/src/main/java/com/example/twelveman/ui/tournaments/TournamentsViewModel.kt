@@ -80,6 +80,31 @@ class TournamentsViewModel : ViewModel() {
         fetchTournaments()
     }
 
+    fun scheduleMatch(
+        teamA: String,
+        teamB: String,
+        format: String,
+        overs: Int,
+        venue: String,
+        date: String,
+        time: String,
+        ballType: String
+    ): Match {
+        val match = repository.scheduleMatch(
+            teamA = teamA,
+            teamB = teamB,
+            format = format,
+            overs = overs,
+            venue = venue,
+            date = date,
+            time = time,
+            ballType = ballType
+        )
+        _selectedMatch.value = match
+        fetchMatches(match.tournamentId)
+        return match
+    }
+
     fun registerTeam(tournamentId: String, teamName: String, captainName: String, phone: String, email: String, players: List<String>) {
         val newTeam = Team(
             id = "TM" + (100..999).random(),
@@ -104,6 +129,42 @@ class TournamentsViewModel : ViewModel() {
         _selectedMatch.value = repository.getMatchById(matchId)
     }
 
+    fun recordTossAndOpeners(
+        matchId: String,
+        tossWinner: String,
+        tossDecision: String,
+        battingTeam: String,
+        bowlingTeam: String,
+        striker: String,
+        nonStriker: String,
+        bowler: String
+    ) {
+        val match = repository.getMatchById(matchId) ?: return
+        match.tossWinner = tossWinner
+        match.tossDecision = tossDecision
+        match.battingTeam = battingTeam
+        match.bowlingTeam = bowlingTeam
+        match.strikerName = striker
+        match.strikerRuns = 0
+        match.strikerBalls = 0
+        match.nonStrikerName = nonStriker
+        match.nonStrikerRuns = 0
+        match.nonStrikerBalls = 0
+        match.bowlerName = bowler
+        match.bowlerOvers = 0.0
+        match.bowlerRunsConceded = 0
+        match.bowlerWickets = 0
+        match.status = "LIVE"
+        match.partnershipRuns = 0
+        match.partnershipBalls = 0
+
+        val commentaryText = "Toss Result: $tossWinner won the toss & elected to $tossDecision first. Match is LIVE! Openers: $striker & $nonStriker. Bowler: $bowler."
+        match.commentary.add(0, commentaryText)
+
+        _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
+    }
+
     fun updateMatchDetails(matchId: String, venue: String, date: String, time: String) {
         val success = repository.updateMatchDetails(matchId, venue, date, time)
         if (success) {
@@ -123,8 +184,8 @@ class TournamentsViewModel : ViewModel() {
 
     fun recordBall(matchId: String, runs: Int, isWicket: Boolean, extraType: String) {
         val match = repository.getMatchById(matchId) ?: return
-        
-        // Save snapshot for Undo
+
+        // 1. Save detailed snapshot for Undo
         match.historyStack.add(
             MatchStateSnapshot(
                 runsA = match.runsA,
@@ -135,15 +196,39 @@ class TournamentsViewModel : ViewModel() {
                 oversB = match.oversB,
                 currentInnings = match.currentInnings,
                 scoreA = match.scoreA,
-                scoreB = match.scoreB
+                scoreB = match.scoreB,
+                strikerName = match.strikerName,
+                strikerRuns = match.strikerRuns,
+                strikerBalls = match.strikerBalls,
+                nonStrikerName = match.nonStrikerName,
+                nonStrikerRuns = match.nonStrikerRuns,
+                nonStrikerBalls = match.nonStrikerBalls,
+                bowlerName = match.bowlerName,
+                bowlerOvers = match.bowlerOvers,
+                bowlerRunsConceded = match.bowlerRunsConceded,
+                bowlerWickets = match.bowlerWickets,
+                partnershipRuns = match.partnershipRuns,
+                partnershipBalls = match.partnershipBalls,
+                extrasWide = match.extrasWide,
+                extrasNoBall = match.extrasNoBall,
+                extrasBye = match.extrasBye,
+                extrasLegBye = match.extrasLegBye
             )
         )
 
         match.status = "LIVE"
-        val isLegalDelivery = extraType.isBlank() || extraType.contains("Bye")
+        val isWide = extraType.contains("Wide", ignoreCase = true)
+        val isNoBall = extraType.contains("No Ball", ignoreCase = true)
+        val isBye = extraType.contains("Bye", ignoreCase = true) && !extraType.contains("Leg Bye", ignoreCase = true)
+        val isLegBye = extraType.contains("Leg Bye", ignoreCase = true)
+        val isLegalDelivery = !isWide && !isNoBall
 
+        var overCompleted = false
+
+        // Update total team score
+        val runsToAdd = if (isWide || isNoBall) runs + 1 else runs
         if (match.currentInnings == 1) {
-            match.runsA += runs
+            match.runsA += runsToAdd
             if (isWicket) match.wicketsA += 1
             if (isLegalDelivery) {
                 val currentOversInt = match.oversA.toInt()
@@ -151,21 +236,14 @@ class TournamentsViewModel : ViewModel() {
                 val newBalls = currentBallsInt + 1
                 if (newBalls >= 6) {
                     match.oversA = (currentOversInt + 1).toDouble()
+                    overCompleted = true
                 } else {
                     match.oversA = currentOversInt + (newBalls / 10.0)
                 }
             }
             match.scoreA = "${match.runsA}/${match.wicketsA} (${String.format(Locale.US, "%.1f", match.oversA)} ov)"
-            
-            val commentaryText = buildString {
-                append("Innings 1: ")
-                if (extraType.isNotBlank()) append("$extraType! ")
-                if (isWicket) append("WICKET! ")
-                append("$runs runs scored. Score: ${match.scoreA}")
-            }
-            match.commentary.add(0, commentaryText)
         } else {
-            match.runsB += runs
+            match.runsB += runsToAdd
             if (isWicket) match.wicketsB += 1
             if (isLegalDelivery) {
                 val currentOversInt = match.oversB.toInt()
@@ -173,21 +251,127 @@ class TournamentsViewModel : ViewModel() {
                 val newBalls = currentBallsInt + 1
                 if (newBalls >= 6) {
                     match.oversB = (currentOversInt + 1).toDouble()
+                    overCompleted = true
                 } else {
                     match.oversB = currentOversInt + (newBalls / 10.0)
                 }
             }
             match.scoreB = "${match.runsB}/${match.wicketsB} (${String.format(Locale.US, "%.1f", match.oversB)} ov)"
-
-            val commentaryText = buildString {
-                append("Innings 2: ")
-                if (extraType.isNotBlank()) append("$extraType! ")
-                if (isWicket) append("WICKET! ")
-                append("$runs runs scored. Score: ${match.scoreB}")
-            }
-            match.commentary.add(0, commentaryText)
         }
 
+        // Extras statistics
+        if (isWide) match.extrasWide += 1
+        if (isNoBall) match.extrasNoBall += 1
+        if (isBye) match.extrasBye += runs
+        if (isLegBye) match.extrasLegBye += runs
+
+        // Partnership updates
+        match.partnershipRuns += runsToAdd
+        if (isLegalDelivery) match.partnershipBalls += 1
+
+        // Striker batsman stats
+        if (!isWide) {
+            match.strikerBalls += 1
+            if (!isBye && !isLegBye) {
+                match.strikerRuns += runs
+            }
+        }
+
+        // Bowler stats
+        if (!isBye && !isLegBye) {
+            match.bowlerRunsConceded += runsToAdd
+        }
+        if (isWicket) {
+            match.bowlerWickets += 1
+        }
+        if (isLegalDelivery) {
+            val bowlerOversInt = match.bowlerOvers.toInt()
+            val bowlerBallsInt = Math.round((match.bowlerOvers - bowlerOversInt) * 10).toInt()
+            val newBowlerBalls = bowlerBallsInt + 1
+            if (newBowlerBalls >= 6) {
+                match.bowlerOvers = (bowlerOversInt + 1).toDouble()
+            } else {
+                match.bowlerOvers = bowlerOversInt + (newBowlerBalls / 10.0)
+            }
+        }
+
+        // Commentary text
+        val commentaryText = buildString {
+            append("Innings ${match.currentInnings}: ")
+            if (extraType.isNotBlank()) append("$extraType! ")
+            if (isWicket) append("WICKET! ")
+            append("$runsToAdd runs. Score: ${if (match.currentInnings == 1) match.scoreA else match.scoreB}")
+            append(" [${match.strikerName} ${match.strikerRuns}(${match.strikerBalls})]")
+        }
+        match.commentary.add(0, commentaryText)
+
+        // Strike rotation on odd runs
+        if (!isWide && runs % 2 != 0) {
+            swapStrike(match)
+        }
+
+        // Strike rotation & event on over completion
+        if (overCompleted) {
+            swapStrike(match)
+            match.commentary.add(0, "End of over. Strike rotated to ${match.strikerName}.")
+        }
+
+        _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
+    }
+
+    private fun swapStrike(match: Match) {
+        val tempName = match.strikerName
+        val tempRuns = match.strikerRuns
+        val tempBalls = match.strikerBalls
+
+        match.strikerName = match.nonStrikerName
+        match.strikerRuns = match.nonStrikerRuns
+        match.strikerBalls = match.nonStrikerBalls
+
+        match.nonStrikerName = tempName
+        match.nonStrikerRuns = tempRuns
+        match.nonStrikerBalls = tempBalls
+    }
+
+    fun rotateStrike(matchId: String) {
+        val match = repository.getMatchById(matchId) ?: return
+        swapStrike(match)
+        match.commentary.add(0, "Manual strike change: ${match.strikerName} is now on strike.")
+        _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
+    }
+
+    fun retireBatsman(matchId: String, newBatsmanName: String) {
+        val match = repository.getMatchById(matchId) ?: return
+        val retiredName = match.strikerName
+        val retiredRuns = match.strikerRuns
+        val retiredBalls = match.strikerBalls
+
+        match.commentary.add(0, "Retired: $retiredName retired on $retiredRuns ($retiredBalls balls). New batsman $newBatsmanName takes strike.")
+        match.strikerName = newBatsmanName
+        match.strikerRuns = 0
+        match.strikerBalls = 0
+
+        _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
+    }
+
+    fun changeBowler(matchId: String, newBowlerName: String) {
+        val match = repository.getMatchById(matchId) ?: return
+        match.bowlerName = newBowlerName
+        match.bowlerOvers = 0.0
+        match.bowlerRunsConceded = 0
+        match.bowlerWickets = 0
+        match.commentary.add(0, "New Bowler: $newBowlerName comes into the attack.")
+        _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
+    }
+
+    fun endOverManually(matchId: String) {
+        val match = repository.getMatchById(matchId) ?: return
+        swapStrike(match)
+        match.commentary.add(0, "Over concluded manually. Strike rotated to ${match.strikerName}.")
         _selectedMatch.value = match
         repository.syncMatchUpdate(match)
     }
@@ -205,11 +389,32 @@ class TournamentsViewModel : ViewModel() {
             match.currentInnings = lastState.currentInnings
             match.scoreA = lastState.scoreA
             match.scoreB = lastState.scoreB
+
+            match.strikerName = lastState.strikerName
+            match.strikerRuns = lastState.strikerRuns
+            match.strikerBalls = lastState.strikerBalls
+            match.nonStrikerName = lastState.nonStrikerName
+            match.nonStrikerRuns = lastState.nonStrikerRuns
+            match.nonStrikerBalls = lastState.nonStrikerBalls
+
+            match.bowlerName = lastState.bowlerName
+            match.bowlerOvers = lastState.bowlerOvers
+            match.bowlerRunsConceded = lastState.bowlerRunsConceded
+            match.bowlerWickets = lastState.bowlerWickets
+
+            match.partnershipRuns = lastState.partnershipRuns
+            match.partnershipBalls = lastState.partnershipBalls
+            match.extrasWide = lastState.extrasWide
+            match.extrasNoBall = lastState.extrasNoBall
+            match.extrasBye = lastState.extrasBye
+            match.extrasLegBye = lastState.extrasLegBye
+
             if (match.commentary.isNotEmpty()) {
                 match.commentary.removeAt(0)
             }
-            match.commentary.add(0, "Undo performed: Restored previous delivery state.")
+            match.commentary.add(0, "Undo: Restored previous delivery state.")
             _selectedMatch.value = match
+            repository.syncMatchUpdate(match)
             return true
         }
         return false
@@ -218,7 +423,25 @@ class TournamentsViewModel : ViewModel() {
     fun switchInnings(matchId: String) {
         val match = repository.getMatchById(matchId) ?: return
         match.currentInnings = 2
-        match.commentary.add(0, "Innings break. Team B is now batting.")
+        match.target = match.runsA + 1
+        // Reset partnership and openers for 2nd innings
+        match.partnershipRuns = 0
+        match.partnershipBalls = 0
+        val tempTeam = match.battingTeam
+        match.battingTeam = match.bowlingTeam
+        match.bowlingTeam = tempTeam
+        match.strikerName = "${match.battingTeam} Opener 1"
+        match.strikerRuns = 0
+        match.strikerBalls = 0
+        match.nonStrikerName = "${match.battingTeam} Opener 2"
+        match.nonStrikerRuns = 0
+        match.nonStrikerBalls = 0
+        match.bowlerName = "${match.bowlingTeam} Bowler 1"
+        match.bowlerOvers = 0.0
+        match.bowlerRunsConceded = 0
+        match.bowlerWickets = 0
+
+        match.commentary.add(0, "Innings 1 concluded. Target: ${match.target} runs in ${match.totalOvers} overs. Innings 2 starts!")
         _selectedMatch.value = match
         repository.syncMatchUpdate(match)
     }

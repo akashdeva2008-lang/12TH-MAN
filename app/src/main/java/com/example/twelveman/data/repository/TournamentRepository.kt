@@ -98,6 +98,44 @@ class TournamentRepository {
         return MockData.matches.find { it.id.equals(matchId, ignoreCase = true) }
     }
 
+    fun scheduleMatch(
+        teamA: String,
+        teamB: String,
+        format: String,
+        overs: Int,
+        venue: String,
+        date: String,
+        time: String,
+        ballType: String
+    ): Match {
+        val nextNum = MockData.matches.size + 1
+        val matchId = "M" + (500 + nextNum)
+        val newMatch = Match(
+            id = matchId,
+            tournamentId = "T301",
+            matchNumber = nextNum,
+            teamA = teamA,
+            teamB = teamB,
+            date = date,
+            time = time,
+            venue = venue,
+            stage = "League Match",
+            status = "UPCOMING",
+            result = "Scheduled",
+            scoreA = "0/0 (0.0)",
+            scoreB = "0/0 (0.0)",
+            totalOvers = overs,
+            format = format,
+            ballType = ballType,
+            strikerName = "Opening Striker",
+            nonStrikerName = "Opening Non-Striker",
+            bowlerName = "Opening Bowler"
+        )
+        MockData.matches.add(0, newMatch)
+        syncMatchUpdate(newMatch)
+        return newMatch
+    }
+
     fun deleteMatch(matchId: String): Boolean {
         return MockData.matches.removeAll { it.id.equals(matchId, ignoreCase = true) }
     }

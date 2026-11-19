@@ -9,7 +9,23 @@ data class MatchStateSnapshot(
     val oversB: Double = 0.0,
     val currentInnings: Int = 1,
     val scoreA: String = "",
-    val scoreB: String = ""
+    val scoreB: String = "",
+    val strikerName: String = "",
+    val strikerRuns: Int = 0,
+    val strikerBalls: Int = 0,
+    val nonStrikerName: String = "",
+    val nonStrikerRuns: Int = 0,
+    val nonStrikerBalls: Int = 0,
+    val bowlerName: String = "",
+    val bowlerOvers: Double = 0.0,
+    val bowlerRunsConceded: Int = 0,
+    val bowlerWickets: Int = 0,
+    val partnershipRuns: Int = 0,
+    val partnershipBalls: Int = 0,
+    val extrasWide: Int = 0,
+    val extrasNoBall: Int = 0,
+    val extrasBye: Int = 0,
+    val extrasLegBye: Int = 0
 )
 
 data class Match(
@@ -21,7 +37,7 @@ data class Match(
     val date: String = "",
     val time: String = "",
     val venue: String = "",
-    val stage: String = "", // "Group Stage", "Semi Final", "Final"
+    val stage: String = "", // "Group Stage", "Semi Final", "Final", "League Match"
     var status: String = "UPCOMING", // "UPCOMING", "LIVE", "COMPLETED"
     var result: String = "",
     var scoreA: String = "0/0 (0.0)",
@@ -34,5 +50,29 @@ data class Match(
     var oversB: Double = 0.0,
     var currentInnings: Int = 1, // 1 for Team A batting, 2 for Team B batting
     val commentary: MutableList<String> = mutableListOf("Match scheduled. Ready for live scoring."),
-    val historyStack: MutableList<MatchStateSnapshot> = mutableListOf()
+    val historyStack: MutableList<MatchStateSnapshot> = mutableListOf(),
+    var format: String = "T20",
+    var totalOvers: Int = 20,
+    var ballType: String = "Leather Ball",
+    var tossWinner: String = "",
+    var tossDecision: String = "", // "BAT" or "BOWL"
+    var battingTeam: String = "",
+    var bowlingTeam: String = "",
+    var strikerName: String = "",
+    var strikerRuns: Int = 0,
+    var strikerBalls: Int = 0,
+    var nonStrikerName: String = "",
+    var nonStrikerRuns: Int = 0,
+    var nonStrikerBalls: Int = 0,
+    var bowlerName: String = "",
+    var bowlerOvers: Double = 0.0,
+    var bowlerRunsConceded: Int = 0,
+    var bowlerWickets: Int = 0,
+    var extrasWide: Int = 0,
+    var extrasNoBall: Int = 0,
+    var extrasBye: Int = 0,
+    var extrasLegBye: Int = 0,
+    var partnershipRuns: Int = 0,
+    var partnershipBalls: Int = 0,
+    var target: Int = 0
 )

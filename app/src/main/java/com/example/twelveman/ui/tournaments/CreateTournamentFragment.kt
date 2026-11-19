@@ -2,16 +2,21 @@ package com.example.twelveman.ui.tournaments
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.twelveman.R
+import com.example.twelveman.data.model.Match
 import com.example.twelveman.databinding.FragmentCreateTournamentBinding
 import java.util.Calendar
 
@@ -107,23 +112,42 @@ class CreateTournamentFragment : Fragment() {
             val name = binding.etTournamentName.text.toString().trim()
             val format = binding.etFormat.text.toString().trim()
             val location = binding.etLocation.text.toString().trim()
+            val overs = when {
+                format.contains("10", ignoreCase = true) -> 10
+                format.contains("100", ignoreCase = true) -> 16
+                format.contains("ODI", ignoreCase = true) -> 50
+                format.contains("Test", ignoreCase = true) -> 90
+                else -> 20
+            }
             val entryFee = binding.etEntryFee.text.toString().toIntOrNull() ?: 10000
             val prize = binding.etPrizeMoney.text.toString().toIntOrNull() ?: 100000
 
-            if (name.isNotBlank() && location.isNotBlank()) {
-                // Prevent duplicate click
-                binding.btnPublishTournament.isEnabled = false
+            if (location.isNotBlank()) {
+                val team1 = binding.tvTeam1Name.text.toString().ifBlank { "Red Warriors" }
+                val team2 = binding.tvTeam2Name.text.toString().ifBlank { "Blue Strikers" }
+                val dateTimeParts = binding.tvDateTimeValue.text.toString().split("•").map { it.trim() }
+                val matchDate = if (dateTimeParts.isNotEmpty()) dateTimeParts[0] else "Today"
+                val matchTime = if (dateTimeParts.size > 1) dateTimeParts[1] else "5:00 PM"
+                val ballType = binding.tvBallTypeValue.text.toString().removePrefix("Ball Type:").trim().ifBlank { "Leather Ball" }
 
-                val team1 = binding.tvTeam1Name.text.toString()
-                val team2 = binding.tvTeam2Name.text.toString()
-                val dateTime = binding.tvDateTimeValue.text.toString()
+                // Create both Tournament and Match in repository
+                val match = viewModel.scheduleMatch(
+                    teamA = team1,
+                    teamB = team2,
+                    format = format.ifBlank { "T20" },
+                    overs = overs,
+                    venue = location,
+                    date = matchDate,
+                    time = matchTime,
+                    ballType = ballType
+                )
 
                 viewModel.createTournament(
-                    name = "$team1 vs $team2 • $name",
-                    format = format,
+                    name = "$team1 vs $team2 • ${name.ifBlank { "Challenge Trophy" }}",
+                    format = format.ifBlank { "T20" },
                     location = location,
-                    startDate = dateTime,
-                    endDate = dateTime,
+                    startDate = matchDate,
+                    endDate = matchDate,
                     totalTeams = 2,
                     entryFee = entryFee,
                     prizeMoney = prize,
@@ -132,12 +156,51 @@ class CreateTournamentFragment : Fragment() {
                     description = "Official match scheduled between $team1 and $team2."
                 )
 
-                Toast.makeText(requireContext(), "Match Scheduled Successfully!", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_create_to_tournaments)
+                // Show professional confirmation dialog with VIEW MATCH and START SCORING options
+                showScheduleSuccessDialog(match)
             } else {
-                Toast.makeText(requireContext(), "Please enter match name and venue location", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter venue location", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showScheduleSuccessDialog(match: Match) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_match_scheduled_success, null)
+
+        val tvTeams = dialogView.findViewById<TextView>(R.id.tvSuccessTeams)
+        val tvDateTime = dialogView.findViewById<TextView>(R.id.tvSuccessDateTime)
+        val tvVenue = dialogView.findViewById<TextView>(R.id.tvSuccessVenue)
+        val tvFormatOvers = dialogView.findViewById<TextView>(R.id.tvSuccessFormatOvers)
+        val tvBallType = dialogView.findViewById<TextView>(R.id.tvSuccessBallType)
+        val btnViewMatch = dialogView.findViewById<Button>(R.id.btnSuccessViewMatch)
+        val btnStartScoring = dialogView.findViewById<Button>(R.id.btnSuccessStartScoring)
+
+        tvTeams.text = "${match.teamA} vs ${match.teamB}"
+        tvDateTime.text = "${match.date} • ${match.time}"
+        tvVenue.text = match.venue
+        tvFormatOvers.text = "${match.format} • ${match.totalOvers} Overs"
+        tvBallType.text = match.ballType
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        btnViewMatch.setOnClickListener {
+            dialog.dismiss()
+            val bundle = Bundle().apply { putString("matchId", match.id) }
+            findNavController().navigate(R.id.action_create_to_match_details, bundle)
+        }
+
+        btnStartScoring.setOnClickListener {
+            dialog.dismiss()
+            val bundle = Bundle().apply { putString("matchId", match.id) }
+            findNavController().navigate(R.id.action_create_to_scoring, bundle)
+        }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {

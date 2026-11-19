@@ -41,10 +41,17 @@ class MatchFixturesFragment : Fragment() {
             tournamentId = it.getString("tournamentId", "")
         }
 
-        adapter = MatchAdapter(emptyList()) { match ->
-            val bundle = Bundle().apply { putString("matchId", match.id) }
-            findNavController().navigate(R.id.action_fixtures_to_match_details, bundle)
-        }
+        adapter = MatchAdapter(
+            matches = emptyList(),
+            onItemClick = { match ->
+                val bundle = Bundle().apply { putString("matchId", match.id) }
+                findNavController().navigate(R.id.action_fixtures_to_match_details, bundle)
+            },
+            onStartScoring = { match ->
+                val bundle = Bundle().apply { putString("matchId", match.id) }
+                findNavController().navigate(R.id.action_fixtures_to_scoring, bundle)
+            }
+        )
 
         binding.rvMatchFixtures.apply {
             layoutManager = LinearLayoutManager(requireContext())
