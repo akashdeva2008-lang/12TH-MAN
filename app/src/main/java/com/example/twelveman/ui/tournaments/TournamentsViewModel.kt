@@ -104,6 +104,23 @@ class TournamentsViewModel : ViewModel() {
         _selectedMatch.value = repository.getMatchById(matchId)
     }
 
+    fun updateMatchDetails(matchId: String, venue: String, date: String, time: String) {
+        val success = repository.updateMatchDetails(matchId, venue, date, time)
+        if (success) {
+            _selectedMatch.value = repository.getMatchById(matchId)
+            _actionSuccess.value = true
+        }
+    }
+
+    fun deleteMatch(matchId: String): Boolean {
+        val success = repository.deleteMatch(matchId)
+        if (success) {
+            _selectedMatch.value = null
+            _actionSuccess.value = true
+        }
+        return success
+    }
+
     fun recordBall(matchId: String, runs: Int, isWicket: Boolean, extraType: String) {
         val match = repository.getMatchById(matchId) ?: return
         

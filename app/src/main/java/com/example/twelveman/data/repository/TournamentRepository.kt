@@ -98,6 +98,22 @@ class TournamentRepository {
         return MockData.matches.find { it.id.equals(matchId, ignoreCase = true) }
     }
 
+    fun deleteMatch(matchId: String): Boolean {
+        return MockData.matches.removeAll { it.id.equals(matchId, ignoreCase = true) }
+    }
+
+    fun updateMatchDetails(matchId: String, newVenue: String, newDate: String, newTime: String): Boolean {
+        val match = getMatchById(matchId) ?: return false
+        val index = MockData.matches.indexOf(match)
+        if (index != -1) {
+            val updated = match.copy(venue = newVenue, date = newDate, time = newTime)
+            MockData.matches[index] = updated
+            syncMatchUpdate(updated)
+            return true
+        }
+        return false
+    }
+
     fun syncMatchUpdate(match: Match) {
         scope.launch {
             try {

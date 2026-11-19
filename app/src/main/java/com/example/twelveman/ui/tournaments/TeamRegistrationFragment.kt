@@ -43,6 +43,7 @@ class TeamRegistrationFragment : Fragment() {
             val playerListStr = binding.etPlayerList.text.toString().trim()
 
             if (teamName.isNotBlank() && captainName.isNotBlank()) {
+                binding.btnSubmitTeamReg.isEnabled = false
                 val players = playerListStr.split(",").map { it.trim() }
                 viewModel.registerTeam(tournamentId, teamName, captainName, phone, "captain@example.com", players)
                 Toast.makeText(requireContext(), "Team Registered Successfully!", Toast.LENGTH_SHORT).show()

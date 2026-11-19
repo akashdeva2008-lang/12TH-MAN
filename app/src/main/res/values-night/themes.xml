@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.TwelveMan" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- RED + DARK GREY + BLACK Theme (Dark Mode) -->
+        <item name="colorPrimary">@color/primary_red</item>
+        <item name="colorPrimaryVariant">@color/primary_dark_red</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">@color/header_black</item>
+        <item name="colorOnSecondary">#121212</item>
+        <item name="colorTertiary">@color/primary_red</item>
+        <item name="colorOnTertiary">#FFFFFF</item>
+        <item name="colorSurface">@color/surface_white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="android:statusBarColor">#121212</item>
+        <item name="android:navigationBarColor">#1E1E1E</item>
+        <item name="android:windowBackground">@color/bg_light</item>
+
+        <!-- Typography & Text Styling -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.TwelveMan.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.TwelveMan.HeadlineMedium</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.TwelveMan.TitleLarge</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.TwelveMan.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.TwelveMan.BodyMedium</item>
+    </style>
+</resources>

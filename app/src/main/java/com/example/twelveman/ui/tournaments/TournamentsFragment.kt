@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -43,8 +45,44 @@ class TournamentsFragment : Fragment() {
             adapter.updateData(list)
         }
 
+        // Host / Create Tournament FAB
         binding.fabCreateTournament.setOnClickListener {
             findNavController().navigate(R.id.action_tournaments_to_create)
+        }
+
+        // Notifications Bell
+        binding.ivTournamentsNotification.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Tournament Alerts")
+                .setMessage("You're subscribed to Premier League T20 & City Cup 2025 fixtures.\nNo delays or schedule changes reported.")
+                .setPositiveButton("OK", null)
+                .show()
+        }
+
+        // Featured Tournament Card Click
+        binding.cardFeaturedTournament.setOnClickListener {
+            val bundle = Bundle().apply { putString("tournamentId", "T301") }
+            findNavController().navigate(R.id.action_tournaments_to_details, bundle)
+        }
+
+        // City Cup Sample Card Click
+        binding.cardSampleCityCup.setOnClickListener {
+            val bundle = Bundle().apply { putString("tournamentId", "T302") }
+            findNavController().navigate(R.id.action_tournaments_to_details, bundle)
+        }
+
+        // Champions Trophy Sample Card Click
+        binding.cardSampleChampionsTrophy.setOnClickListener {
+            val bundle = Bundle().apply { putString("tournamentId", "T303") }
+            findNavController().navigate(R.id.action_tournaments_to_details, bundle)
+        }
+
+        // View All links
+        binding.tvViewAllMyTournaments.setOnClickListener {
+            Toast.makeText(requireContext(), "Displaying your registered tournaments", Toast.LENGTH_SHORT).show()
+        }
+        binding.tvViewAllUpcomingTournaments.setOnClickListener {
+            Toast.makeText(requireContext(), "Displaying all upcoming sanctioned leagues", Toast.LENGTH_SHORT).show()
         }
     }
 

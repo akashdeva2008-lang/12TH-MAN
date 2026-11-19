@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/header_black"
+            android:background="@color/top_bar_dark_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp">
@@ -147,10 +147,14 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:id="@+id/rowTeam1Picker"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="6dp"
                     android:background="@drawable/bg_card_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="14dp">
@@ -162,6 +166,7 @@
                         app:tint="@color/primary_red" />
 
                     <TextView
+                        android:id="@+id/tvTeam1Name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -189,10 +194,14 @@
                     android:textStyle="bold" />
 
                 <LinearLayout
+                    android:id="@+id/rowTeam2Picker"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="6dp"
                     android:background="@drawable/bg_card_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="14dp">
@@ -204,6 +213,7 @@
                         app:tint="@color/header_black" />
 
                     <TextView
+                        android:id="@+id/tvTeam2Name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -312,10 +322,14 @@
 
                 <!-- Date & Time & Ball Type Indicator -->
                 <LinearLayout
+                    android:id="@+id/rowDateTimeSelector"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="12dp"
                     android:background="@drawable/bg_card_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="14dp">
@@ -327,6 +341,7 @@
                         app:tint="@color/primary_red" />
 
                     <TextView
+                        android:id="@+id/tvDateTimeValue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -344,10 +359,14 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/rowBallTypeSelector"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/bg_card_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingHorizontal="14dp">
@@ -359,6 +378,7 @@
                         app:tint="@color/primary_red" />
 
                     <TextView
+                        android:id="@+id/tvBallTypeValue"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"

@@ -22,7 +22,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@color/header_black"
+                android:background="@color/top_bar_dark_bg"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingHorizontal="16dp">
@@ -45,10 +45,13 @@
                     android:textStyle="bold" />
 
                 <ImageView
+                    android:id="@+id/ivTournamentsNotification"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
                     android:contentDescription="Notifications"
+                    android:focusable="true"
                     android:padding="6dp"
                     android:src="@drawable/ic_bell"
                     app:tint="@color/pure_white" />
@@ -56,10 +59,14 @@
 
             <!-- Featured Tournament Banner -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardFeaturedTournament"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardCornerRadius="18dp"
                 app:cardElevation="3dp"
                 app:strokeColor="@color/border_grey"
@@ -126,6 +133,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvViewAllMyTournaments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -140,10 +148,14 @@
 
             <!-- My Tournament Sample Item Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSampleCityCup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/surface_white"
                 app:cardCornerRadius="14dp"
                 app:cardElevation="2dp"
@@ -216,6 +228,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvViewAllUpcomingTournaments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackgroundBorderless"
@@ -230,10 +243,14 @@
 
             <!-- Upcoming Tournament Sample Item Card -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardSampleChampionsTrophy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
                 app:cardBackgroundColor="@color/surface_white"
                 app:cardCornerRadius="14dp"
                 app:cardElevation="2dp"

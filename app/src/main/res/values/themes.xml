@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.TwelveMan" parent="Theme.Material3.Light.NoActionBar">
-        <!-- RED + WHITE + BLACK Color Scheme -->
+    <style name="Theme.TwelveMan" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- RED + WHITE + BLACK Color Scheme (Light Mode) -->
         <item name="colorPrimary">@color/primary_red</item>
         <item name="colorPrimaryVariant">@color/primary_dark_red</item>
         <item name="colorOnPrimary">@color/pure_white</item>
@@ -12,7 +12,7 @@
         <item name="colorSurface">@color/surface_white</item>
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="android:statusBarColor">@color/header_black</item>
-        <item name="android:navigationBarColor">@color/pure_white</item>
+        <item name="android:navigationBarColor">@color/surface_white</item>
         <item name="android:windowBackground">@color/bg_light</item>
 
         <!-- Typography & Text Styling -->

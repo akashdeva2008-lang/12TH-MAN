@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 12THMAN Official RED + WHITE + BLACK Professional Cricket Palette -->
+    <!-- 12THMAN Official RED + WHITE + BLACK Professional Cricket Palette (Light Mode) -->
     <color name="primary_red">#E50920</color>
     <color name="primary_dark_red">#B90016</color>
     <color name="pure_white">#FFFFFF</color>
@@ -23,14 +23,17 @@
     <color name="accent_blue">#1976D2</color>
     <color name="accent_cyan">#00ACC1</color>
 
-    <!-- Backgrounds & Surfaces -->
-    <color name="bg_light">#F5F5F7</color>
+    <!-- Backgrounds & Surfaces (Light Mode) -->
+    <color name="bg_light">#FFFFFF</color>
     <color name="surface_white">#FFFFFF</color>
+    <color name="card_elevated">#F5F5F5</color>
     <color name="card_border">#E5E5E5</color>
+    <color name="top_bar_dark_bg">#151515</color>
+    <color name="bottom_nav_bg">#FFFFFF</color>
 
-    <!-- Typography Text Colors -->
+    <!-- Typography Text Colors (Light Mode) -->
     <color name="text_primary">#151515</color>
-    <color name="text_secondary">#616161</color>
+    <color name="text_secondary">#666666</color>
     <color name="text_hint">#9E9E9E</color>
     <color name="text_white">#FFFFFF</color>
     <color name="text_disabled">#BDBDBD</color>

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -68,26 +70,67 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
+        // Profile icon
+        binding.ivHeaderProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_profile)
+        }
+
+        // Notification Bell icon
+        binding.ivHeaderNotification.setOnClickListener {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Notifications")
+                .setMessage("No new match notifications right now.\nYou're all caught up with live scores and team updates!")
+                .setPositiveButton("OK", null)
+                .show()
+        }
+
+        // Live Match Hero Button (View Live)
+        binding.btnQuickHost.setOnClickListener {
+            val bundle = Bundle().apply { putString("matchId", "M501") }
+            findNavController().navigate(R.id.action_home_to_match_scoring, bundle)
+        }
+
+        // Quick Actions
+        // 1. Start Match -> Open Create Match screen
+        binding.cardTournaments.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_create_tournament)
+        }
+
+        // 2. Live Scoring -> Open Live Scoring screen
+        binding.cardHireUmpire.setOnClickListener {
+            val bundle = Bundle().apply { putString("matchId", "M501") }
+            findNavController().navigate(R.id.action_home_to_match_scoring, bundle)
+        }
+
+        // 3. Find Players -> Open Players list screen
         binding.cardBookPlayer.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_players)
         }
-        binding.cardHireUmpire.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_umpires)
+
+        // Upcoming Matches section
+        binding.tvSeeAllUpcoming.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_bookings)
         }
-        binding.cardTournaments.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_tournaments)
+        binding.cardFeaturedUpcomingMatch.setOnClickListener {
+            val bundle = Bundle().apply { putString("matchId", "M502") }
+            findNavController().navigate(R.id.action_home_to_match_details, bundle)
         }
-        binding.btnQuickHost.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_tournaments)
+
+        // Recent Results section
+        binding.tvSeeAllResults.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_fixtures)
         }
+        binding.cardRecentResult.setOnClickListener {
+            val bundle = Bundle().apply { putString("matchId", "M501") }
+            findNavController().navigate(R.id.action_home_to_match_details, bundle)
+        }
+
+        // See All links
         binding.tvSeeAllPlayers.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_players)
         }
         binding.tvSeeAllUmpires.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_umpires)
-        }
-        binding.ivHeaderProfile.setOnClickListener {
-            findNavController().navigate(R.id.action_home_to_profile)
         }
     }
 

@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@color/header_black"
+            android:background="@color/top_bar_dark_bg"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp">
@@ -333,13 +333,19 @@
 
             <!-- Round the Wicket -->
             <LinearLayout
+                android:id="@+id/layoutRoundWicket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingVertical="4dp">
 
                 <ImageView
+                    android:id="@+id/ivRoundWicket"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:background="@drawable/bg_circle_light"
@@ -348,6 +354,7 @@
                     app:tint="@color/header_black" />
 
                 <TextView
+                    android:id="@+id/tvRoundWicket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -358,13 +365,19 @@
 
             <!-- Between the Wicket -->
             <LinearLayout
+                android:id="@+id/layoutBetweenWicket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingVertical="4dp">
 
                 <ImageView
+                    android:id="@+id/ivBetweenWicket"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:background="@drawable/bg_circle_light"
@@ -373,6 +386,7 @@
                     app:tint="@color/header_black" />
 
                 <TextView
+                    android:id="@+id/tvBetweenWicket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -383,13 +397,19 @@
 
             <!-- Over the Wicket (Active Highlighted) -->
             <LinearLayout
+                android:id="@+id/layoutOverWicket"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingVertical="4dp">
 
                 <ImageView
+                    android:id="@+id/ivOverWicket"
                     android:layout_width="38dp"
                     android:layout_height="38dp"
                     android:background="@drawable/bg_badge_red_outline"
@@ -398,6 +418,7 @@
                     app:tint="@color/primary_red" />
 
                 <TextView
+                    android:id="@+id/tvOverWicket"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

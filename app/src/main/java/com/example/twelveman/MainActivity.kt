@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.twelveman.databinding.ActivityMainBinding
+import com.example.twelveman.utils.ThemeManager
 
 open class MainActivity : AppCompatActivity() {
 
@@ -14,6 +15,9 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Ensure saved theme mode is applied
+        ThemeManager.applyTheme(ThemeManager.getTheme(this))
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
