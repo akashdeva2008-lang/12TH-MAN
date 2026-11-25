@@ -17,7 +17,7 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = AuthRepository(application)
     private val sessionManager = SessionManager.getInstance(application)
 
-    private val _currentUser = MutableLiveData<User?>(sessionManager.getCurrentUser() ?: MockData.currentUser)
+    private val _currentUser = MutableLiveData<User?>(sessionManager.getCurrentUser())
     val currentUser: LiveData<User?> = _currentUser
 
     private val _authState = MutableLiveData<String>()

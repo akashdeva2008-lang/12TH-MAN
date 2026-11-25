@@ -7,7 +7,7 @@
     android:background="@color/bg_light"
     android:clipToPadding="false"
     android:fillViewport="true"
-    android:paddingBottom="36dp">
+    android:paddingBottom="48dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,447 +29,995 @@
                 android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
-                android:contentDescription="Menu/Back"
+                android:contentDescription="Back"
                 android:focusable="true"
                 android:padding="6dp"
-                android:src="@drawable/ic_menu"
+                android:src="@drawable/ic_arrow_back"
                 app:tint="@color/pure_white" />
 
-            <!-- 12THMAN Logo -->
-            <LinearLayout
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:contentDescription="Logo"
-                    android:src="@drawable/ic_cricket_batsman" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="12TH"
-                    android:textColor="@color/pure_white"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MAN"
-                    android:textColor="@color/primary_red"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Notifications"
-                android:padding="6dp"
-                android:src="@drawable/ic_bell"
-                app:tint="@color/pure_white" />
+                android:text="Create &amp; Organize"
+                android:textColor="@color/pure_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <!-- Dark Stadium Hero Header Banner -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@drawable/bg_hero_dark"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="16dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Create Match"
-                    android:textColor="@color/pure_white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Schedule &amp; configure match details"
-                    android:textColor="#E0E0E0"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="75dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:alpha="0.8"
-                android:contentDescription="Cricket"
-                android:src="@drawable/ic_cricket_batsman"
-                app:tint="@color/pure_white" />
-        </RelativeLayout>
-
-        <!-- White Form Card -->
-        <com.google.android.material.card.MaterialCardView
+        <!-- Segmented Mode Toggle: Full Tournament vs Quick Match -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="-16dp"
-            app:cardBackgroundColor="@color/surface_white"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
-            app:strokeColor="@color/border_grey"
-            app:strokeWidth="1dp">
+            android:background="@color/surface_white"
+            android:elevation="1dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="10dp">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tabModeTournament"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_badge_pill_active"
+                android:gravity="center"
+                android:text="🏆 Tournament Organizer"
+                android:textColor="@color/pure_white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tabModeQuickMatch"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_badge_pill_inactive"
+                android:gravity="center"
+                android:text="🏏 Single Match"
+                android:textColor="@color/header_dark_grey"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- ============================================================== -->
+        <!-- SECTION A: FULL TOURNAMENT ORGANIZER FORM                     -->
+        <!-- ============================================================== -->
+        <LinearLayout
+            android:id="@+id/layoutTournamentModeForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <!-- Team 1 Selector -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Team 1"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/surface_white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
-                    android:id="@+id/rowTeam1Picker"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_card_white"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_shield"
-                        app:tint="@color/primary_red" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/tvTeam1Name"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:text="Red Warriors"
+                        android:text="Tournament Information"
                         android:textColor="@color/header_black"
-                        android:textSize="14sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/text_secondary" />
-                </LinearLayout>
-
-                <!-- Team 2 Selector -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:text="Team 2"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:id="@+id/rowTeam2Picker"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/bg_card_white"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
-
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_shield"
-                        app:tint="@color/header_black" />
-
-                    <TextView
-                        android:id="@+id/tvTeam2Name"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:text="Blue Strikers"
-                        android:textColor="@color/header_black"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/text_secondary" />
-                </LinearLayout>
-
-                <!-- Format & Overs Inputs -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
-                    android:orientation="horizontal">
-
-                    <!-- Format -->
+                    <!-- Tournament Name -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:hint="Format"
-                        app:boxBackgroundColor="@color/surface_white"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxStrokeColor="@color/primary_red"
-                        app:hintTextColor="@color/primary_red">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etFormat"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:text="T20"
-                            android:textColor="@color/header_black"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Match Name -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1.2"
-                        android:hint="Match / Tournament"
-                        app:boxBackgroundColor="@color/surface_white"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxStrokeColor="@color/primary_red"
-                        app:hintTextColor="@color/primary_red">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etTournamentName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:singleLine="true"
-                            android:text="League Match"
-                            android:textColor="@color/header_black"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-
-                <!-- Venue Location -->
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Venue"
-                    app:boxBackgroundColor="@color/surface_white"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/primary_red"
-                    app:hintTextColor="@color/primary_red"
-                    app:startIconDrawable="@drawable/ic_location"
-                    app:startIconTint="@color/primary_red">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etLocation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
-                        android:text="Green Park Stadium"
+                        android:layout_marginTop="14dp"
+                        android:hint="Tournament Name *"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:expandedHintEnabled="true"
+                        app:hintTextColor="@color/primary_red"
+                        app:placeholderText="e.g. Mumbai Premier League 2026">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTournName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="14dp"
+                            android:singleLine="true"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Tournament Description -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:hint="Description / Overview"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:expandedHintEnabled="true"
+                        app:hintTextColor="@color/primary_red"
+                        app:placeholderText="Official premier corporate &amp; club cricket tournament">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTournDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:minLines="3"
+                            android:maxLines="6"
+                            android:scrollbars="vertical"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="14dp"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Type & Format Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:hint="Match Type"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournType"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="T20"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:hint="Tournament Format"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournFormatPicker"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="Knockout"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Location & Ground Name Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:hint="City / Location *"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournCity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="Mumbai"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:hint="Ground Name *"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournGround"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="Wankhede Cricket Ground"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Dates & Deadline Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:hint="Start Date"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournStartDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="20 Mar 2026"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:hint="End Date"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournEndDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="28 Mar 2026"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Registration Deadline & Max Teams Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:hint="Reg. Deadline"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournDeadline"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:clickable="true"
+                                android:cursorVisible="false"
+                                android:focusable="false"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="18 Mar 2026"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:hint="Max Teams"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournMaxTeams"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="16"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Entry Fee & Prize Pool Row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:hint="Entry Fee (₹)"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournEntryFee"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="10000"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:hint="Total Prize Pool (₹)"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournTotalPrize"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:paddingHorizontal="14dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="100000"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Prizes: 1st, 2nd, 3rd -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:text="Prizes Breakdown"
                         android:textColor="@color/header_black"
                         android:textSize="14sp"
                         android:textStyle="bold" />
-                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Date & Time & Ball Type Indicator -->
-                <LinearLayout
-                    android:id="@+id/rowDateTimeSelector"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_card_white"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_calendar"
-                        app:tint="@color/primary_red" />
-
-                    <TextView
-                        android:id="@+id/tvDateTimeValue"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:text="Apr 26, 2025 • 5:00 PM"
-                        android:textColor="@color/header_black"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/text_secondary" />
-                </LinearLayout>
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:hint="1st Prize"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
 
-                <LinearLayout
-                    android:id="@+id/rowBallTypeSelector"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/bg_card_white"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="14dp">
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournPrize1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="₹50,000"
+                                android:textColor="@color/accent_gold"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_cricket_ball"
-                        app:tint="@color/primary_red" />
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:hint="2nd Prize"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
 
-                    <TextView
-                        android:id="@+id/tvBallTypeValue"
-                        android:layout_width="0dp"
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournPrize2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="₹25,000"
+                                android:textColor="@color/header_black"
+                                android:textSize="13sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:hint="3rd Prize"
+                            app:boxCornerRadiusBottomEnd="10dp"
+                            app:boxCornerRadiusBottomStart="10dp"
+                            app:boxCornerRadiusTopEnd="10dp"
+                            app:boxCornerRadiusTopStart="10dp"
+                            app:boxStrokeColor="@color/primary_red"
+                            app:boxStrokeWidth="1dp"
+                            app:boxStrokeWidthFocused="2dp"
+                            app:expandedHintEnabled="true"
+                            app:hintTextColor="@color/primary_red">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etTournPrize3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="14dp"
+                                android:singleLine="true"
+                                android:text="₹10,000"
+                                android:textColor="@color/header_black"
+                                android:textSize="13sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!-- Rules & Organizer Contact -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_weight="1"
-                        android:text="Ball Type: Leather Ball"
-                        android:textColor="@color/header_black"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="16dp"
+                        android:hint="Tournament Rules"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:expandedHintEnabled="true"
+                        app:hintTextColor="@color/primary_red"
+                        app:placeholderText="ICC &amp; local board standard rules apply. Leather white ball. 20 overs per side.">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/text_secondary" />
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTournRules"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:minLines="3"
+                            android:maxLines="6"
+                            android:scrollbars="vertical"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="14dp"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:hint="Organizer Contact (Phone / Email) *"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:expandedHintEnabled="true"
+                        app:hintTextColor="@color/primary_red">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTournContact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text|phone"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="14dp"
+                            android:singleLine="true"
+                            android:text="+91 98200 11223"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Action Buttons: Save Draft & Publish Tournament -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="22dp"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnSaveDraft"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:text="💾 Save as Draft"
+                            android:textColor="@color/header_black"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="12dp"
+                            app:strokeColor="@color/border_grey"
+                            app:strokeWidth="1.5dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnPublishTournament"
+                            android:layout_width="0dp"
+                            android:layout_height="52dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1.2"
+                            android:text="🚀 Publish Tournament"
+                            android:textColor="@color/pure_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/primary_red"
+                            app:cornerRadius="12dp" />
+                    </LinearLayout>
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
 
-                <!-- Entry Fee & Prize Pool -->
+        <!-- ============================================================== -->
+        <!-- SECTION B: QUICK MATCH FORM                                    -->
+        <!-- ============================================================== -->
+        <LinearLayout
+            android:id="@+id/layoutQuickMatchModeForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/surface_white"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="3dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quick Match Scheduler"
+                        android:textColor="@color/header_black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <!-- Team 1 Selector -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Team 1 (Batting / Home)"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/rowTeam1Picker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="54dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_card_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:id="@+id/ivTeam1Logo"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/primary_red" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvTeam1Name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tap to Select Team 1"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvTeam1Subtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Choose or create your team"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <!-- Team 2 Selector -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="Team 2 (Bowling / Away)"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/rowTeam2Picker"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="54dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/bg_card_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:id="@+id/ivTeam2Logo"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_shield"
+                            app:tint="@color/header_black" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvTeam2Name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Tap to Select Team 2"
+                                android:textColor="@color/header_black"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvTeam2Subtitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Choose or create your team"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="11sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <!-- Match Venue -->
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:layout_weight="1"
-                        android:hint="Entry Fee (₹)"
-                        app:boxBackgroundColor="@color/surface_white"
+                        android:layout_marginTop="14dp"
+                        android:hint="Match Venue *"
                         app:boxCornerRadiusBottomEnd="10dp"
                         app:boxCornerRadiusBottomStart="10dp"
                         app:boxCornerRadiusTopEnd="10dp"
                         app:boxCornerRadiusTopStart="10dp"
                         app:boxStrokeColor="@color/primary_red"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:expandedHintEnabled="true"
                         app:hintTextColor="@color/primary_red">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etEntryFee"
+                            android:id="@+id/etQuickVenue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="14dp"
                             android:singleLine="true"
-                            android:text="15000"
+                            android:text="Green Park Stadium"
                             android:textColor="@color/header_black"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
+                            android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_weight="1"
-                        android:hint="Prize Pool (₹)"
-                        app:boxBackgroundColor="@color/surface_white"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxStrokeColor="@color/primary_red"
-                        app:hintTextColor="@color/primary_red">
+                    <!-- Date & Time Picker -->
+                    <LinearLayout
+                        android:id="@+id/rowDateTimeSelector"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_card_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etPrizeMoney"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/primary_red" />
+
+                        <TextView
+                            android:id="@+id/tvDateTimeValue"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
-                            android:singleLine="true"
-                            android:text="150000"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:text="Apr 26, 2025 • 5:00 PM"
                             android:textColor="@color/header_black"
-                            android:textSize="14sp"
+                            android:textSize="13sp"
                             android:textStyle="bold" />
-                    </com.google.android.material.textfield.TextInputLayout>
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <!-- Ball Type -->
+                    <LinearLayout
+                        android:id="@+id/rowBallTypeSelector"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_card_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="14dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_cricket_ball"
+                            app:tint="@color/primary_red" />
+
+                        <TextView
+                            android:id="@+id/tvBallTypeValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:text="Ball Type: Leather Ball"
+                            android:textColor="@color/header_black"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <!-- Schedule Single Match Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnScheduleQuickMatch"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="20dp"
+                        android:text="▶  Schedule Match"
+                        android:textColor="@color/pure_white"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primary_red"
+                        app:cornerRadius="12dp" />
                 </LinearLayout>
-
-                <!-- Primary Action Button: Schedule Match -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnPublishTournament"
-                    android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="20dp"
-                    android:text="▶  Schedule Match"
-                    android:textColor="@color/pure_white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="@color/primary_red"
-                    app:cornerRadius="14dp" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

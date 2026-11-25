@@ -81,10 +81,15 @@ class MatchDetailsFragment : Fragment() {
         // Toss info card
         binding.cardToss.setOnClickListener {
             val m = viewModel.selectedMatch.value
-            val teamA = m?.teamA ?: "Red Warriors"
+            val teamA = m?.teamA ?: "Team A"
+            val tossMsg = if (!m?.tossWinner.isNullOrBlank()) {
+                "${m?.tossWinner} won the coin toss and elected to ${m?.tossDecision?.lowercase() ?: "bat"} first."
+            } else {
+                "Coin toss not yet recorded for this fixture."
+            }
             AlertDialog.Builder(requireContext())
                 .setTitle("Toss Decision")
-                .setMessage("Toss Result:\n\n$teamA won the coin toss and elected to bat first.\nMatch Pitch Condition: Dry, hard surface favorable for stroke play.")
+                .setMessage("Toss Result:\n\n$tossMsg\nMatch Venue: ${m?.venue ?: "Scheduled Ground"}")
                 .setPositiveButton("OK", null)
                 .show()
         }
@@ -92,15 +97,15 @@ class MatchDetailsFragment : Fragment() {
         // Squad info card
         binding.cardSquad.setOnClickListener {
             val m = viewModel.selectedMatch.value
-            val teamA = m?.teamA ?: "Red Warriors"
-            val teamB = m?.teamB ?: "Blue Strikers"
+            val teamA = m?.teamA ?: "Team A"
+            val teamB = m?.teamB ?: "Team B"
             AlertDialog.Builder(requireContext())
                 .setTitle("Match Squads")
                 .setMessage(
-                    "Playing XI for $teamA:\n" +
-                    "1. R. Sharma (C)\n2. V. Kohli\n3. S. Yadav\n4. R. Pant (WK)\n5. H. Pandya\n6. R. Jadeja\n7. J. Bumrah\n8. M. Siraj\n\n" +
-                    "Playing XI for $teamB:\n" +
-                    "1. J. Butler (C)\n2. P. Salt\n3. H. Brook\n4. L. Livingstone\n5. S. Curran\n6. M. Wood\n7. A. Rashid\n8. R. Topley"
+                    "Playing Squads:\n\n" +
+                    "• $teamA: Playing XI registered\n" +
+                    "• $teamB: Playing XI registered\n\n" +
+                    "Format: ${m?.format ?: "T20"} • Ball: ${m?.ballType ?: "Leather"}"
                 )
                 .setPositiveButton("OK", null)
                 .show()

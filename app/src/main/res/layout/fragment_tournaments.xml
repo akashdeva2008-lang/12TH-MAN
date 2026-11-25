@@ -57,6 +57,126 @@
                     app:tint="@color/pure_white" />
             </LinearLayout>
 
+            <!-- Tournament Organizer Section Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardOrganizerHub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/top_bar_dark_bg"
+                app:cardCornerRadius="18dp"
+                app:cardElevation="4dp"
+                app:strokeColor="@color/primary_red"
+                app:strokeWidth="1.5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="44dp"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_circle_light"
+                            android:padding="9dp"
+                            android:src="@drawable/ic_trophy"
+                            app:tint="@color/accent_gold" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🏆 TOURNAMENT ORGANIZER"
+                                android:textColor="@color/accent_gold"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp"
+                                android:text="Organize &amp; Conduct Tournaments"
+                                android:textColor="@color/pure_white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_arrow_back"
+                            android:rotation="180"
+                            app:tint="@color/pure_white" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Add teams, auto-generate knockout/league fixtures, live scoring integration &amp; dynamic points table."
+                        android:textColor="#B0BEC5"
+                        android:textSize="12sp" />
+
+                    <!-- Two Action Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnOpenOrganizerDashboard"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="Open Dashboard"
+                            android:textColor="@color/pure_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/primary_red"
+                            app:cornerRadius="10dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCreateNewTournamentQuick"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:text="+ Create New"
+                            android:textColor="@color/pure_white"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            app:cornerRadius="10dp"
+                            app:strokeColor="@color/pure_white"
+                            app:strokeWidth="1.5dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
             <!-- Featured Tournament Banner -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardFeaturedTournament"
@@ -96,18 +216,20 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvFeaturedTournamentTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Premier League T20 Championship"
+                            android:text="Tournaments"
                             android:textColor="@color/pure_white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvFeaturedTournamentSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="12 Teams • 5 Matches"
+                            android:text=""
                             android:textColor="#E0E0E0"
                             android:textSize="13sp" />
                     </LinearLayout>
@@ -185,18 +307,20 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvMyTournament1Title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="City Cup 2025"
+                            android:text=""
                             android:textColor="@color/header_black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvMyTournament1Sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="8 Teams • League"
+                            android:text=""
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -280,18 +404,20 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tvUpcomingTournament1Title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Champions Trophy 2025"
+                            android:text=""
                             android:textColor="@color/header_black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvUpcomingTournament1Sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
-                            android:text="16 Teams • Knockout"
+                            android:text=""
                             android:textColor="@color/text_secondary"
                             android:textSize="12sp" />
                     </LinearLayout>

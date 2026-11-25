@@ -30,11 +30,16 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.user.observe(viewLifecycleOwner) { user ->
-            user?.let {
-                binding.tvProfileName.text = it.name
-                binding.tvProfileRole.text = "Role: ${it.role}"
-                binding.tvProfileEmail.text = "Email: ${it.email}"
-                binding.tvProfilePhone.text = "Phone: ${it.phone}"
+            if (user != null) {
+                binding.tvProfileName.text = user.name
+                binding.tvProfileRole.text = "Role: ${user.role}"
+                binding.tvProfileEmail.text = "Email: ${user.email}"
+                binding.tvProfilePhone.text = if (user.phone.isNotBlank()) "Phone: ${user.phone}" else "Phone: Not provided"
+            } else {
+                binding.tvProfileName.text = "Guest User"
+                binding.tvProfileRole.text = "Role: Guest"
+                binding.tvProfileEmail.text = "Email: Not signed in"
+                binding.tvProfilePhone.text = "Phone: -"
             }
         }
 
@@ -52,9 +57,9 @@ class ProfileFragment : Fragment() {
         // My Teams
         binding.rowMyTeams.setOnClickListener {
             val teams = arrayOf(
-                "Red Warriors (Captain: Rahul Sharma)",
-                "Mumbai Superstars (Vice Captain: S. Iyer)",
-                "Chembur Strikers (Player: Rahul Sharma)"
+                "Mumbai Warriors (Captain: Rohit Sharma)",
+                "Strikers XI (Captain: Hardik Pandya)",
+                "Royal Super Kings (Captain: Virat Kohli)"
             )
             AlertDialog.Builder(requireContext())
                 .setTitle("My Registered Teams")

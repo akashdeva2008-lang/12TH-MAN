@@ -136,7 +136,8 @@ CREATE TABLE `teams` (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`captain_id`) REFERENCES `users` (`id`) ON DELETE SET NULL,
-  INDEX `idx_team_tournament` (`tournament_id`)
+  INDEX `idx_team_tournament` (`tournament_id`),
+  UNIQUE KEY `uk_tourn_team` (`tournament_id`, `team_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------
@@ -183,7 +184,8 @@ CREATE TABLE `matches` (
   FOREIGN KEY (`team1_id`) REFERENCES `teams` (`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`team2_id`) REFERENCES `teams` (`id`) ON DELETE RESTRICT,
   INDEX `idx_match_tournament` (`tournament_id`),
-  INDEX `idx_match_status` (`status`)
+  INDEX `idx_match_status` (`status`),
+  UNIQUE KEY `uk_tourn_match` (`tournament_id`, `match_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------
@@ -260,7 +262,8 @@ CREATE TABLE `ball_by_ball` (
   FOREIGN KEY (`innings_id`) REFERENCES `match_innings` (`id`) ON DELETE CASCADE,
   FOREIGN KEY (`match_id`) REFERENCES `matches` (`id`) ON DELETE CASCADE,
   INDEX `idx_ball_innings` (`innings_id`),
-  INDEX `idx_ball_match` (`match_id`)
+  INDEX `idx_ball_match` (`match_id`),
+  UNIQUE KEY `uk_innings_over_ball` (`innings_id`, `over_number`, `ball_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------

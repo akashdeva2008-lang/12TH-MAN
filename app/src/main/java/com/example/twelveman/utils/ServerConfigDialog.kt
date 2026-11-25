@@ -1,56 +1,53 @@
 package com.example.twelveman.utils
 
+import android.app.Dialog
 import android.content.Context
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.view.LayoutInflater
+import android.view.Window
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.example.twelveman.data.api.RetrofitClient
 import com.example.twelveman.data.local.SessionManager
+import com.example.twelveman.databinding.DialogServerConfigBinding
 
 object ServerConfigDialog {
 
     fun show(context: Context, onUpdated: (() -> Unit)? = null) {
         val currentUrl = RetrofitClient.getBaseUrl(context)
+        val binding = DialogServerConfigBinding.inflate(LayoutInflater.from(context))
 
-        val container = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(50, 20, 50, 10)
+        val dialog = Dialog(context).apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setContentView(binding.root)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            setCancelable(true)
         }
 
-        val hintText = TextView(context).apply {
-            text = "Ensure your phone and computer are on the same Wi-Fi.\nEnter PC IP address:"
-            textSize = 14f
-            setPadding(0, 0, 0, 20)
-        }
-        container.addView(hintText)
+        binding.etServerUrl.setText(currentUrl)
+        binding.etServerUrl.setSelection(binding.etServerUrl.text?.length ?: 0)
 
-        val input = EditText(context).apply {
-            setText(currentUrl)
-            setSelection(text.length)
-            hint = "http://172.23.51.147/12THMAN_BACKEND/"
-        }
-        container.addView(input)
-
-        AlertDialog.Builder(context)
-            .setTitle("Server Configuration")
-            .setView(container)
-            .setPositiveButton("Save & Connect") { _, _ ->
-                val newUrl = input.text.toString().trim()
-                if (newUrl.isNotBlank()) {
-                    RetrofitClient.setServerUrl(context, newUrl)
-                    Toast.makeText(context, "Server updated to: ${RetrofitClient.getBaseUrl(context)}", Toast.LENGTH_LONG).show()
-                    onUpdated?.invoke()
-                }
-            }
-            .setNeutralButton("Reset Default") { _, _ ->
-                SessionManager.getInstance(context).saveCustomServerUrl(null)
-                Toast.makeText(context, "Reset to default: ${RetrofitClient.getBaseUrl(context)}", Toast.LENGTH_SHORT).show()
+        binding.btnSaveServerUrl.setOnClickListener {
+            val newUrl = binding.etServerUrl.text.toString().trim()
+            if (newUrl.isNotBlank()) {
+                RetrofitClient.setServerUrl(context, newUrl)
+                Toast.makeText(context, "Server updated to: ${RetrofitClient.getBaseUrl(context)}", Toast.LENGTH_LONG).show()
+                dialog.dismiss()
                 onUpdated?.invoke()
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
+
+        binding.btnResetServerDefault.setOnClickListener {
+            SessionManager.getInstance(context).saveCustomServerUrl(null)
+            Toast.makeText(context, "Reset to default: ${RetrofitClient.getBaseUrl(context)}", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+            onUpdated?.invoke()
+        }
+
+        binding.btnCancelServerDialog.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 }
-

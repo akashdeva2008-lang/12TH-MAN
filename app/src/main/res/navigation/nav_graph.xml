@@ -175,6 +175,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_organizer"
+            app:destination="@id/organizerDashboardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 5. Player Listing -->
@@ -267,12 +274,27 @@
             app:popUpTo="@id/homeFragment" />
     </fragment>
 
-    <!-- 10. My Bookings -->
+    <!-- 10. My Bookings / My Matches -->
     <fragment
         android:id="@+id/bookingsFragment"
         android:name="com.example.twelveman.ui.bookings.BookingsFragment"
-        android:label="My Bookings"
-        tools:layout="@layout/fragment_bookings" />
+        android:label="My Matches &amp; Bookings"
+        tools:layout="@layout/fragment_bookings">
+        <action
+            android:id="@+id/action_bookings_to_match_details"
+            app:destination="@id/matchDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_bookings_to_scoring"
+            app:destination="@id/matchScoringFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <!-- 11. Tournament Listing -->
     <fragment
@@ -290,6 +312,60 @@
         <action
             android:id="@+id/action_tournaments_to_create"
             app:destination="@id/createTournamentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_tournaments_to_organizer"
+            app:destination="@id/organizerDashboardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- 11.5 Tournament Organizer Dashboard -->
+    <fragment
+        android:id="@+id/organizerDashboardFragment"
+        android:name="com.example.twelveman.ui.tournaments.OrganizerDashboardFragment"
+        android:label="Tournament Organizer"
+        tools:layout="@layout/fragment_organizer_dashboard">
+        <argument
+            android:name="tournamentId"
+            app:argType="string"
+            android:defaultValue="T301" />
+        <action
+            android:id="@+id/action_organizer_to_register_team"
+            app:destination="@id/teamRegistrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_organizer_to_create_tournament"
+            app:destination="@id/createTournamentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_organizer_to_match_details"
+            app:destination="@id/matchDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_organizer_to_scoring"
+            app:destination="@id/matchScoringFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_organizer_to_fixtures"
+            app:destination="@id/matchFixturesFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -345,6 +421,13 @@
         <action
             android:id="@+id/action_tournament_details_to_fixtures"
             app:destination="@id/matchFixturesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_tournament_details_to_organizer"
+            app:destination="@id/organizerDashboardFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

@@ -23,9 +23,10 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:src="@drawable/ic_cricket_batsman" />
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="12THMAN Logo"
+                android:src="@drawable/app_logo" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -143,6 +144,20 @@
                     android:textStyle="bold"
                     app:backgroundTint="@color/primary_red"
                     app:cornerRadius="12dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnGuestLogin"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Continue as Guest →"
+                    android:textColor="@color/primary_red"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="12dp"
+                    app:strokeColor="@color/primary_red"
+                    app:strokeWidth="1.5dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -151,7 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -175,5 +190,19 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvServerConfig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="6dp"
+            android:text="⚙ Server Settings"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

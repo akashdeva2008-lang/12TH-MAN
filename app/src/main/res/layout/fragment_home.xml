@@ -47,10 +47,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:contentDescription="12THMAN Logo"
-                    android:src="@drawable/ic_cricket_batsman" />
+                    android:src="@drawable/app_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,6 +88,7 @@
 
         <!-- Live Match Banner (Hero Card) -->
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardLiveMatchHero"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -122,21 +123,33 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvLiveMatchTeams"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="Red Warriors vs Blue Strikers"
+                        android:text="Live Match"
                         android:textColor="@color/pure_white"
                         android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvLiveMatchScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:text="T20 • Green Park Stadium"
+                        android:text=""
+                        android:textColor="@color/pure_white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvLiveMatchVenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text=""
                         android:textColor="#E0E0E0"
                         android:textSize="13sp" />
 
@@ -196,7 +209,9 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="4dp"
+                android:padding="8dp"
+                android:minHeight="44dp"
+                android:gravity="center_vertical"
                 android:text="View All →"
                 android:textColor="@color/primary_red"
                 android:textSize="14sp"
@@ -248,13 +263,14 @@
                             app:tint="@color/primary_red" />
 
                         <TextView
+                            android:id="@+id/tvUpcomingTeamA"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:ellipsize="end"
                             android:gravity="center"
                             android:maxLines="1"
-                            android:text="Red Warriors"
+                            android:text="Team A"
                             android:textColor="@color/header_black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -287,13 +303,14 @@
                             app:tint="@color/header_black" />
 
                         <TextView
+                            android:id="@+id/tvUpcomingTeamB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:ellipsize="end"
                             android:gravity="center"
                             android:maxLines="1"
-                            android:text="Blue Strikers"
+                            android:text="Team B"
                             android:textColor="@color/header_black"
                             android:textSize="14sp"
                             android:textStyle="bold" />
@@ -301,21 +318,23 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/tvUpcomingDateTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:gravity="center"
-                    android:text="Apr 26, 2025 • 5:00 PM"
+                    android:text=""
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvUpcomingVenue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:gravity="center"
-                    android:text="Green Park Stadium"
+                    android:text=""
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -346,7 +365,9 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                android:padding="4dp"
+                android:padding="8dp"
+                android:minHeight="44dp"
+                android:gravity="center_vertical"
                 android:text="View All →"
                 android:textColor="@color/primary_red"
                 android:textSize="14sp"
@@ -383,28 +404,31 @@
                     app:tint="@color/primary_red" />
 
                 <TextView
+                    android:id="@+id/tvRecentTeamA"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Red Warriors"
+                    android:text="Team A"
                     android:textColor="@color/header_black"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvRecentResultText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:paddingHorizontal="6dp"
-                    android:text="Won by 6 Runs"
+                    android:text=""
                     android:textColor="@color/accent_green"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvRecentTeamB"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -412,7 +436,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:text="Blue Strikers"
+                    android:text="Team B"
                     android:textColor="@color/header_black"
                     android:textSize="13sp"
                     android:textStyle="bold" />

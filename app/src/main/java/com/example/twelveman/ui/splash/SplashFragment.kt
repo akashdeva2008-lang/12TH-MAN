@@ -32,6 +32,10 @@ class SplashFragment : Fragment() {
         binding.btnLoginSplash.setOnClickListener {
             findNavController().navigate(R.id.action_splash_to_login)
         }
+
+        binding.btnGuestExplore.setOnClickListener {
+            findNavController().navigate(R.id.action_splash_to_home)
+        }
     }
 
     override fun onDestroyView() {

@@ -40,6 +40,14 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_login_to_register)
         }
 
+        binding.btnGuestLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_login_to_home)
+        }
+
+        binding.tvServerConfig.setOnClickListener {
+            ServerConfigDialog.show(requireContext())
+        }
+
         // Long press anywhere on the background to configure server IP
         binding.root.setOnLongClickListener {
             ServerConfigDialog.show(requireContext())
@@ -66,14 +74,6 @@ class LoginFragment : Fragment() {
                     val message = result.message ?: "Authentication failed"
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                     viewModel.resetAuthResult()
-
-                    // If connection failed, offer Server IP configuration dialog
-                    if (message.contains("connect", ignoreCase = true) ||
-                        message.contains("timeout", ignoreCase = true) ||
-                        message.contains("host", ignoreCase = true) ||
-                        message.contains("network", ignoreCase = true)) {
-                        ServerConfigDialog.show(requireContext())
-                    }
                 }
                 null -> {
                     binding.btnLogin.isEnabled = true

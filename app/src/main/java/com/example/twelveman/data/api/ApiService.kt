@@ -55,6 +55,22 @@ interface ApiService {
     @POST("api/tournaments/update_match.php")
     suspend fun updateMatch(@Body matchUpdate: Map<String, Any>): Response<ApiResponse<Map<String, Any>>>
 
+    // Tournament Organizer Endpoints
+    @GET("api/tournaments/get_organizer_dashboard.php")
+    suspend fun getOrganizerDashboard(@Query("tournament_id") tournamentId: String = ""): Response<ApiResponse<com.example.twelveman.data.model.OrganizerDashboardData>>
+
+    @GET("api/tournaments/get_teams.php")
+    suspend fun getTournamentTeams(@Query("tournament_id") tournamentId: String = ""): Response<ApiResponse<List<Team>>>
+
+    @POST("api/tournaments/manage_team.php")
+    suspend fun manageTeam(@Body request: com.example.twelveman.data.model.ManageTeamRequest): Response<ApiResponse<Map<String, Any>>>
+
+    @POST("api/tournaments/generate_fixtures.php")
+    suspend fun generateFixtures(@Body request: com.example.twelveman.data.model.GenerateFixturesRequest): Response<ApiResponse<List<Map<String, Any>>>>
+
+    @GET("api/tournaments/get_standings.php")
+    suspend fun getTournamentStandings(@Query("tournament_id") tournamentId: String = ""): Response<ApiResponse<List<com.example.twelveman.data.model.TeamStanding>>>
+
     // Bookings
     @GET("api/bookings/get_bookings.php")
     suspend fun getBookings(): Response<ApiResponse<List<Booking>>>

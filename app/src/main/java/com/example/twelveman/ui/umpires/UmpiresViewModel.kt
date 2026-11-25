@@ -18,7 +18,15 @@ class UmpiresViewModel : ViewModel() {
     val selectedUmpire: LiveData<Umpire?> = _selectedUmpire
 
     init {
-        fetchUmpires()
+        startRealtimeSync()
+    }
+
+    fun startRealtimeSync() {
+        viewModelScope.launch {
+            repository.pollUmpires(intervalMs = 10000L).collect { umpires ->
+                _umpiresList.value = umpires.distinctBy { it.id }
+            }
+        }
     }
 
     fun fetchUmpires(query: String = "") {

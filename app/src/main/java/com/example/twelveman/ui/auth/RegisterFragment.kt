@@ -68,15 +68,6 @@ class RegisterFragment : Fragment() {
                     val message = result.message ?: "Registration failed"
                     Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
                     viewModel.resetAuthResult()
-
-                    // If connection to server failed, offer Server IP configuration dialog
-                    if (message.contains("connect", ignoreCase = true) ||
-                        message.contains("timeout", ignoreCase = true) ||
-                        message.contains("host", ignoreCase = true) ||
-                        message.contains("network", ignoreCase = true) ||
-                        message.contains("failed", ignoreCase = true)) {
-                        ServerConfigDialog.show(requireContext())
-                    }
                 }
                 null -> {
                     binding.btnRegister.isEnabled = true

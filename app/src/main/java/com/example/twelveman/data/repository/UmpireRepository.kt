@@ -12,6 +12,21 @@ class UmpireRepository {
 
     private val apiService = RetrofitClient.getApiService()
 
+    fun pollUmpires(intervalMs: Long = 10000L): Flow<List<Umpire>> = flow {
+        while (true) {
+            try {
+                val response = apiService.getUmpires()
+                if (response.isSuccessful && response.body()?.data != null) {
+                    val remoteUmpires = response.body()!!.data!!
+                    MockData.umpires.clear()
+                    MockData.umpires.addAll(remoteUmpires)
+                }
+            } catch (ignored: Exception) { }
+            emit(MockData.umpires.toList())
+            kotlinx.coroutines.delay(intervalMs)
+        }
+    }.flowOn(Dispatchers.IO)
+
     fun getUmpires(): Flow<List<Umpire>> = flow {
         // Emit cached data immediately
         emit(MockData.umpires)

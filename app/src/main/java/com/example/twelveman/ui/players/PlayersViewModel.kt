@@ -20,13 +20,28 @@ class PlayersViewModel : ViewModel() {
     private var currentQuery = ""
     private var currentRoleFilter = "All"
 
+    private var cachedRawPlayers: List<Player> = emptyList()
+
     init {
-        fetchPlayers()
+        startRealtimeSync()
+    }
+
+    fun startRealtimeSync() {
+        viewModelScope.launch {
+            repository.pollPlayers(intervalMs = 6000L).collect { players ->
+                cachedRawPlayers = players
+                _playersList.value = filterPlayers(players, currentQuery, currentRoleFilter)
+            }
+        }
     }
 
     fun fetchPlayers() {
+        if (cachedRawPlayers.isNotEmpty()) {
+            _playersList.value = filterPlayers(cachedRawPlayers, currentQuery, currentRoleFilter)
+        }
         viewModelScope.launch {
             repository.getPlayers().collect { players ->
+                cachedRawPlayers = players
                 _playersList.value = filterPlayers(players, currentQuery, currentRoleFilter)
             }
         }

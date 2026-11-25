@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet_dialog"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_check_circle"
+            app:tint="@color/accent_gold" />
+
+        <TextView
+            android:id="@+id/tvOverCompleteTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:text="Over Completed!"
+            android:textColor="@color/header_black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ivCloseOverCompleteDialog"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="Close"
+            android:focusable="true"
+            android:padding="6dp"
+            android:src="@drawable/ic_close"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="12dp"
+        android:background="@color/border_grey" />
+
+    <TextView
+        android:id="@+id/tvOverCompleteSummary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="End of Over 5. Strike rotated automatically."
+        android:textColor="@color/header_black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvCurrentStrikerNotice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="New Striker: Virat Kohli*"
+        android:textColor="@color/primary_red"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <!-- Next Bowler Input -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Next Bowler"
+            android:textColor="@color/header_black"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPickNextBowlerFromSquad"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="Choose from Squad"
+            android:textColor="@color/primary_red"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNextBowler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:hint="Select / Enter Next Bowler"
+        app:boxStrokeColor="@color/primary_red"
+        app:hintTextColor="@color/primary_red">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNextBowler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tvBowlerRuleHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="* Previous bowler cannot bowl consecutive overs."
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp" />
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnUndoInOverDialog"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="6dp"
+            android:layout_weight="1"
+            android:text="Undo Last Ball"
+            android:textColor="@color/primary_red"
+            app:cornerRadius="10dp"
+            app:strokeColor="@color/primary_red" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmNextBowler"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1.2"
+            android:text="Start Over"
+            android:textColor="@color/pure_white"
+            app:backgroundTint="@color/primary_red"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+</LinearLayout>

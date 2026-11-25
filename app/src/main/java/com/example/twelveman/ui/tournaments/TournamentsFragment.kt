@@ -43,46 +43,83 @@ class TournamentsFragment : Fragment() {
 
         viewModel.tournamentsList.observe(viewLifecycleOwner) { list ->
             adapter.updateData(list)
+
+            // Dynamically bind live tournaments from DB into the top cards
+            val featured = list.getOrNull(0)
+            if (featured != null) {
+                binding.cardFeaturedTournament.visibility = View.VISIBLE
+                binding.tvFeaturedTournamentTitle.text = featured.name
+                binding.tvFeaturedTournamentSub.text = "${featured.format} • ${featured.totalTeams} Teams • ${featured.location}"
+                binding.cardFeaturedTournament.setOnClickListener {
+                    val bundle = Bundle().apply { putString("tournamentId", featured.id) }
+                    findNavController().navigate(R.id.action_tournaments_to_details, bundle)
+                }
+            } else {
+                binding.cardFeaturedTournament.visibility = View.GONE
+            }
+
+            val t1 = list.getOrNull(1)
+            if (t1 != null) {
+                binding.cardSampleCityCup.visibility = View.VISIBLE
+                binding.tvMyTournament1Title.text = t1.name
+                binding.tvMyTournament1Sub.text = "${t1.format} • ${t1.totalTeams} Teams • Status: ${t1.status}"
+                binding.cardSampleCityCup.setOnClickListener {
+                    val bundle = Bundle().apply { putString("tournamentId", t1.id) }
+                    findNavController().navigate(R.id.action_tournaments_to_details, bundle)
+                }
+            } else {
+                binding.cardSampleCityCup.visibility = View.GONE
+            }
+
+            val t2 = list.getOrNull(2)
+            if (t2 != null) {
+                binding.cardSampleChampionsTrophy.visibility = View.VISIBLE
+                binding.tvUpcomingTournament1Title.text = t2.name
+                binding.tvUpcomingTournament1Sub.text = "${t2.format} • ${t2.totalTeams} Teams • Status: ${t2.status}"
+                binding.cardSampleChampionsTrophy.setOnClickListener {
+                    val bundle = Bundle().apply { putString("tournamentId", t2.id) }
+                    findNavController().navigate(R.id.action_tournaments_to_details, bundle)
+                }
+            } else {
+                binding.cardSampleChampionsTrophy.visibility = View.GONE
+            }
         }
 
-        // Host / Create Tournament FAB
+        // Tournament Organizer Hub Navigation
+        binding.cardOrganizerHub.setOnClickListener {
+            findNavController().navigate(R.id.action_tournaments_to_organizer)
+        }
+        binding.btnOpenOrganizerDashboard.setOnClickListener {
+            findNavController().navigate(R.id.action_tournaments_to_organizer)
+        }
+        binding.btnCreateNewTournamentQuick.setOnClickListener {
+            val bundle = Bundle().apply { putBoolean("isTournament", true) }
+            findNavController().navigate(R.id.action_tournaments_to_create, bundle)
+        }
+
+        // Host Tournament Floating Action Button (FAB)
         binding.fabCreateTournament.setOnClickListener {
-            findNavController().navigate(R.id.action_tournaments_to_create)
+            val bundle = Bundle().apply { putBoolean("isTournament", true) }
+            findNavController().navigate(R.id.action_tournaments_to_create, bundle)
         }
 
-        // Notifications Bell
+        // Notifications
         binding.ivTournamentsNotification.setOnClickListener {
             AlertDialog.Builder(requireContext())
-                .setTitle("Tournament Alerts")
-                .setMessage("You're subscribed to Premier League T20 & City Cup 2025 fixtures.\nNo delays or schedule changes reported.")
+                .setTitle("Tournament Notifications")
+                .setMessage("No unread alerts. You will receive live toss results, fixture schedules, and match score updates here.")
                 .setPositiveButton("OK", null)
                 .show()
         }
 
-        // Featured Tournament Card Click
-        binding.cardFeaturedTournament.setOnClickListener {
-            val bundle = Bundle().apply { putString("tournamentId", "T301") }
-            findNavController().navigate(R.id.action_tournaments_to_details, bundle)
-        }
-
-        // City Cup Sample Card Click
-        binding.cardSampleCityCup.setOnClickListener {
-            val bundle = Bundle().apply { putString("tournamentId", "T302") }
-            findNavController().navigate(R.id.action_tournaments_to_details, bundle)
-        }
-
-        // Champions Trophy Sample Card Click
-        binding.cardSampleChampionsTrophy.setOnClickListener {
-            val bundle = Bundle().apply { putString("tournamentId", "T303") }
-            findNavController().navigate(R.id.action_tournaments_to_details, bundle)
-        }
-
-        // View All links
+        // View All links - scroll to list
         binding.tvViewAllMyTournaments.setOnClickListener {
-            Toast.makeText(requireContext(), "Displaying your registered tournaments", Toast.LENGTH_SHORT).show()
+            binding.rvTournaments.smoothScrollToPosition(0)
+            Toast.makeText(requireContext(), "Showing all tournaments", Toast.LENGTH_SHORT).show()
         }
         binding.tvViewAllUpcomingTournaments.setOnClickListener {
-            Toast.makeText(requireContext(), "Displaying all upcoming sanctioned leagues", Toast.LENGTH_SHORT).show()
+            binding.rvTournaments.smoothScrollToPosition(0)
+            Toast.makeText(requireContext(), "Showing upcoming sanctioned tournaments", Toast.LENGTH_SHORT).show()
         }
     }
 

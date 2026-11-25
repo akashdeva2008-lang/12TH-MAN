@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_weight="1"
-                android:text="Team Registration"
+                android:text="Register Cricket Team"
                 android:textColor="@color/pure_white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -63,68 +63,85 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+                <!-- Team Name -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Team Name"
+                    android:hint="Team Name *"
                     app:boxBackgroundColor="@color/surface_white"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
                     app:boxStrokeColor="@color/primary_red"
-                    app:hintTextColor="@color/primary_red">
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:expandedHintEnabled="true"
+                    app:hintTextColor="@color/primary_red"
+                    app:placeholderText="e.g. Mumbai Warriors">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etTeamName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="14dp"
                         android:singleLine="true"
-                        android:text="Mumbai Warriors"
                         android:textColor="@color/header_black"
                         android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Captain Name -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:hint="Captain Name"
+                    android:hint="Captain Name *"
                     app:boxBackgroundColor="@color/surface_white"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
                     app:boxStrokeColor="@color/primary_red"
-                    app:hintTextColor="@color/primary_red">
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:expandedHintEnabled="true"
+                    app:hintTextColor="@color/primary_red"
+                    app:placeholderText="e.g. Rohit Sharma">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCaptainName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="14dp"
                         android:singleLine="true"
-                        android:text="Rahul Dravid"
                         android:textColor="@color/header_black"
                         android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Captain Phone -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:hint="Captain Phone"
+                    android:hint="Captain Contact Number *"
                     app:boxBackgroundColor="@color/surface_white"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
                     app:boxStrokeColor="@color/primary_red"
-                    app:hintTextColor="@color/primary_red">
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:expandedHintEnabled="true"
+                    app:hintTextColor="@color/primary_red"
+                    app:placeholderText="+91 98765 43210">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etCaptainPhone"
@@ -132,49 +149,192 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="phone"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="14dp"
                         android:singleLine="true"
-                        android:text="+91 98200 11223"
                         android:textColor="@color/header_black"
                         android:textSize="15sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Vice-Captain Name -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:hint="Squad Player Names"
+                    android:hint="Vice-Captain Name (Optional)"
                     app:boxBackgroundColor="@color/surface_white"
-                    app:boxCornerRadiusBottomEnd="12dp"
-                    app:boxCornerRadiusBottomStart="12dp"
-                    app:boxCornerRadiusTopEnd="12dp"
-                    app:boxCornerRadiusTopStart="12dp"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
                     app:boxStrokeColor="@color/primary_red"
-                    app:hintTextColor="@color/primary_red">
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:expandedHintEnabled="true"
+                    app:hintTextColor="@color/primary_red"
+                    app:placeholderText="e.g. Jasprit Bumrah">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etViceCaptain"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:imeOptions="actionNext"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="14dp"
+                        android:singleLine="true"
+                        android:textColor="@color/header_black"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Team Manager & Location Row -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:hint="Team Manager"
+                        app:boxBackgroundColor="@color/surface_white"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:expandedHintEnabled="true"
+                        app:hintTextColor="@color/primary_red"
+                        app:placeholderText="Manager Name">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etManagerName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="14dp"
+                            android:singleLine="true"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:hint="Location / City"
+                        app:boxBackgroundColor="@color/surface_white"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/primary_red"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:expandedHintEnabled="true"
+                        app:hintTextColor="@color/primary_red">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTeamCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="14dp"
+                            android:singleLine="true"
+                            android:text="Mumbai"
+                            android:textColor="@color/header_black"
+                            android:textSize="14sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <!-- Squad Player Names -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:hint="Player Names (Comma separated)"
+                    app:boxBackgroundColor="@color/surface_white"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/primary_red"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:expandedHintEnabled="true"
+                    app:hintTextColor="@color/primary_red"
+                    app:placeholderText="Player 1, Player 2, Player 3...">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etPlayerList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:imeOptions="actionDone"
+                        android:gravity="top|start"
                         android:inputType="textMultiLine"
                         android:minLines="3"
-                        android:text="Rahul Dravid, Virat Sharma, Jasprit Patel, Hardik Verma, Rishabh Singh"
+                        android:maxLines="6"
+                        android:scrollbars="vertical"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="14dp"
                         android:textColor="@color/header_black"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Team Bio / Description -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:hint="Team Description"
+                    app:boxBackgroundColor="@color/surface_white"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/primary_red"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:expandedHintEnabled="true"
+                    app:hintTextColor="@color/primary_red"
+                    app:placeholderText="Club team established in 2024">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etTeamBio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="top|start"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:maxLines="5"
+                        android:scrollbars="vertical"
+                        android:paddingHorizontal="14dp"
+                        android:paddingVertical="14dp"
+                        android:textColor="@color/header_black"
+                        android:textSize="14sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Action Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnSubmitTeamReg"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Submit Team Registration"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="22dp"
+                    android:text="Register Team in Tournament"
                     android:textColor="@color/pure_white"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     app:backgroundTint="@color/primary_red"
-                    app:cornerRadius="14dp" />
+                    app:cornerRadius="12dp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="My Matches"
+            android:text="My Matches &amp; Bookings"
             android:textColor="@color/pure_white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -51,7 +51,96 @@
             app:tint="@color/pure_white" />
     </LinearLayout>
 
-    <!-- Tab Filter Pills Row -->
+    <!-- Top Category Selector: Bookings vs Scheduled Matches -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/btnSelectBookings"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_badge_pill_active"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:paddingHorizontal="8dp"
+            android:text="👤 Player &amp; Umpire Bookings"
+            android:textColor="@color/pure_white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnSelectMatches"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_badge_pill_inactive"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:paddingHorizontal="8dp"
+            android:text="🏏 Scheduled Matches"
+            android:textColor="@color/header_dark_grey"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Sub-filter Row for Bookings (Players vs Umpires) -->
+    <LinearLayout
+        android:id="@+id/layoutBookingSubFilters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface_white"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/chipAllBookings"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:background="@drawable/bg_badge_red_outline"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="All"
+            android:textColor="@color/primary_red"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/chipPlayerBookings"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_badge_pill_inactive"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="Players Only"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/chipUmpireBookings"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_badge_pill_inactive"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:text="Umpires Only"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Status Filter Pills Row (Upcoming / Live / Completed) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,16 +149,17 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="10dp">
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/tabBookingUpcoming"
             android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="6dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="4dp"
             android:layout_weight="1"
             android:background="@drawable/bg_badge_pill_active"
             android:gravity="center"
+            android:textAlignment="center"
             android:text="Upcoming"
             android:textColor="@color/pure_white"
             android:textSize="13sp"
@@ -78,11 +168,12 @@
         <TextView
             android:id="@+id/tabBookingLive"
             android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_marginHorizontal="3dp"
+            android:layout_height="38dp"
+            android:layout_marginHorizontal="4dp"
             android:layout_weight="1"
             android:background="@drawable/bg_badge_pill_inactive"
             android:gravity="center"
+            android:textAlignment="center"
             android:text="Live"
             android:textColor="@color/header_dark_grey"
             android:textSize="13sp"
@@ -91,23 +182,81 @@
         <TextView
             android:id="@+id/tabBookingCompleted"
             android:layout_width="0dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="6dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="4dp"
             android:layout_weight="1"
             android:background="@drawable/bg_badge_pill_inactive"
             android:gravity="center"
+            android:textAlignment="center"
             android:text="Completed"
             android:textColor="@color/header_dark_grey"
             android:textSize="13sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBookings"
+    <!-- Content Area: Bookings List vs Matches List vs Empty State -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="24dp"
-        tools:listitem="@layout/item_booking" />
+        android:layout_height="match_parent">
+
+        <!-- RecyclerView for Bookings -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBookings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="24dp"
+            tools:listitem="@layout/item_booking" />
+
+        <!-- RecyclerView for Matches -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMatches"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp"
+            android:paddingBottom="24dp"
+            android:visibility="gone"
+            tools:listitem="@layout/item_match" />
+
+        <!-- Empty State View -->
+        <LinearLayout
+            android:id="@+id/layoutEmptyState"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="@drawable/bg_circle_light"
+                android:padding="16dp"
+                android:src="@drawable/ic_calendar"
+                app:tint="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/tvEmptyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="No Records Found"
+                android:textColor="@color/header_black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEmptyMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:text="There are no records in this category."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

@@ -231,14 +231,18 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegisterTeam"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="50dp"
                 android:layout_marginEnd="6dp"
-                android:layout_weight="1.2"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:text="Register Team"
                 android:textColor="@color/pure_white"
                 android:textSize="14sp"
@@ -250,9 +254,12 @@
                 android:id="@+id/btnViewFixtures"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="50dp"
                 android:layout_marginStart="6dp"
                 android:layout_weight="1"
+                android:gravity="center"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
                 android:text="View Fixtures"
                 android:textColor="@color/primary_red"
                 android:textSize="14sp"
@@ -261,5 +268,21 @@
                 app:strokeColor="@color/primary_red"
                 app:strokeWidth="1.5dp" />
         </LinearLayout>
+
+        <!-- Organizer Hub Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOpenOrganizerFromDetails"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="10dp"
+            android:text="🏆 Open Organizer Dashboard"
+            android:textColor="@color/header_black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1.5dp" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

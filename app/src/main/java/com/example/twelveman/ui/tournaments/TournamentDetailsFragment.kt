@@ -57,6 +57,11 @@ class TournamentDetailsFragment : Fragment() {
             val bundle = Bundle().apply { putString("tournamentId", tournamentId) }
             findNavController().navigate(R.id.action_tournament_details_to_fixtures, bundle)
         }
+
+        binding.btnOpenOrganizerFromDetails.setOnClickListener {
+            val bundle = Bundle().apply { putString("tournamentId", tournamentId) }
+            findNavController().navigate(R.id.action_tournament_details_to_organizer, bundle)
+        }
     }
 
     override fun onDestroyView() {

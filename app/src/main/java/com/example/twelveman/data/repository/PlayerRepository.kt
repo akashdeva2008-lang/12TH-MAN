@@ -13,6 +13,21 @@ class PlayerRepository {
 
     private val apiService = RetrofitClient.getApiService()
 
+    fun pollPlayers(intervalMs: Long = 8000L): Flow<List<Player>> = flow {
+        while (true) {
+            try {
+                val response = apiService.getPlayers()
+                if (response.isSuccessful && response.body()?.data != null) {
+                    val remotePlayers = response.body()!!.data!!
+                    MockData.players.clear()
+                    MockData.players.addAll(remotePlayers)
+                }
+            } catch (ignored: Exception) { }
+            emit(MockData.players.toList())
+            kotlinx.coroutines.delay(intervalMs)
+        }
+    }.flowOn(Dispatchers.IO)
+
     fun getPlayers(): Flow<List<Player>> = flow {
         // Emit cached data immediately for zero latency
         emit(MockData.players)

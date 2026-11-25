@@ -17,8 +17,8 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private val authRepository = AuthRepository(application)
     private val sessionManager = SessionManager.getInstance(application)
 
-    private val _user = MutableLiveData<User>(sessionManager.getCurrentUser() ?: MockData.currentUser)
-    val user: LiveData<User> = _user
+    private val _user = MutableLiveData<User?>(sessionManager.getCurrentUser())
+    val user: LiveData<User?> = _user
 
     private val _darkModeEnabled = MutableLiveData<Boolean>(false)
     val darkModeEnabled: LiveData<Boolean> = _darkModeEnabled
@@ -54,7 +54,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun logout() {
         authRepository.logout()
-        _user.value = MockData.currentUser
+        _user.value = null
     }
 
     fun toggleDarkMode(enabled: Boolean) {

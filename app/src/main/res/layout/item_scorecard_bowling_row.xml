@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:minWidth="310dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="8dp">
+
+    <!-- Bowler Name -->
+    <TextView
+        android:id="@+id/tvRowBowlerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3.5"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:minWidth="120dp"
+        android:paddingEnd="6dp"
+        android:text="Jasprit Bumrah"
+        android:textColor="@color/header_black"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <!-- Overs (O) -->
+    <TextView
+        android:id="@+id/tvRowBowlerO"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:minWidth="32dp"
+        android:text="4.0"
+        android:textColor="@color/header_black"
+        android:textSize="13sp" />
+
+    <!-- Maidens (M) -->
+    <TextView
+        android:id="@+id/tvRowBowlerM"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:minWidth="32dp"
+        android:text="1"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp" />
+
+    <!-- Runs (R) -->
+    <TextView
+        android:id="@+id/tvRowBowlerR"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:minWidth="32dp"
+        android:text="22"
+        android:textColor="@color/header_black"
+        android:textSize="13sp" />
+
+    <!-- Wickets (W) -->
+    <TextView
+        android:id="@+id/tvRowBowlerW"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:minWidth="32dp"
+        android:text="3"
+        android:textColor="@color/primary_red"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <!-- Economy (Econ) -->
+    <TextView
+        android:id="@+id/tvRowBowlerEcon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:gravity="end"
+        android:minWidth="44dp"
+        android:text="5.50"
+        android:textColor="@color/header_black"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+</LinearLayout>
