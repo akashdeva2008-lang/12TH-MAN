@@ -164,7 +164,7 @@ class HomeFragment : Fragment() {
         }
 
         // 2. Live Scoring -> Open Live Scoring screen
-        binding.cardHireUmpire.setOnClickListener {
+        binding.cardLiveScoring.setOnClickListener {
             val bundle = Bundle().apply { putString("matchId", "M501") }
             safeNavigate(R.id.action_home_to_match_scoring, bundle)
         }
@@ -174,7 +174,12 @@ class HomeFragment : Fragment() {
             safeNavigate(R.id.action_home_to_players)
         }
 
-        // 4. 12THMAN GPT-1 Cricket AI Assistant
+        // 4. Book Umpires -> Open Dedicated Umpire Booking Dashboard
+        binding.cardHireUmpire.setOnClickListener {
+            safeNavigate(R.id.action_home_to_umpire_dashboard)
+        }
+
+        // 5. 12THMAN GPT-1 Cricket AI Assistant
         binding.cardAiAssistant.setOnClickListener {
             safeNavigate(R.id.action_home_to_ai_assistant)
         }
@@ -210,7 +215,7 @@ class HomeFragment : Fragment() {
             safeNavigate(R.id.action_home_to_players)
         }
         binding.tvSeeAllUmpires.setOnClickListener {
-            safeNavigate(R.id.action_home_to_umpires)
+            safeNavigate(R.id.action_home_to_umpire_dashboard)
         }
     }
 

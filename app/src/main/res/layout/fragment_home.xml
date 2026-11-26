@@ -460,19 +460,19 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <!-- 3 Quick Action Cards Row (Start Match, Live Scoring, Find Players) -->
+        <!-- 4 Quick Action Cards Row (Start Match, Live Scoring, Find Players, Book Umpires) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:paddingHorizontal="12dp">
+            android:paddingHorizontal="10dp">
 
             <!-- Start Match (Navigates to Tournaments / Match Creation) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardTournaments"
                 android:layout_width="0dp"
                 android:layout_height="115dp"
-                android:layout_margin="4dp"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
@@ -490,10 +490,10 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="@drawable/bg_circle_light"
-                        android:padding="8dp"
+                        android:padding="7dp"
                         android:src="@drawable/ic_trophy"
                         app:tint="@color/primary_red" />
 
@@ -506,17 +506,17 @@
                         android:maxLines="1"
                         android:text="Start Match"
                         android:textColor="@color/header_black"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Live Scoring (Navigates to Umpires / Scoring) -->
+            <!-- Live Scoring -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardHireUmpire"
+                android:id="@+id/cardLiveScoring"
                 android:layout_width="0dp"
                 android:layout_height="115dp"
-                android:layout_margin="4dp"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
@@ -534,10 +534,10 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="@drawable/bg_circle_light"
-                        android:padding="8dp"
+                        android:padding="7dp"
                         android:src="@drawable/ic_live_waves"
                         app:tint="@color/primary_red" />
 
@@ -550,17 +550,17 @@
                         android:maxLines="1"
                         android:text="Live Scoring"
                         android:textColor="@color/header_black"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Find Players (Navigates to Players) -->
+            <!-- Find Players -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardBookPlayer"
                 android:layout_width="0dp"
                 android:layout_height="115dp"
-                android:layout_margin="4dp"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:focusable="true"
@@ -578,10 +578,10 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="38dp"
-                        android:layout_height="38dp"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
                         android:background="@drawable/bg_circle_light"
-                        android:padding="8dp"
+                        android:padding="7dp"
                         android:src="@drawable/ic_groups"
                         app:tint="@color/primary_red" />
 
@@ -594,7 +594,51 @@
                         android:maxLines="1"
                         android:text="Find Players"
                         android:textColor="@color/header_black"
-                        android:textSize="13sp"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Book Umpires (Navigates to Umpire Booking Dashboard) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardHireUmpire"
+                android:layout_width="0dp"
+                android:layout_height="115dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/surface_white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="@color/border_grey"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_circle_light"
+                        android:padding="7dp"
+                        android:src="@drawable/ic_umpire"
+                        app:tint="@color/primary_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:text="Book Umpires"
+                        android:textColor="@color/header_black"
+                        android:textSize="11.5sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

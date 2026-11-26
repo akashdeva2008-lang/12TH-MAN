@@ -116,8 +116,9 @@ open class MainActivity : AppCompatActivity() {
 
         // Status bar scrim background and status icon contrast per destination
         when (destinationId) {
-            R.id.homeFragment -> {
-                // Home screen has a light surface_white top bar
+            R.id.homeFragment,
+            R.id.umpireDashboardFragment -> {
+                // Home screen and Umpire Dashboard have a light surface_white top bar
                 binding.statusBarScrim.setBackgroundResource(R.color.surface_white)
                 windowInsetsController.isAppearanceLightStatusBars = !isDarkMode
             }

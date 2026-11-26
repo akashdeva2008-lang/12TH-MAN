@@ -45,6 +45,10 @@ class UmpiresFragment : Fragment() {
             adapter.updateData(list)
         }
 
+        binding.btnOpenDashboard.setOnClickListener {
+            findNavController().navigate(R.id.action_umpires_to_dashboard)
+        }
+
         binding.etSearchUmpires.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

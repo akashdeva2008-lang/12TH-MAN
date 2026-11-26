@@ -25,6 +25,7 @@
 
     <!-- Backgrounds & Surfaces (Light Mode) -->
     <color name="bg_light">#FFFFFF</color>
+    <color name="bg_light_grey">#F8F9FA</color>
     <color name="surface_white">#FFFFFF</color>
     <color name="card_elevated">#F5F5F5</color>
     <color name="card_border">#E5E5E5</color>

@@ -182,6 +182,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_home_to_umpire_dashboard"
+            app:destination="@id/umpireDashboardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <!-- 5. Player Listing -->
@@ -227,6 +234,35 @@
         <action
             android:id="@+id/action_umpires_to_details"
             app:destination="@id/umpireDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_umpires_to_dashboard"
+            app:destination="@id/umpireDashboardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!-- 7.5 Umpire Booking Dashboard -->
+    <fragment
+        android:id="@+id/umpireDashboardFragment"
+        android:name="com.example.twelveman.ui.umpires.UmpireDashboardFragment"
+        android:label="Umpire Booking Hub"
+        tools:layout="@layout/fragment_umpire_dashboard">
+        <action
+            android:id="@+id/action_umpire_dashboard_to_details"
+            app:destination="@id/umpireDetailsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_umpire_dashboard_to_booking"
+            app:destination="@id/bookingFormFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
