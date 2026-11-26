@@ -211,6 +211,25 @@ class TournamentRepository {
         }
     }
 
+    fun pollLiveMatch(matchId: String, intervalMs: Long = 3000L): Flow<Match> = flow {
+        while (true) {
+            try {
+                val response = apiService.getLiveMatch(matchId)
+                if (response.isSuccessful && response.body()?.status == "success") {
+                    val matchData = response.body()?.data
+                    if (matchData != null) {
+                        emit(matchData)
+                    }
+                }
+            } catch (ignored: Exception) { }
+            val localMatch = getMatchById(matchId)
+            if (localMatch != null) {
+                emit(localMatch)
+            }
+            kotlinx.coroutines.delay(intervalMs)
+        }
+    }
+
     // ----------------------------------------------------
     // TOURNAMENT ORGANIZER REPOSITORY METHODS
     // ----------------------------------------------------

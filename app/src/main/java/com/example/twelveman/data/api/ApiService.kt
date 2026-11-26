@@ -55,6 +55,9 @@ interface ApiService {
     @POST("api/tournaments/update_match.php")
     suspend fun updateMatch(@Body matchUpdate: Map<String, Any>): Response<ApiResponse<Map<String, Any>>>
 
+    @GET("api/tournaments/get_live_match.php")
+    suspend fun getLiveMatch(@Query("match_id") matchId: String = ""): Response<ApiResponse<Match>>
+
     // Tournament Organizer Endpoints
     @GET("api/tournaments/get_organizer_dashboard.php")
     suspend fun getOrganizerDashboard(@Query("tournament_id") tournamentId: String = ""): Response<ApiResponse<com.example.twelveman.data.model.OrganizerDashboardData>>

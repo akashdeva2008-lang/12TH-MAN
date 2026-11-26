@@ -1036,4 +1036,17 @@ class TournamentsViewModel : ViewModel() {
         loadOrganizerDashboard(match.tournamentId)
         loadStandings(match.tournamentId)
     }
+
+    fun completeMatch(matchId: String) {
+        val match = repository.getMatchById(matchId) ?: return
+        match.status = "COMPLETED"
+        match.result = if (match.runsA > match.runsB) "${match.teamA} won by ${match.runsA - match.runsB} runs"
+        else if (match.runsB > match.runsA) "${match.teamB} won by ${match.wicketsB.let { 10 - it }} wickets"
+        else "Match Tied"
+        match.commentary.add(0, "Match Concluded: ${match.result}")
+        _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
+        loadOrganizerDashboard(match.tournamentId)
+        loadStandings(match.tournamentId)
+    }
 }

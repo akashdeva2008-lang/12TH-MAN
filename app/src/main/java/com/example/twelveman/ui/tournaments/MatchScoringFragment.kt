@@ -304,9 +304,16 @@ class MatchScoringFragment : Fragment() {
             showChangeBowlerDialog()
         }
 
-        // Tap on Score Displays to view Scorecard
+        // Tap on Score Displays to view Scorecard or edit overs
         binding.tvCurrentScoreDisplay.setOnClickListener { showFullScorecardDialog() }
-        binding.tvOversDisplay.setOnClickListener { showFullScorecardDialog() }
+        binding.tvOversDisplay.setOnClickListener {
+            val m = viewModel.selectedMatch.value
+            if (m != null) {
+                showEditOversDialog(m)
+            } else {
+                showFullScorecardDialog()
+            }
+        }
         binding.tvScoringTeams.setOnClickListener { showFullScorecardDialog() }
 
         // Live Feed refresh
@@ -587,6 +594,11 @@ class MatchScoringFragment : Fragment() {
             dialog.dismiss()
             viewModel.endOverManually(matchId)
             Toast.makeText(requireContext(), "Over concluded manually. Strike rotated.", Toast.LENGTH_SHORT).show()
+        }
+
+        dialogView.findViewById<View?>(R.id.actionEditMatchOvers)?.setOnClickListener {
+            dialog.dismiss()
+            showEditOversDialog(match)
         }
 
         dialogView.findViewById<View>(R.id.actionViewScorecard).setOnClickListener {
@@ -887,6 +899,20 @@ class MatchScoringFragment : Fragment() {
         val btnConfirm = dialogView.findViewById<Button>(R.id.btnConfirmTossStart)
         val ivCloseToss = dialogView.findViewById<ImageView?>(R.id.ivCloseTossDialog)
 
+        val etMatchOvers = dialogView.findViewById<EditText?>(R.id.etMatchOvers)
+        val btnOvers5 = dialogView.findViewById<Button?>(R.id.btnOvers5)
+        val btnOvers10 = dialogView.findViewById<Button?>(R.id.btnOvers10)
+        val btnOvers12 = dialogView.findViewById<Button?>(R.id.btnOvers12)
+        val btnOvers15 = dialogView.findViewById<Button?>(R.id.btnOvers15)
+        val btnOvers20 = dialogView.findViewById<Button?>(R.id.btnOvers20)
+
+        etMatchOvers?.setText(match.totalOvers.toString())
+        btnOvers5?.setOnClickListener { etMatchOvers?.setText("5") }
+        btnOvers10?.setOnClickListener { etMatchOvers?.setText("10") }
+        btnOvers12?.setOnClickListener { etMatchOvers?.setText("12") }
+        btnOvers15?.setOnClickListener { etMatchOvers?.setText("15") }
+        btnOvers20?.setOnClickListener { etMatchOvers?.setText("20") }
+
         tvSubtitle.text = "${match.teamA} vs ${match.teamB} • ${match.venue}"
         rbTeam1.text = match.teamA
         rbTeam2.text = match.teamB
@@ -1051,6 +1077,8 @@ class MatchScoringFragment : Fragment() {
 
             val winner = if (rbTeam1.isChecked) match.teamA else match.teamB
             val decision = if (rbBat.isChecked) "BAT" else "BOWL"
+            val selectedOvers = etMatchOvers?.text?.toString()?.trim()?.toIntOrNull() ?: match.totalOvers
+            val finalOvers = if (selectedOvers > 0) selectedOvers else match.totalOvers
 
             viewModel.recordTossAndOpeners(
                 matchId = match.id,
@@ -1060,12 +1088,57 @@ class MatchScoringFragment : Fragment() {
                 bowlingTeam = currentBowlingTeam,
                 striker = strikerName,
                 nonStriker = nonStrikerName,
-                bowler = bowlerName
+                bowler = bowlerName,
+                totalOvers = finalOvers
             )
 
             isTossDialogOpen = false
             dialog.dismiss()
             Toast.makeText(requireContext(), "Toss confirmed! $winner elected to $decision first.", Toast.LENGTH_LONG).show()
+        }
+
+        dialog.show()
+    }
+
+    private fun showEditOversDialog(match: Match) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_edit_overs, null)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        val etOvers = dialogView.findViewById<EditText?>(R.id.etEditCustomOvers)
+        val btn5 = dialogView.findViewById<Button?>(R.id.btnPreset5)
+        val btn8 = dialogView.findViewById<Button?>(R.id.btnPreset8)
+        val btn10 = dialogView.findViewById<Button?>(R.id.btnPreset10)
+        val btn12 = dialogView.findViewById<Button?>(R.id.btnPreset12)
+        val btn15 = dialogView.findViewById<Button?>(R.id.btnPreset15)
+        val btn20 = dialogView.findViewById<Button?>(R.id.btnPreset20)
+        val btnSave = dialogView.findViewById<Button?>(R.id.btnSaveEditOvers)
+        val btnCancel = dialogView.findViewById<Button?>(R.id.btnCancelEditOvers)
+        val ivClose = dialogView.findViewById<ImageView?>(R.id.ivCloseEditOvers)
+
+        etOvers?.setText(match.totalOvers.toString())
+        btn5?.setOnClickListener { etOvers?.setText("5") }
+        btn8?.setOnClickListener { etOvers?.setText("8") }
+        btn10?.setOnClickListener { etOvers?.setText("10") }
+        btn12?.setOnClickListener { etOvers?.setText("12") }
+        btn15?.setOnClickListener { etOvers?.setText("15") }
+        btn20?.setOnClickListener { etOvers?.setText("20") }
+
+        ivClose?.setOnClickListener { dialog.dismiss() }
+        btnCancel?.setOnClickListener { dialog.dismiss() }
+
+        btnSave?.setOnClickListener {
+            val newOvers = etOvers?.text?.toString()?.trim()?.toIntOrNull()
+            if (newOvers == null || newOvers <= 0) {
+                Toast.makeText(requireContext(), "Please enter a valid number of overs (minimum 1)", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            viewModel.updateMatchOvers(match.id, newOvers)
+            dialog.dismiss()
+            Toast.makeText(requireContext(), "Match overs revised to $newOvers overs per side.", Toast.LENGTH_LONG).show()
         }
 
         dialog.show()
