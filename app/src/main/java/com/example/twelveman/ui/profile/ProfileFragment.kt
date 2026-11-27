@@ -9,11 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.twelveman.R
-import com.example.twelveman.databinding.DialogMyRegisteredTeamsBinding
 import com.example.twelveman.databinding.FragmentProfileBinding
-import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -57,9 +54,24 @@ class ProfileFragment : Fragment() {
         binding.btnGoToSettings.setOnClickListener(goToSettings)
         binding.ivProfileTopSettings.setOnClickListener(goToSettings)
 
-        // My Teams -> Show actual registered teams
+        // My Teams
         binding.rowMyTeams.setOnClickListener {
-            showMyRegisteredTeamsDialog()
+            val teams = arrayOf(
+                "Mumbai Warriors (Captain: Rohit Sharma)",
+                "Strikers XI (Captain: Hardik Pandya)",
+                "Royal Super Kings (Captain: Virat Kohli)"
+            )
+            AlertDialog.Builder(requireContext())
+                .setTitle("My Registered Teams")
+                .setItems(teams) { _, which ->
+                    Toast.makeText(requireContext(), "Selected: ${teams[which]}", Toast.LENGTH_SHORT).show()
+                }
+                .setPositiveButton("Register New Team") { _, _ ->
+                    val bundle = Bundle().apply { putString("tournamentId", "T301") }
+                    findNavController().navigate(R.id.action_profile_to_team_registration, bundle)
+                }
+                .setNegativeButton("Close", null)
+                .show()
         }
 
         // My Statistics
@@ -119,52 +131,6 @@ class ProfileFragment : Fragment() {
                 .setNegativeButton("Cancel", null)
                 .show()
         }
-    }
-
-    private fun showMyRegisteredTeamsDialog() {
-        viewModel.fetchMyRegisteredTeams()
-
-        val dialog = BottomSheetDialog(requireContext())
-        val dialogBinding = DialogMyRegisteredTeamsBinding.inflate(layoutInflater)
-        dialog.setContentView(dialogBinding.root)
-
-        val adapter = MyRegisteredTeamAdapter(emptyList()) { team ->
-            Toast.makeText(requireContext(), "Team: ${team.teamName} (${team.approvalStatus})", Toast.LENGTH_SHORT).show()
-        }
-
-        dialogBinding.rvMyRegisteredTeams.layoutManager = LinearLayoutManager(requireContext())
-        dialogBinding.rvMyRegisteredTeams.adapter = adapter
-
-        viewModel.isLoadingTeams.observe(viewLifecycleOwner) { loading ->
-            dialogBinding.pbLoadingTeams.visibility = if (loading) View.VISIBLE else View.GONE
-        }
-
-        viewModel.myRegisteredTeams.observe(viewLifecycleOwner) { teams ->
-            adapter.updateData(teams)
-            val count = teams.size
-            dialogBinding.tvMyTeamsCount.text = if (count > 0) "$count Registered Teams" else "No Registered Teams"
-            dialogBinding.tvFilterBadge.text = if (count > 0) "Showing $count Active Teams" else "No Teams Found"
-
-            if (teams.isEmpty() && viewModel.isLoadingTeams.value != true) {
-                dialogBinding.layoutEmptyTeams.visibility = View.VISIBLE
-                dialogBinding.rvMyRegisteredTeams.visibility = View.GONE
-            } else {
-                dialogBinding.layoutEmptyTeams.visibility = View.GONE
-                dialogBinding.rvMyRegisteredTeams.visibility = View.VISIBLE
-            }
-        }
-
-        val navigateToRegister = View.OnClickListener {
-            dialog.dismiss()
-            val bundle = Bundle().apply { putString("tournamentId", "T301") }
-            findNavController().navigate(R.id.action_profile_to_team_registration, bundle)
-        }
-
-        dialogBinding.btnRegisterNewTeamDialog.setOnClickListener(navigateToRegister)
-        dialogBinding.btnEmptyRegisterTeam.setOnClickListener(navigateToRegister)
-        dialogBinding.ivCloseMyTeamsDialog.setOnClickListener { dialog.dismiss() }
-
-        dialog.show()
     }
 
     override fun onDestroyView() {

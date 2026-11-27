@@ -33,17 +33,6 @@ class TeamRegistrationFragment : Fragment() {
             if (!tid.isNullOrBlank()) tournamentId = tid
         }
 
-        val session = com.example.twelveman.data.local.SessionManager.getInstance(requireContext())
-        val currentUser = session.getCurrentUser()
-        if (currentUser != null) {
-            if (binding.etCaptainName.text.isNullOrBlank() && currentUser.name.isNotBlank()) {
-                binding.etCaptainName.setText(currentUser.name)
-            }
-            if (binding.etCaptainPhone.text.isNullOrBlank() && currentUser.phone.isNotBlank()) {
-                binding.etCaptainPhone.setText(currentUser.phone)
-            }
-        }
-
         binding.ivTeamRegBack.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -68,8 +57,6 @@ class TeamRegistrationFragment : Fragment() {
                 listOf(captainName)
             }
 
-            val email = if (!currentUser?.email.isNullOrBlank()) currentUser!!.email else "captain@12thman.com"
-
             binding.btnSubmitTeamReg.isEnabled = false
 
             viewModel.addOrganizerTeam(
@@ -77,7 +64,7 @@ class TeamRegistrationFragment : Fragment() {
                 teamName = teamName,
                 captainName = captainName,
                 phone = phone,
-                email = email,
+                email = "captain@12thman.com",
                 viceCaptain = viceCaptain,
                 manager = manager,
                 description = description,
@@ -85,7 +72,6 @@ class TeamRegistrationFragment : Fragment() {
             ) { success ->
                 binding.btnSubmitTeamReg.isEnabled = true
                 if (success) {
-                    session.addRegisteredTeam("", teamName)
                     Toast.makeText(requireContext(), "Team '$teamName' registered successfully!", Toast.LENGTH_LONG).show()
                     findNavController().navigateUp()
                 } else {
