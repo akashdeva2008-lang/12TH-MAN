@@ -340,6 +340,7 @@ class CreateTournamentFragment : Fragment() {
     // TEAM SELECTION DIALOG (Professional Dialog with Create & My Teams)
     // =========================================================================
     private fun showTeamSelectionDialog(side: Int) {
+        viewModel.loadAllTeams()
         val dialogView = layoutInflater.inflate(R.layout.dialog_team_selection, null)
 
         val tvTitle = dialogView.findViewById<TextView>(R.id.tvTeamSelectionTitle)
@@ -517,6 +518,11 @@ class CreateTournamentFragment : Fragment() {
                 }
             }
         } else {
+            val user = com.example.twelveman.data.local.SessionManager.getInstance(requireContext()).getCurrentUser()
+            if (user != null) {
+                if (user.name.isNotBlank()) etCaptainName.setText(user.name)
+                if (user.phone.isNotBlank()) etCaptainPhone.setText(user.phone)
+            }
             etLocation.setText("Mumbai")
         }
 
@@ -620,6 +626,7 @@ class CreateTournamentFragment : Fragment() {
                 }
             }
 
+            val currentUserEmail = com.example.twelveman.data.local.SessionManager.getInstance(requireContext()).getCurrentUser()?.email
             val teamToSave = Team(
                 id = existingTeam?.id ?: "",
                 tournamentId = existingTeam?.tournamentId ?: "",
@@ -627,7 +634,7 @@ class CreateTournamentFragment : Fragment() {
                 shortName = short,
                 captainName = captain,
                 captainPhone = phone,
-                captainEmail = existingTeam?.captainEmail ?: "captain@12thman.com",
+                captainEmail = existingTeam?.captainEmail?.takeIf { it.isNotBlank() } ?: currentUserEmail ?: "captain@12thman.com",
                 viceCaptain = viceCap,
                 managerName = existingTeam?.managerName ?: "",
                 description = desc,

@@ -311,19 +311,19 @@ try {
 
             $db->beginTransaction();
 
-            // Check if matches have already been completed with this team
-            $mCheck = $db->prepare("SELECT id FROM matches WHERE (team1_id = ? OR team2_id = ?) AND status = 'COMPLETED' LIMIT 1");
+            // Protect all match history & scheduled matches
+            $mCheck = $db->prepare("SELECT id, status FROM matches WHERE (team1_id = ? OR team2_id = ?) LIMIT 1");
             $mCheck->execute([$numericTeamId, $numericTeamId]);
-            if ($mCheck->fetch()) {
+            $linkedMatch = $mCheck->fetch(PDO::FETCH_ASSOC);
+            if ($linkedMatch) {
                 $db->rollBack();
                 http_response_code(400);
-                echo json_encode(["status" => "error", "message" => "Cannot delete team: completed match records exist for this team."]);
+                echo json_encode([
+                    "status"  => "error",
+                    "message" => "Cannot delete team: this team is associated with existing matches (" . $linkedMatch['status'] . ")."
+                ]);
                 exit();
             }
-
-            // Delete upcoming or scheduled matches referencing this team
-            $delMatches = $db->prepare("DELETE FROM matches WHERE (team1_id = ? OR team2_id = ?) AND status != 'COMPLETED'");
-            $delMatches->execute([$numericTeamId, $numericTeamId]);
 
             // Remove tournament link
             $delLink = $db->prepare("DELETE FROM tournament_teams WHERE team_id = ?");

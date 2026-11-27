@@ -115,15 +115,13 @@ class TournamentsViewModel : ViewModel() {
 
     fun deleteTeam(teamId: String, onComplete: (Boolean, String) -> Unit) {
         viewModelScope.launch {
-            val success = repository.deleteCustomTeam(teamId)
-            if (success) {
+            val result = repository.deleteCustomTeamWithResult(teamId)
+            if (result.success) {
                 loadAllTeams()
                 if (_selectedTeam1.value?.id == teamId) _selectedTeam1.value = null
                 if (_selectedTeam2.value?.id == teamId) _selectedTeam2.value = null
-                onComplete(true, "Team deleted successfully.")
-            } else {
-                onComplete(false, "Could not delete team. Matches may already be scheduled.")
             }
+            onComplete(result.success, result.message)
         }
     }
 

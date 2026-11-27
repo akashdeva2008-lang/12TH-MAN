@@ -344,28 +344,36 @@ class TournamentRepository {
     fun getTournamentTeams(tournamentId: String = ""): Flow<List<Team>> = flow {
         // Emit cache if available
         if (MockData.teams.isNotEmpty()) {
-            val cached = if (tournamentId.isEmpty()) MockData.teams.toList() else MockData.teams.filter { it.tournamentId.equals(tournamentId, ignoreCase = true) }
+            val cached = synchronized(MockData.teams) {
+                if (tournamentId.isEmpty()) MockData.teams.toList()
+                else MockData.teams.filter { it.tournamentId.equals(tournamentId, ignoreCase = true) }
+            }
             emit(cached)
         }
         try {
             val response = apiService.getTournamentTeams(tournamentId)
             if (response.isSuccessful && response.body()?.data != null) {
                 val remoteTeams = response.body()!!.data!!
-                if (tournamentId.isEmpty()) {
-                    MockData.teams.clear()
-                    MockData.teams.addAll(remoteTeams)
-                } else {
-                    remoteTeams.forEach { remote ->
-                        val idx = MockData.teams.indexOfFirst { it.id == remote.id }
-                        if (idx != -1) MockData.teams[idx] = remote else MockData.teams.add(remote)
+                synchronized(MockData.teams) {
+                    if (tournamentId.isEmpty()) {
+                        MockData.teams.clear()
+                        MockData.teams.addAll(remoteTeams)
+                    } else {
+                        remoteTeams.forEach { remote ->
+                            val idx = MockData.teams.indexOfFirst { it.id == remote.id }
+                            if (idx != -1) MockData.teams[idx] = remote else MockData.teams.add(remote)
+                        }
+                    }
+                    MockData.teams.sortByDescending {
+                        it.id.replace(Regex("[^0-9]"), "").toIntOrNull() ?: 0
                     }
                 }
                 emit(remoteTeams)
             } else {
-                emit(MockData.teams.toList())
+                emit(synchronized(MockData.teams) { MockData.teams.toList() })
             }
         } catch (e: Exception) {
-            emit(MockData.teams.toList())
+            emit(synchronized(MockData.teams) { MockData.teams.toList() })
         }
     }.flowOn(Dispatchers.IO)
 
@@ -375,11 +383,16 @@ class TournamentRepository {
                 val response = apiService.getTournamentTeams("")
                 if (response.isSuccessful && response.body()?.data != null) {
                     val remoteTeams = response.body()!!.data!!
-                    MockData.teams.clear()
-                    MockData.teams.addAll(remoteTeams)
+                    synchronized(MockData.teams) {
+                        MockData.teams.clear()
+                        MockData.teams.addAll(remoteTeams)
+                        MockData.teams.sortByDescending {
+                            it.id.replace(Regex("[^0-9]"), "").toIntOrNull() ?: 0
+                        }
+                    }
                 }
             } catch (ignored: Exception) { }
-            emit(MockData.teams.toList())
+            emit(synchronized(MockData.teams) { MockData.teams.toList() })
             kotlinx.coroutines.delay(intervalMs)
         }
     }.flowOn(Dispatchers.IO)
@@ -408,29 +421,31 @@ class TournamentRepository {
             if (response.isSuccessful && response.body()?.status == "success") {
                 val returnedId = (response.body()?.data?.get("id") as? String)
                     ?: ((response.body()?.data?.get("numeric_id") as? Number)?.let { "TM$it" })
-                    ?: team.id.ifBlank { "TM${System.currentTimeMillis() % 1000}" }
+                    ?: team.id
                 val savedTeam = team.copy(id = returnedId)
-                val existing = MockData.teams.indexOfFirst { it.teamName.equals(team.teamName, ignoreCase = true) || (it.id == returnedId && returnedId.isNotBlank()) }
-                if (existing != -1) MockData.teams[existing] = savedTeam else MockData.teams.add(0, savedTeam)
-                com.example.twelveman.data.model.TeamOpResult(true, response.body()?.message ?: "Team '${team.teamName}' saved successfully", savedTeam)
+                synchronized(MockData.teams) {
+                    val existing = MockData.teams.indexOfFirst {
+                        it.teamName.equals(team.teamName, ignoreCase = true) ||
+                            (it.id == returnedId && returnedId.isNotBlank())
+                    }
+                    if (existing != -1) MockData.teams[existing] = savedTeam else MockData.teams.add(0, savedTeam)
+                }
+                com.example.twelveman.data.model.TeamOpResult(
+                    true,
+                    response.body()?.message ?: "Team '${team.teamName}' saved successfully",
+                    savedTeam
+                )
             } else {
                 val errorMsg = extractErrorMessage(response)
-                // Cache locally so user is never blocked
-                val fallbackTeam = team.copy(id = team.id.ifBlank { "TM${System.currentTimeMillis() % 1000}" })
-                val existing = MockData.teams.indexOfFirst { it.teamName.equals(team.teamName, ignoreCase = true) }
-                if (existing != -1) MockData.teams[existing] = fallbackTeam else MockData.teams.add(0, fallbackTeam)
-                com.example.twelveman.data.model.TeamOpResult(false, errorMsg, fallbackTeam)
+                com.example.twelveman.data.model.TeamOpResult(false, errorMsg)
             }
         } catch (e: Exception) {
-            val fallbackTeam = team.copy(id = team.id.ifBlank { "TM${System.currentTimeMillis() % 1000}" })
-            val existing = MockData.teams.indexOfFirst { it.teamName.equals(team.teamName, ignoreCase = true) }
-            if (existing != -1) MockData.teams[existing] = fallbackTeam else MockData.teams.add(0, fallbackTeam)
             val msg = if (e is java.net.ConnectException || e is java.net.SocketTimeoutException || e is java.net.UnknownHostException) {
-                "Saved locally in offline mode (server unreachable at ${RetrofitClient.getBaseUrl()})."
+                "Failed to save team: Server unreachable at ${RetrofitClient.getBaseUrl()}. Check Wi-Fi or Server IP."
             } else {
-                e.localizedMessage ?: "Saved locally"
+                "Failed to save team: ${e.localizedMessage ?: "Unknown database error"}"
             }
-            com.example.twelveman.data.model.TeamOpResult(true, "Team saved! $msg", fallbackTeam)
+            com.example.twelveman.data.model.TeamOpResult(false, msg)
         }
     }
 
@@ -456,17 +471,26 @@ class TournamentRepository {
             )
             val response = apiService.manageTeam(req)
             if (response.isSuccessful && response.body()?.status == "success") {
-                val idx = MockData.teams.indexOfFirst { it.id == team.id }
-                if (idx != -1) MockData.teams[idx] = team
-                com.example.twelveman.data.model.TeamOpResult(true, response.body()?.message ?: "Team '${team.teamName}' updated successfully", team)
+                synchronized(MockData.teams) {
+                    val idx = MockData.teams.indexOfFirst { it.id == team.id }
+                    if (idx != -1) MockData.teams[idx] = team
+                }
+                com.example.twelveman.data.model.TeamOpResult(
+                    true,
+                    response.body()?.message ?: "Team '${team.teamName}' updated successfully",
+                    team
+                )
             } else {
                 val errorMsg = extractErrorMessage(response)
                 com.example.twelveman.data.model.TeamOpResult(false, errorMsg)
             }
         } catch (e: Exception) {
-            val idx = MockData.teams.indexOfFirst { it.id == team.id }
-            if (idx != -1) MockData.teams[idx] = team
-            com.example.twelveman.data.model.TeamOpResult(true, "Team updated locally in offline mode.", team)
+            val msg = if (e is java.net.ConnectException || e is java.net.SocketTimeoutException || e is java.net.UnknownHostException) {
+                "Failed to update team: Server unreachable at ${RetrofitClient.getBaseUrl()}."
+            } else {
+                "Failed to update team: ${e.localizedMessage ?: "Unknown error"}"
+            }
+            com.example.twelveman.data.model.TeamOpResult(false, msg)
         }
     }
 
@@ -484,21 +508,28 @@ class TournamentRepository {
         }
     }
 
-    suspend fun deleteCustomTeam(teamId: String): Boolean {
+    suspend fun deleteCustomTeamWithResult(teamId: String): com.example.twelveman.data.model.TeamOpResult {
         return try {
             val req = com.example.twelveman.data.model.ManageTeamRequest(
                 action = "delete_team",
                 teamId = teamId
             )
             val response = apiService.manageTeam(req)
-            val success = response.isSuccessful && response.body()?.status == "success"
-            if (success) {
-                MockData.teams.removeAll { it.id == teamId }
+            if (response.isSuccessful && response.body()?.status == "success") {
+                synchronized(MockData.teams) {
+                    MockData.teams.removeAll { it.id == teamId }
+                }
+                com.example.twelveman.data.model.TeamOpResult(true, response.body()?.message ?: "Team deleted successfully.")
+            } else {
+                com.example.twelveman.data.model.TeamOpResult(false, extractErrorMessage(response))
             }
-            success
         } catch (e: Exception) {
-            false
+            com.example.twelveman.data.model.TeamOpResult(false, e.localizedMessage ?: "Failed to delete team.")
         }
+    }
+
+    suspend fun deleteCustomTeam(teamId: String): Boolean {
+        return deleteCustomTeamWithResult(teamId).success
     }
 
     suspend fun manageTeam(request: com.example.twelveman.data.model.ManageTeamRequest): Boolean {
