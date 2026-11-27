@@ -19,6 +19,8 @@ class SessionManager private constructor(context: Context) {
         private const val KEY_PHONE = "phone"
         private const val KEY_ROLE = "role"
         private const val KEY_CUSTOM_SERVER_URL = "custom_server_url"
+        private const val KEY_REGISTERED_TEAM_IDS = "registered_team_ids"
+        private const val KEY_REGISTERED_TEAM_NAMES = "registered_team_names"
 
         @Volatile
         private var instance: SessionManager? = null
@@ -71,6 +73,25 @@ class SessionManager private constructor(context: Context) {
 
     fun isLoggedIn(): Boolean {
         return !getAuthToken().isNullOrBlank() && prefs.getString(KEY_EMAIL, null) != null
+    }
+
+    fun addRegisteredTeam(teamId: String, teamName: String) {
+        val ids = getRegisteredTeamIds().toMutableSet()
+        if (teamId.isNotBlank()) ids.add(teamId)
+        val names = getRegisteredTeamNames().toMutableSet()
+        if (teamName.isNotBlank()) names.add(teamName.trim().lowercase())
+        prefs.edit()
+            .putStringSet(KEY_REGISTERED_TEAM_IDS, ids)
+            .putStringSet(KEY_REGISTERED_TEAM_NAMES, names)
+            .apply()
+    }
+
+    fun getRegisteredTeamIds(): Set<String> {
+        return prefs.getStringSet(KEY_REGISTERED_TEAM_IDS, emptySet()) ?: emptySet()
+    }
+
+    fun getRegisteredTeamNames(): Set<String> {
+        return prefs.getStringSet(KEY_REGISTERED_TEAM_NAMES, emptySet()) ?: emptySet()
     }
 
     fun clearSession() {

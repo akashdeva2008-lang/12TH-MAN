@@ -12,6 +12,9 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 $tournamentIdRaw = trim($_GET['tournament_id'] ?? $_GET['tournamentId'] ?? '');
+$userEmail       = trim($_GET['user_email'] ?? $_GET['captain_email'] ?? $_GET['email'] ?? '');
+$userPhone       = trim($_GET['user_phone'] ?? $_GET['captain_phone'] ?? $_GET['phone'] ?? '');
+$captainName     = trim($_GET['captain_name'] ?? $_GET['captainName'] ?? '');
 
 try {
     $db = getDatabaseConnection();
@@ -48,7 +51,28 @@ try {
                 ORDER BY tm.id DESC";
         $stmt = $db->prepare($sql);
         $stmt->execute([$numericId, $numericId, $numericId, $numericId]);
+        $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } else {
+        $where = [];
+        $params = [];
+        if (!empty($userEmail)) {
+            $where[] = "LOWER(TRIM(tm.captain_email)) = LOWER(TRIM(?))";
+            $params[] = $userEmail;
+        }
+        if (!empty($userPhone)) {
+            $cleanPhone = preg_replace('/[^0-9]/', '', $userPhone);
+            if (strlen($cleanPhone) >= 7) {
+                $where[] = "REPLACE(REPLACE(REPLACE(REPLACE(tm.captain_phone, '+', ''), ' ', ''), '-', ''), '(', '') LIKE ?";
+                $params[] = '%' . substr($cleanPhone, -8) . '%';
+            }
+        }
+        if (!empty($captainName)) {
+            $where[] = "LOWER(TRIM(tm.captain_name)) = LOWER(TRIM(?))";
+            $params[] = $captainName;
+        }
+
+        $whereClause = !empty($where) ? "WHERE (" . implode(" OR ", $where) . ")" : "";
+
         $sql = "SELECT 
                     tm.id AS numeric_id,
                     CONCAT('TM', tm.id) AS id,
@@ -69,11 +93,38 @@ try {
                     'Group A' AS groupName,
                     DATE_FORMAT(tm.created_at, '%d %b %Y') AS registrationDate
                 FROM teams tm
+                $whereClause
                 ORDER BY tm.id DESC";
-        $stmt = $db->query($sql);
-    }
+        $stmt = $db->prepare($sql);
+        $stmt->execute($params);
+        $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $teams = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // If specific user filter was requested but returned 0 rows, fallback to all teams
+        if (empty($teams) && !empty($where)) {
+            $allStmt = $db->query("SELECT 
+                                        tm.id AS numeric_id,
+                                        CONCAT('TM', tm.id) AS id,
+                                        CASE WHEN tm.tournament_id IS NOT NULL AND tm.tournament_id > 0 
+                                             THEN CONCAT('T', tm.tournament_id + 300) 
+                                             ELSE '' END AS tournamentId,
+                                        tm.team_name AS teamName,
+                                        COALESCE(tm.short_name, UPPER(SUBSTRING(tm.team_name, 1, 3))) AS shortName,
+                                        tm.captain_name AS captainName,
+                                        tm.captain_phone AS captainPhone,
+                                        tm.captain_email AS captainEmail,
+                                        COALESCE(tm.vice_captain, '') AS viceCaptain,
+                                        COALESCE(tm.manager_name, '') AS managerName,
+                                        COALESCE(tm.description, '') AS description,
+                                        COALESCE(tm.city, 'Mumbai') AS city,
+                                        COALESCE(tm.logo_url, 'RED') AS logoUrl,
+                                        COALESCE(tm.approval_status, 'APPROVED') AS approvalStatus,
+                                        'Group A' AS groupName,
+                                        DATE_FORMAT(tm.created_at, '%d %b %Y') AS registrationDate
+                                    FROM teams tm
+                                    ORDER BY tm.id DESC");
+            $teams = $allStmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 
     // Fetch players with detailed role, jersey number, and contact
     foreach ($teams as &$t) {
