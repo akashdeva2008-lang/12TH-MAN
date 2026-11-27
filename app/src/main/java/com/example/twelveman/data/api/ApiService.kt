@@ -52,6 +52,9 @@ interface ApiService {
     @GET("api/tournaments/get_matches.php")
     suspend fun getMatches(@Query("tournament_id") tournamentId: String = ""): Response<ApiResponse<List<Match>>>
 
+    @POST("api/tournaments/create_match.php")
+    suspend fun createMatch(@Body matchPayload: Map<String, Any>): Response<ApiResponse<Match>>
+
     @POST("api/tournaments/update_match.php")
     suspend fun updateMatch(@Body matchUpdate: Map<String, Any>): Response<ApiResponse<Map<String, Any>>>
 

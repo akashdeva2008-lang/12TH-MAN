@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 
 object AiRetrofitClient {
 
-    const val DEFAULT_LAN_IP = "172.23.51.43"
+    const val DEFAULT_LAN_IP = "172.23.53.204"
     const val DEFAULT_EMULATOR_IP = "10.0.2.2"
     const val AI_PORT = 8000
 

@@ -11,6 +11,8 @@ import com.example.twelveman.data.model.Umpire
 import com.example.twelveman.data.repository.PlayerRepository
 import com.example.twelveman.data.repository.TournamentRepository
 import com.example.twelveman.data.repository.UmpireRepository
+import com.example.twelveman.utils.Resource
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
@@ -27,6 +29,9 @@ class HomeViewModel : ViewModel() {
     private val _upcomingTournaments = MutableLiveData<List<Tournament>>()
     val upcomingTournaments: LiveData<List<Tournament>> = _upcomingTournaments
 
+    private val _matchesState = MutableLiveData<Resource<List<Match>>>(Resource.Loading())
+    val matchesState: LiveData<Resource<List<Match>>> = _matchesState
+
     private val _liveMatch = MutableLiveData<Match?>()
     val liveMatch: LiveData<Match?> = _liveMatch
 
@@ -36,39 +41,60 @@ class HomeViewModel : ViewModel() {
     private val _recentResult = MutableLiveData<Match?>()
     val recentResult: LiveData<Match?> = _recentResult
 
+    private var matchesSyncJob: Job? = null
+    private var secondarySyncStarted = false
+
     init {
         startRealtimeSync()
     }
 
     fun startRealtimeSync() {
-        // 1. Real-time Matches sync (Live, Upcoming, Recent Results)
-        viewModelScope.launch {
-            tournamentRepository.pollDashboardMatches(intervalMs = 5000L).collect { matches ->
-                val distinct = matches.distinctBy { it.id }
-                _liveMatch.value = distinct.firstOrNull { it.status.equals("LIVE", ignoreCase = true) }
-                _featuredUpcomingMatch.value = distinct.firstOrNull { it.status.equals("UPCOMING", ignoreCase = true) }
-                _recentResult.value = distinct.firstOrNull { it.status.equals("COMPLETED", ignoreCase = true) }
+        startMatchesSync()
+
+        if (!secondarySyncStarted) {
+            secondarySyncStarted = true
+            // 2. Real-time Players sync
+            viewModelScope.launch {
+                playerRepository.pollPlayers(intervalMs = 8000L).collect { players ->
+                    _featuredPlayers.value = players.distinctBy { it.id }.take(3)
+                }
+            }
+
+            // 3. Real-time Umpires sync
+            viewModelScope.launch {
+                umpireRepository.pollUmpires(intervalMs = 10000L).collect { umpires ->
+                    _topUmpires.value = umpires.distinctBy { it.id }.take(3)
+                }
+            }
+
+            // 4. Real-time Tournaments sync
+            viewModelScope.launch {
+                tournamentRepository.pollTournaments(intervalMs = 10000L).collect { tournaments ->
+                    _upcomingTournaments.value = tournaments.distinctBy { it.id }.take(2)
+                }
             }
         }
+    }
 
-        // 2. Real-time Players sync
-        viewModelScope.launch {
-            playerRepository.pollPlayers(intervalMs = 8000L).collect { players ->
-                _featuredPlayers.value = players.distinctBy { it.id }.take(3)
-            }
-        }
+    fun retrySync() {
+        startMatchesSync()
+    }
 
-        // 3. Real-time Umpires sync
-        viewModelScope.launch {
-            umpireRepository.pollUmpires(intervalMs = 10000L).collect { umpires ->
-                _topUmpires.value = umpires.distinctBy { it.id }.take(3)
-            }
-        }
-
-        // 4. Real-time Tournaments sync
-        viewModelScope.launch {
-            tournamentRepository.pollTournaments(intervalMs = 10000L).collect { tournaments ->
-                _upcomingTournaments.value = tournaments.distinctBy { it.id }.take(2)
+    private fun startMatchesSync() {
+        matchesSyncJob?.cancel()
+        matchesSyncJob = viewModelScope.launch {
+            tournamentRepository.pollDashboardMatchesState(intervalMs = 5000L).collect { resource ->
+                _matchesState.value = resource
+                if (resource is Resource.Success) {
+                    val distinct = (resource.data ?: emptyList()).distinctBy { it.id }
+                    _liveMatch.value = distinct.firstOrNull { it.status.equals("LIVE", ignoreCase = true) }
+                    _featuredUpcomingMatch.value = distinct.firstOrNull { it.status.equals("UPCOMING", ignoreCase = true) }
+                    _recentResult.value = distinct.firstOrNull { it.status.equals("COMPLETED", ignoreCase = true) }
+                } else if (resource is Resource.Error) {
+                    _liveMatch.value = null
+                    _featuredUpcomingMatch.value = null
+                    _recentResult.value = null
+                }
             }
         }
     }

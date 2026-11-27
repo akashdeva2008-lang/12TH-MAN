@@ -464,7 +464,7 @@ class TournamentsViewModel : ViewModel() {
     fun startLiveMatchPolling(matchId: String) {
         livePollingJob?.cancel()
         livePollingJob = viewModelScope.launch {
-            repository.pollLiveMatch(matchId, intervalMs = 3000L).collect { liveMatch ->
+            repository.    pollLiveMatch(matchId, intervalMs = 3000L).collect { liveMatch ->
                 _selectedMatch.value = liveMatch
             }
         }

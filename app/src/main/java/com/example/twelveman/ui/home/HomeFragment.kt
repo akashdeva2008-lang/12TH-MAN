@@ -15,6 +15,7 @@ import com.example.twelveman.R
 import com.example.twelveman.databinding.FragmentHomeBinding
 import com.example.twelveman.ui.players.PlayerAdapter
 import com.example.twelveman.ui.umpires.UmpireAdapter
+import com.example.twelveman.utils.Resource
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -40,6 +41,11 @@ class HomeFragment : Fragment() {
         setupRecyclerViews()
         observeViewModel()
         setupClickListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.retrySync()
     }
 
     private fun safeNavigate(actionId: Int, bundle: Bundle? = null) {
@@ -84,21 +90,54 @@ class HomeFragment : Fragment() {
             umpireAdapter.updateData(umpires)
         }
 
+        // 0. Overall Matches Sync State (Loading / Error / Success)
+        viewModel.matchesState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is Resource.Loading -> {
+                    binding.llHomeLoading.visibility = View.VISIBLE
+                    binding.cardHomeNetworkError.visibility = View.GONE
+                }
+                is Resource.Success -> {
+                    binding.llHomeLoading.visibility = View.GONE
+                    binding.cardHomeNetworkError.visibility = View.GONE
+                }
+                is Resource.Error -> {
+                    binding.llHomeLoading.visibility = View.GONE
+                    binding.cardHomeNetworkError.visibility = View.VISIBLE
+                    binding.tvHomeErrorMessage.text = state.message ?: "Unable to load matches from server."
+                    binding.cardUpcomingEmpty.visibility = View.GONE
+                    binding.cardRecentEmpty.visibility = View.GONE
+                }
+            }
+        }
+
         // 3. Live Match Hero Card
         viewModel.liveMatch.observe(viewLifecycleOwner) { match ->
+            binding.cardLiveMatchHero.visibility = View.VISIBLE
             if (match != null) {
-                binding.cardLiveMatchHero.visibility = View.VISIBLE
+                binding.tvLiveMatchBadge.text = "• LIVE • INNINGS ${match.currentInnings}"
                 binding.tvLiveMatchTeams.text = "${match.teamA} vs ${match.teamB}"
-                binding.tvLiveMatchScore.text = if (match.scoreA.isNotBlank()) "Score: ${match.scoreA}" else ""
+                binding.tvLiveMatchScore.text = when {
+                    match.currentInnings == 2 && match.scoreB.isNotBlank() && match.scoreB != "0/0 (0.0)" ->
+                        "${match.teamA}: ${match.scoreA}  |  ${match.teamB}: ${match.scoreB}"
+                    match.scoreA.isNotBlank() -> "Score: ${match.scoreA}"
+                    else -> "Innings ${match.currentInnings} In Progress"
+                }
                 binding.tvLiveMatchVenue.text = "${match.format} • ${match.venue}"
+                binding.btnQuickHost.text = "View Live"
                 binding.btnQuickHost.setOnClickListener {
                     val bundle = Bundle().apply { putString("matchId", match.id) }
                     safeNavigate(R.id.action_home_to_match_scoring, bundle)
                 }
             } else {
+                binding.tvLiveMatchBadge.text = "• MATCH CENTER"
                 binding.tvLiveMatchTeams.text = "No Live Matches Now"
                 binding.tvLiveMatchScore.text = "Matches will appear live once started"
                 binding.tvLiveMatchVenue.text = "Check Upcoming Matches below"
+                binding.btnQuickHost.text = "Start Match"
+                binding.btnQuickHost.setOnClickListener {
+                    safeNavigate(R.id.action_home_to_create_tournament)
+                }
             }
         }
 
@@ -106,16 +145,20 @@ class HomeFragment : Fragment() {
         viewModel.featuredUpcomingMatch.observe(viewLifecycleOwner) { match ->
             if (match != null) {
                 binding.cardFeaturedUpcomingMatch.visibility = View.VISIBLE
+                binding.cardUpcomingEmpty.visibility = View.GONE
                 binding.tvUpcomingTeamA.text = match.teamA
                 binding.tvUpcomingTeamB.text = match.teamB
                 binding.tvUpcomingDateTime.text = "${match.date} • ${match.time}"
-                binding.tvUpcomingVenue.text = match.venue
+                binding.tvUpcomingVenue.text = "${match.format} • ${match.venue}"
                 binding.cardFeaturedUpcomingMatch.setOnClickListener {
                     val bundle = Bundle().apply { putString("matchId", match.id) }
                     safeNavigate(R.id.action_home_to_match_details, bundle)
                 }
             } else {
                 binding.cardFeaturedUpcomingMatch.visibility = View.GONE
+                if (viewModel.matchesState.value !is Resource.Error) {
+                    binding.cardUpcomingEmpty.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -123,15 +166,27 @@ class HomeFragment : Fragment() {
         viewModel.recentResult.observe(viewLifecycleOwner) { match ->
             if (match != null) {
                 binding.cardRecentResult.visibility = View.VISIBLE
+                binding.cardRecentEmpty.visibility = View.GONE
                 binding.tvRecentTeamA.text = match.teamA
                 binding.tvRecentTeamB.text = match.teamB
-                binding.tvRecentResultText.text = if (match.result.isNotBlank() && !match.result.equals("Scheduled", ignoreCase = true)) match.result else "${match.scoreA} vs ${match.scoreB}"
+                val scoreSummary = if (match.scoreA.isNotBlank() && match.scoreB.isNotBlank()) {
+                    "\n${match.scoreA} vs ${match.scoreB}"
+                } else ""
+                val resultHeadline = if (match.result.isNotBlank() && !match.result.equals("Scheduled", ignoreCase = true)) {
+                    match.result
+                } else {
+                    "Completed"
+                }
+                binding.tvRecentResultText.text = "$resultHeadline$scoreSummary"
                 binding.cardRecentResult.setOnClickListener {
                     val bundle = Bundle().apply { putString("matchId", match.id) }
                     safeNavigate(R.id.action_home_to_match_details, bundle)
                 }
             } else {
                 binding.cardRecentResult.visibility = View.GONE
+                if (viewModel.matchesState.value !is Resource.Error) {
+                    binding.cardRecentEmpty.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -151,10 +206,9 @@ class HomeFragment : Fragment() {
                 .show()
         }
 
-        // Live Match Hero Button (View Live)
-        binding.btnQuickHost.setOnClickListener {
-            val bundle = Bundle().apply { putString("matchId", "M501") }
-            safeNavigate(R.id.action_home_to_match_scoring, bundle)
+        // Retry Button on Network Error
+        binding.btnRetryHome.setOnClickListener {
+            viewModel.retrySync()
         }
 
         // Quick Actions
@@ -163,10 +217,16 @@ class HomeFragment : Fragment() {
             safeNavigate(R.id.action_home_to_create_tournament)
         }
 
-        // 2. Live Scoring -> Open Live Scoring screen
+        // 2. Live Scoring -> Open Live Scoring screen for active or upcoming match
         binding.cardLiveScoring.setOnClickListener {
-            val bundle = Bundle().apply { putString("matchId", "M501") }
-            safeNavigate(R.id.action_home_to_match_scoring, bundle)
+            val targetId = viewModel.liveMatch.value?.id
+                ?: viewModel.featuredUpcomingMatch.value?.id
+            if (targetId != null) {
+                val bundle = Bundle().apply { putString("matchId", targetId) }
+                safeNavigate(R.id.action_home_to_match_scoring, bundle)
+            } else {
+                safeNavigate(R.id.action_home_to_create_tournament)
+            }
         }
 
         // 3. Find Players -> Open Players list screen
@@ -192,10 +252,6 @@ class HomeFragment : Fragment() {
             }
             safeNavigate(R.id.action_home_to_bookings, bundle)
         }
-        binding.cardFeaturedUpcomingMatch.setOnClickListener {
-            val bundle = Bundle().apply { putString("matchId", "M502") }
-            safeNavigate(R.id.action_home_to_match_details, bundle)
-        }
 
         // Recent Results section -> Navigate to My Matches Screen with Completed Tab & Scheduled Matches
         binding.tvSeeAllResults.setOnClickListener {
@@ -204,10 +260,6 @@ class HomeFragment : Fragment() {
                 putString("targetTab", "COMPLETED")
             }
             safeNavigate(R.id.action_home_to_bookings, bundle)
-        }
-        binding.cardRecentResult.setOnClickListener {
-            val bundle = Bundle().apply { putString("matchId", "M501") }
-            safeNavigate(R.id.action_home_to_match_details, bundle)
         }
 
         // See All links

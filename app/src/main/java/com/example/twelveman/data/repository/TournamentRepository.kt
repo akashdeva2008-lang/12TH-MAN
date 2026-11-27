@@ -5,6 +5,7 @@ import com.example.twelveman.data.local.MockData
 import com.example.twelveman.data.model.Match
 import com.example.twelveman.data.model.Team
 import com.example.twelveman.data.model.Tournament
+import com.example.twelveman.utils.Resource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class TournamentRepository {
 
-    private val apiService = RetrofitClient.getApiService()
+    private val apiService get() = RetrofitClient.getApiService()
     private val scope = CoroutineScope(Dispatchers.IO)
 
     fun pollTournaments(intervalMs: Long = 10000L): Flow<List<Tournament>> = flow {
@@ -80,28 +81,81 @@ class TournamentRepository {
         }
     }
 
+    fun pollDashboardMatchesState(intervalMs: Long = 5000L): Flow<Resource<List<Match>>> = flow {
+        if (MockData.matches.isEmpty()) {
+            emit(Resource.Loading())
+        } else {
+            emit(Resource.Success(MockData.matches.toList()))
+        }
+
+        while (true) {
+            try {
+                val response = apiService.getMatches("")
+                if (response.isSuccessful && response.body()?.data != null) {
+                    val remoteMatches = response.body()!!.data!!
+                    syncRemoteMatchesIntoCache(remoteMatches)
+                    emit(Resource.Success(MockData.matches.toList()))
+                } else {
+                    val errMsg = "Server error (${response.code()}): Unable to load matches"
+                    if (MockData.matches.isEmpty()) {
+                        emit(Resource.Error(errMsg))
+                    } else {
+                        emit(Resource.Success(MockData.matches.toList()))
+                    }
+                }
+            } catch (e: Exception) {
+                val errMsg = "Network error: Unable to reach server (${RetrofitClient.getBaseUrl()}). Check Wi-Fi or Server IP."
+                if (MockData.matches.isEmpty()) {
+                    emit(Resource.Error(errMsg))
+                } else {
+                    emit(Resource.Success(MockData.matches.toList()))
+                }
+            }
+            kotlinx.coroutines.delay(intervalMs)
+        }
+    }.flowOn(Dispatchers.IO)
+
+    private fun syncRemoteMatchesIntoCache(remoteMatches: List<Match>) {
+        synchronized(MockData.matches) {
+            val remoteIds = remoteMatches.map { it.id }.toSet()
+            // Remove stale matches that no longer exist in DB (unless newly pending creation)
+            MockData.matches.removeAll { !remoteIds.contains(it.id) && !it.id.startsWith("TEMP_") }
+
+            for (remote in remoteMatches) {
+                val existingIndex = MockData.matches.indexOfFirst { it.id == remote.id }
+                if (existingIndex != -1) {
+                    val current = MockData.matches[existingIndex]
+                    MockData.matches[existingIndex] = current.copy(
+                        teamA = remote.teamA,
+                        teamB = remote.teamB,
+                        date = remote.date,
+                        time = remote.time,
+                        venue = remote.venue,
+                        format = remote.format.ifBlank { current.format },
+                        stage = remote.stage.ifBlank { current.stage },
+                        scoreA = remote.scoreA,
+                        scoreB = remote.scoreB,
+                        status = remote.status,
+                        result = remote.result
+                    )
+                } else {
+                    MockData.matches.add(remote)
+                }
+            }
+            // Keep newest matches first (descending numeric part of ID)
+            MockData.matches.sortByDescending {
+                it.id.replace(Regex("[^0-9]"), "").toIntOrNull() ?: 0
+            }
+        }
+    }
+
     fun pollDashboardMatches(intervalMs: Long = 8000L): Flow<List<Match>> = flow {
         while (true) {
             try {
                 val response = apiService.getMatches("")
                 if (response.isSuccessful && response.body()?.data != null) {
                     val remoteMatches = response.body()!!.data!!
-                    if (remoteMatches.isNotEmpty()) {
-                        for (remote in remoteMatches) {
-                            val existingIndex = MockData.matches.indexOfFirst { it.id == remote.id }
-                            if (existingIndex != -1) {
-                                val current = MockData.matches[existingIndex]
-                                MockData.matches[existingIndex] = current.copy(
-                                    scoreA = remote.scoreA,
-                                    scoreB = remote.scoreB,
-                                    status = remote.status,
-                                    result = remote.result
-                                )
-                            } else {
-                                MockData.matches.add(remote)
-                            }
-                        }
-                    }
+                    syncRemoteMatchesIntoCache(remoteMatches)
                 }
             } catch (ignored: Exception) { }
             emit(MockData.matches.toList())
@@ -152,12 +206,11 @@ class TournamentRepository {
         time: String,
         ballType: String
     ): Match {
-        val nextNum = MockData.matches.size + 1
-        val matchId = "M" + (500 + nextNum)
+        val tempId = "TEMP_${System.currentTimeMillis()}"
         val newMatch = Match(
-            id = matchId,
+            id = tempId,
             tournamentId = "T301",
-            matchNumber = nextNum,
+            matchNumber = MockData.matches.size + 1,
             teamA = teamA,
             teamB = teamB,
             date = date,
@@ -175,8 +228,38 @@ class TournamentRepository {
             nonStrikerName = "Opening Non-Striker",
             bowlerName = "Opening Bowler"
         )
-        MockData.matches.add(0, newMatch)
-        syncMatchUpdate(newMatch)
+        synchronized(MockData.matches) {
+            MockData.matches.add(0, newMatch)
+        }
+
+        scope.launch {
+            try {
+                val payload = mapOf(
+                    "tournamentId" to "T301",
+                    "teamA" to teamA,
+                    "teamB" to teamB,
+                    "date" to date,
+                    "time" to time,
+                    "venue" to venue,
+                    "format" to format,
+                    "stage" to "League Match",
+                    "status" to "UPCOMING"
+                )
+                val response = apiService.createMatch(payload)
+                if (response.isSuccessful && response.body()?.data != null) {
+                    val saved = response.body()!!.data!!
+                    synchronized(MockData.matches) {
+                        val idx = MockData.matches.indexOfFirst { it.id == tempId }
+                        if (idx != -1) {
+                            MockData.matches[idx] = MockData.matches[idx].copy(
+                                id = saved.id,
+                                matchNumber = saved.matchNumber
+                            )
+                        }
+                    }
+                }
+            } catch (ignored: Exception) { }
+        }
         return newMatch
     }
 

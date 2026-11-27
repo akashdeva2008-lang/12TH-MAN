@@ -22,6 +22,7 @@ try {
                 m.match_date AS date,
                 m.match_time AS time,
                 m.venue,
+                m.match_type AS format,
                 m.stage,
                 m.status,
                 m.result,
@@ -37,10 +38,11 @@ try {
             $numericTournamentId = (int)$numericTournamentId;
         }
 
-        $sql .= " WHERE m.tournament_id = :tid";
+        $sql .= " WHERE m.tournament_id = :tid ORDER BY m.id DESC";
         $stmt = $db->prepare($sql);
         $stmt->execute([':tid' => $numericTournamentId]);
     } else {
+        $sql .= " ORDER BY m.id DESC";
         $stmt = $db->query($sql);
     }
 

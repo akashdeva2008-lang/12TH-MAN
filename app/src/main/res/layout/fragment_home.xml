@@ -86,6 +86,93 @@
                 app:tint="@color/header_black" />
         </LinearLayout>
 
+        <!-- Loading Indicator -->
+        <LinearLayout
+            android:id="@+id/llHomeLoading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:indeterminateTint="@color/primary_red" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Syncing live matches from server..."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <!-- Network Error Banner with Retry -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardHomeNetworkError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#FFF5F5"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/primary_red"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Connection Issue"
+                        android:textColor="@color/primary_red"
+                        android:textSize="13sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvHomeErrorMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Unable to load matches from server."
+                        android:textColor="@color/header_black"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRetryHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/primary_red"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingHorizontal="12dp"
+                    android:text="Retry"
+                    android:textColor="@color/pure_white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="17dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Live Match Banner (Hero Card) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardLiveMatchHero"
@@ -112,6 +199,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tvLiveMatchBadge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_badge_red"
@@ -340,6 +428,30 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Upcoming Empty State -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardUpcomingEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="1dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="18dp"
+                android:text="No upcoming matches scheduled yet. Tap Start Match to schedule one."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </com.google.android.material.card.MaterialCardView>
+
         <!-- Recent Results Section Header -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -447,6 +559,30 @@
                     android:src="@drawable/ic_shield"
                     app:tint="@color/header_black" />
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Recent Results Empty State -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardRecentEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/surface_white"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="1dp"
+            app:strokeColor="@color/border_grey"
+            app:strokeWidth="1dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="18dp"
+                android:text="No completed matches yet. Finished match results will appear here."
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Quick Actions Header -->
