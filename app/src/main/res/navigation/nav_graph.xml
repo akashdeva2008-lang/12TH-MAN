@@ -48,8 +48,29 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action
+            android:id="@+id/action_login_to_role"
+            app:destination="@id/roleSelectionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
             android:id="@+id/action_login_to_home"
             app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_to_player_dashboard"
+            app:destination="@id/playerRoleDashboardFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_login_to_umpire_dashboard"
+            app:destination="@id/umpireRoleDashboardFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/loginFragment"
@@ -71,11 +92,11 @@
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
-    <!-- 3.5 Role Selection Screen -->
+    <!-- 3.5 Role Selection Screen (Join 12THMAN) -->
     <fragment
         android:id="@+id/roleSelectionFragment"
         android:name="com.example.twelveman.ui.auth.RoleSelectionFragment"
-        android:label="Select Role"
+        android:label="Join 12THMAN"
         tools:layout="@layout/fragment_role_selection">
         <action
             android:id="@+id/action_role_to_home"
@@ -84,7 +105,65 @@
             app:exitAnim="@anim/fade_out"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_role_to_player_registration"
+            app:destination="@id/playerRegistrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_role_to_umpire_registration"
+            app:destination="@id/umpireRegistrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <!-- 3.6 Separate Player Registration -->
+    <fragment
+        android:id="@+id/playerRegistrationFragment"
+        android:name="com.example.twelveman.ui.auth.PlayerRegistrationFragment"
+        android:label="Player Registration"
+        tools:layout="@layout/fragment_player_registration">
+        <action
+            android:id="@+id/action_player_reg_to_player_dashboard"
+            app:destination="@id/playerRoleDashboardFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 3.7 Separate Umpire Registration -->
+    <fragment
+        android:id="@+id/umpireRegistrationFragment"
+        android:name="com.example.twelveman.ui.auth.UmpireRegistrationFragment"
+        android:label="Umpire Registration"
+        tools:layout="@layout/fragment_umpire_registration">
+        <action
+            android:id="@+id/action_umpire_reg_to_umpire_dashboard"
+            app:destination="@id/umpireRoleDashboardFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <!-- 3.8 Player Role Dashboard -->
+    <fragment
+        android:id="@+id/playerRoleDashboardFragment"
+        android:name="com.example.twelveman.ui.players.PlayerRoleDashboardFragment"
+        android:label="Player Dashboard"
+        tools:layout="@layout/fragment_player_role_dashboard" />
+
+    <!-- 3.9 Umpire Role Dashboard -->
+    <fragment
+        android:id="@+id/umpireRoleDashboardFragment"
+        android:name="com.example.twelveman.ui.umpires.UmpireRoleDashboardFragment"
+        android:label="Umpire Dashboard"
+        tools:layout="@layout/fragment_umpire_role_dashboard" />
 
     <!-- 4. Home Dashboard -->
     <fragment
@@ -569,6 +648,20 @@
         <action
             android:id="@+id/action_profile_to_team_registration"
             app:destination="@id/teamRegistrationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_to_player_dashboard"
+            app:destination="@id/playerRoleDashboardFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_profile_to_umpire_dashboard"
+            app:destination="@id/umpireRoleDashboardFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"

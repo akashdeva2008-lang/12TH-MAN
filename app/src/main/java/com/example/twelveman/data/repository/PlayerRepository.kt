@@ -1,8 +1,11 @@
 package com.example.twelveman.data.repository
 
 import com.example.twelveman.data.api.RetrofitClient
+import com.example.twelveman.data.api.models.AuthResponse
+import com.example.twelveman.data.api.models.PlayerRegistrationRequest
 import com.example.twelveman.data.local.MockData
 import com.example.twelveman.data.model.Player
+import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,7 +14,50 @@ import kotlinx.coroutines.withContext
 
 class PlayerRepository {
 
-    private val apiService = RetrofitClient.getApiService()
+    private val apiService get() = RetrofitClient.getApiService()
+
+    suspend fun registerPlayer(request: PlayerRegistrationRequest): Result<AuthResponse> = withContext(Dispatchers.IO) {
+        try {
+            val response = apiService.registerPlayer(request)
+            if (response.isSuccessful && response.body()?.status == "success") {
+                Result.success(response.body()!!)
+            } else {
+                val raw = response.errorBody()?.string()
+                val msg = try {
+                    JsonParser.parseString(raw).asJsonObject.get("message")?.asString
+                } catch (_: Exception) { null } ?: "Registration failed (HTTP ${response.code()})"
+                Result.failure(Exception(msg))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Network error: ${e.localizedMessage ?: "Unable to connect to server"}"))
+        }
+    }
+
+    suspend fun fetchMyPlayerProfile(userId: Int = 0): Result<Map<String, Any>> = withContext(Dispatchers.IO) {
+        try {
+            val response = apiService.getRoleProfile(userId)
+            if (response.isSuccessful && response.body()?.data != null) {
+                Result.success(response.body()!!.data!!)
+            } else {
+                Result.failure(Exception("Unable to load player profile (HTTP ${response.code()})"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateMyPlayerProfile(payload: Map<String, Any>): Result<String> = withContext(Dispatchers.IO) {
+        try {
+            val response = apiService.updateRoleProfile(payload)
+            if (response.isSuccessful && response.body()?.status == "success") {
+                Result.success(response.body()?.message ?: "Profile updated")
+            } else {
+                Result.failure(Exception("Failed to update profile (HTTP ${response.code()})"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     fun pollPlayers(intervalMs: Long = 8000L): Flow<List<Player>> = flow {
         while (true) {

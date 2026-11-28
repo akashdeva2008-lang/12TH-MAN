@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.twelveman.data.api.models.AuthResponse
+import com.example.twelveman.data.api.models.PlayerRegistrationRequest
 import com.example.twelveman.data.model.Player
 import com.example.twelveman.data.repository.PlayerRepository
 import kotlinx.coroutines.launch
@@ -16,6 +18,37 @@ class PlayersViewModel : ViewModel() {
 
     private val _selectedPlayer = MutableLiveData<Player?>()
     val selectedPlayer: LiveData<Player?> = _selectedPlayer
+
+    private val _myPlayerProfile = MutableLiveData<Map<String, Any>?>()
+    val myPlayerProfile: LiveData<Map<String, Any>?> = _myPlayerProfile
+
+    fun registerPlayer(request: PlayerRegistrationRequest, onResult: (Result<AuthResponse>) -> Unit) {
+        viewModelScope.launch {
+            val result = repository.registerPlayer(request)
+            if (result.isSuccess) {
+                fetchPlayers()
+            }
+            onResult(result)
+        }
+    }
+
+    fun loadMyPlayerProfile(userId: Int = 0) {
+        viewModelScope.launch {
+            repository.fetchMyPlayerProfile(userId).onSuccess { data ->
+                _myPlayerProfile.value = data
+            }
+        }
+    }
+
+    fun updateMyPlayerProfile(payload: Map<String, Any>, onResult: (Result<String>) -> Unit) {
+        viewModelScope.launch {
+            val res = repository.updateMyPlayerProfile(payload)
+            if (res.isSuccess) {
+                loadMyPlayerProfile()
+            }
+            onResult(res)
+        }
+    }
 
     private var currentQuery = ""
     private var currentRoleFilter = "All"

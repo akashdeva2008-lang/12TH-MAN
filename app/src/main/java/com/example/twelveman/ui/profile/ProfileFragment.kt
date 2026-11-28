@@ -75,27 +75,20 @@ class ProfileFragment : Fragment() {
             showMyRegisteredTeamsDialog()
         }
 
-        // My Statistics
+        // My Statistics / Role Dashboard
         binding.rowMyStatistics.setOnClickListener {
             val user = viewModel.user.value
-            AlertDialog.Builder(requireContext())
-                .setTitle("Cricket Career Performance")
-                .setMessage(
-                    "Player: ${user?.name ?: "Rahul Sharma"}\n" +
-                    "Primary Role: ${user?.role ?: "PLAYER"}\n\n" +
-                    "• Matches Played: 24\n" +
-                    "• Total Runs: 680\n" +
-                    "• Batting Average: 34.0\n" +
-                    "• Strike Rate: 138.2\n" +
-                    "• High Score: 84*\n" +
-                    "• Half Centuries (50s): 4\n" +
-                    "• Total Wickets: 14\n" +
-                    "• Bowling Economy: 7.15\n" +
-                    "• Catches / Run Outs: 11\n" +
-                    "• Player Rating: 4.8 ★"
-                )
-                .setPositiveButton("Close", null)
-                .show()
+            when (user?.role?.uppercase()) {
+                "PLAYER" -> findNavController().navigate(R.id.action_profile_to_player_dashboard)
+                "UMPIRE" -> findNavController().navigate(R.id.action_profile_to_umpire_dashboard)
+                else -> {
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("Join as Player or Umpire")
+                        .setMessage("Sign in as a Player or Umpire to view your dedicated role dashboard and booking requests.")
+                        .setPositiveButton("OK", null)
+                        .show()
+                }
+            }
         }
 
         // My Matches

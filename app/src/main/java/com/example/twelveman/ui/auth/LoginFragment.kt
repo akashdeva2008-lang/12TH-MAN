@@ -37,7 +37,7 @@ class LoginFragment : Fragment() {
         }
 
         binding.tvGoToRegister.setOnClickListener {
-            findNavController().navigate(R.id.action_login_to_register)
+            findNavController().navigate(R.id.action_login_to_role)
         }
 
         binding.btnGuestLogin.setOnClickListener {
@@ -66,7 +66,11 @@ class LoginFragment : Fragment() {
                     val user = result.data
                     Toast.makeText(requireContext(), "Welcome back, ${user?.name ?: "User"}!", Toast.LENGTH_SHORT).show()
                     viewModel.resetAuthResult()
-                    findNavController().navigate(R.id.action_login_to_home)
+                    when (user?.role?.uppercase()) {
+                        "PLAYER" -> findNavController().navigate(R.id.action_login_to_player_dashboard)
+                        "UMPIRE" -> findNavController().navigate(R.id.action_login_to_umpire_dashboard)
+                        else -> findNavController().navigate(R.id.action_login_to_home)
+                    }
                 }
                 is Resource.Error -> {
                     binding.btnLogin.isEnabled = true

@@ -3,7 +3,9 @@ package com.example.twelveman.data.api
 import com.example.twelveman.data.api.models.ApiResponse
 import com.example.twelveman.data.api.models.AuthResponse
 import com.example.twelveman.data.api.models.LoginRequest
+import com.example.twelveman.data.api.models.PlayerRegistrationRequest
 import com.example.twelveman.data.api.models.RegisterRequest
+import com.example.twelveman.data.api.models.UmpireRegistrationRequest
 import com.example.twelveman.data.model.Booking
 import com.example.twelveman.data.model.Match
 import com.example.twelveman.data.model.Player
@@ -35,9 +37,22 @@ interface ApiService {
     @GET("api/players/get_players.php")
     suspend fun getPlayers(): Response<ApiResponse<List<Player>>>
 
+    @POST("api/players/register_player.php")
+    suspend fun registerPlayer(@Body request: PlayerRegistrationRequest): Response<AuthResponse>
+
     // Umpires
     @GET("api/umpires/get_umpires.php")
     suspend fun getUmpires(): Response<ApiResponse<List<Umpire>>>
+
+    @POST("api/umpires/register_umpire.php")
+    suspend fun registerUmpire(@Body request: UmpireRegistrationRequest): Response<AuthResponse>
+
+    // Role Profile Management
+    @GET("api/auth/role_profile.php")
+    suspend fun getRoleProfile(@Query("user_id") userId: Int = 0): Response<ApiResponse<Map<String, Any>>>
+
+    @POST("api/auth/role_profile.php")
+    suspend fun updateRoleProfile(@Body payload: Map<String, @JvmSuppressWildcards Any>): Response<ApiResponse<Map<String, Any>>>
 
     // Tournaments & Matches
     @GET("api/tournaments/get_tournaments.php")

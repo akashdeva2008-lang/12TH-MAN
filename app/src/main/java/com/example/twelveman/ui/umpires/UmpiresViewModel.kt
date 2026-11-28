@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.twelveman.data.api.models.AuthResponse
+import com.example.twelveman.data.api.models.UmpireRegistrationRequest
 import com.example.twelveman.data.model.Booking
 import com.example.twelveman.data.model.Umpire
 import com.example.twelveman.data.repository.BookingRepository
@@ -20,6 +22,37 @@ class UmpiresViewModel : ViewModel() {
 
     private val _selectedUmpire = MutableLiveData<Umpire?>()
     val selectedUmpire: LiveData<Umpire?> = _selectedUmpire
+
+    private val _myUmpireProfile = MutableLiveData<Map<String, Any>?>()
+    val myUmpireProfile: LiveData<Map<String, Any>?> = _myUmpireProfile
+
+    fun registerUmpire(request: UmpireRegistrationRequest, onResult: (Result<AuthResponse>) -> Unit) {
+        viewModelScope.launch {
+            val result = repository.registerUmpire(request)
+            if (result.isSuccess) {
+                startRealtimeSync()
+            }
+            onResult(result)
+        }
+    }
+
+    fun loadMyUmpireProfile(userId: Int = 0) {
+        viewModelScope.launch {
+            repository.fetchMyUmpireProfile(userId).onSuccess { data ->
+                _myUmpireProfile.value = data
+            }
+        }
+    }
+
+    fun updateMyUmpireProfile(payload: Map<String, Any>, onResult: (Result<String>) -> Unit) {
+        viewModelScope.launch {
+            val res = repository.updateMyUmpireProfile(payload)
+            if (res.isSuccess) {
+                loadMyUmpireProfile()
+            }
+            onResult(res)
+        }
+    }
 
     private val _myUmpireBookings = MutableLiveData<List<Booking>>()
     val myUmpireBookings: LiveData<List<Booking>> = _myUmpireBookings
