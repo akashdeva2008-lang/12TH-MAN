@@ -1,8 +1,12 @@
 package com.example.twelveman.data.repository
 
 import android.content.Context
+import com.example.twelveman.ai.ModelDownloadManager
+import com.example.twelveman.ai.SmolLMInferenceEngine
+import com.example.twelveman.ai.SmolLMModelManager
 import com.example.twelveman.data.api.AiApiService
 import com.example.twelveman.data.api.AiRetrofitClient
+import com.example.twelveman.data.model.AiChatMessage
 import com.example.twelveman.data.model.AiChatRequest
 import com.example.twelveman.data.model.AiChatResponse
 import com.example.twelveman.data.model.AiModelInfoResponse
@@ -13,6 +17,38 @@ class AiRepository(
     private val context: Context? = null,
     private val apiService: AiApiService = AiRetrofitClient.getAiApiService(context)
 ) {
+    private val inferenceEngine = SmolLMInferenceEngine()
+
+    suspend fun sendMessageWithSmolLM(
+        prompt: String,
+        history: List<AiChatMessage>
+    ): Result<AiChatResponse> = withContext(Dispatchers.IO) {
+        val appContext = context?.applicationContext
+            ?: return@withContext Result.failure(IllegalStateException("Application context unavailable."))
+
+        val downloadManager = ModelDownloadManager(appContext)
+        if (!downloadManager.isModelValid()) {
+            return@withContext Result.failure(
+                IllegalStateException("SmolLM2-1.7B model is not downloaded yet. Tap 'Enable & Download' above to run AI locally.")
+            )
+        }
+
+        val modelResult = SmolLMModelManager.ensureModelLoaded(appContext, downloadManager.modelFile)
+        val model = modelResult.getOrElse { err ->
+            return@withContext Result.failure(err)
+        }
+
+        val genResult = inferenceEngine.generateReply(model, prompt, history)
+        genResult.map { output ->
+            AiChatResponse(
+                response = output.text,
+                model = ModelDownloadManager.MODEL_NAME,
+                tokensGenerated = output.tokensGenerated,
+                latencyMs = output.latencyMs,
+                status = "local_smollm2"
+            )
+        }
+    }
 
     suspend fun sendMessage(prompt: String): Result<AiChatResponse> = withContext(Dispatchers.IO) {
         try {

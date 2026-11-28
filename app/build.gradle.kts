@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.gson)
+    implementation("dev.ffmpegkit-maintained:llama-android:0.1.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

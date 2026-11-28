@@ -15,6 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.twelveman.ai.ModelDownloadManager
+import com.example.twelveman.ai.ModelDownloadState
+import com.example.twelveman.ai.SmolLMInferenceEngine
+import com.example.twelveman.ai.SmolLMModelManager
 import com.example.twelveman.databinding.FragmentAiAssistantBinding
 
 class AiAssistantFragment : Fragment() {
@@ -104,25 +108,41 @@ class AiAssistantFragment : Fragment() {
         // Plus (+) Quick Cricket Topics / Attachment Menu
         binding.btnAttachPrompt.setOnClickListener {
             val topics = arrayOf(
+                "Regenerate Last Response",
                 "Ask about MCC Cricket Rules & Laws",
                 "Ask about T20 Powerplay & Fielding Restrictions",
                 "Ask about Strike Rate & Economy Calculations",
                 "Ask about Captaincy & Field Placements"
             )
             val prompts = arrayOf(
+                "",
                 "Explain the key MCC cricket laws every umpire should know.",
                 "What are the T20 Powerplay and fielding circle restrictions?",
                 "How are batting strike rate and bowling economy calculated?",
                 "Suggest attacking field placements for a fast bowler in Powerplay."
             )
             AlertDialog.Builder(requireContext())
-                .setTitle("Quick Cricket Topics")
+                .setTitle("Assistant Options & Topics")
                 .setItems(topics) { _, which ->
-                    binding.etChatInput.setText(prompts[which])
-                    binding.etChatInput.setSelection(prompts[which].length)
-                    binding.etChatInput.requestFocus()
+                    if (which == 0) {
+                        viewModel.regenerateLastResponse()
+                    } else {
+                        binding.etChatInput.setText(prompts[which])
+                        binding.etChatInput.setSelection(prompts[which].length)
+                        binding.etChatInput.requestFocus()
+                    }
                 }
                 .show()
+        }
+
+        // Stop Generation Button
+        binding.btnStopGeneration.setOnClickListener {
+            viewModel.stopGeneration()
+        }
+
+        // Cancel Model Download Button
+        binding.btnCancelDownload.setOnClickListener {
+            viewModel.cancelModelDownload()
         }
 
         // Microphone Voice Input
@@ -203,35 +223,117 @@ class AiAssistantFragment : Fragment() {
             binding.btnSendMessage.alpha = if (isLoading) 0.5f else 1.0f
         }
 
-        viewModel.modelInfo.observe(viewLifecycleOwner) { info ->
-            info?.let {
-                binding.tvModelRibbon.text =
-                    "${it.parameters / 1000}K Params • ${it.nLayer} Layers • 0 Pretrained Weights • Val Loss: ${String.format("%.2f", it.valLoss)}"
+        viewModel.downloadState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ModelDownloadState.NotDownloaded -> {
+                    val freeMb = viewModel.getAvailableStorageMb()
+                    binding.cardModelStatusBanner.visibility = View.VISIBLE
+                    binding.tvModelStatusTitle.text = "Enable SmolLM2-1.7B On-Device AI"
+                    binding.tvModelStatusSubtitle.text = "Model: 1.06 GB (Q4_K_M) • Free Storage: $freeMb MB"
+                    binding.pbModelDownload.visibility = View.GONE
+                    binding.btnCancelDownload.visibility = View.GONE
+                    binding.btnEnableDownloadModel.visibility = View.VISIBLE
+                    binding.btnEnableDownloadModel.text = "Download"
+                    binding.btnEnableDownloadModel.setOnClickListener {
+                        promptDownloadConsent()
+                    }
+                    binding.tvModelRibbon.text = "SmolLM2-1.7B Not Downloaded • Tap Download (1.06 GB)"
+                }
+                is ModelDownloadState.Downloading -> {
+                    val dlMb = state.downloadedBytes / (1024L * 1024L)
+                    val totMb = (state.totalBytes / (1024L * 1024L)).coerceAtLeast(1L)
+                    binding.cardModelStatusBanner.visibility = View.VISIBLE
+                    binding.tvModelStatusTitle.text = "Downloading SmolLM2-1.7B (${state.progressPercent}%)"
+                    binding.tvModelStatusSubtitle.text = "$dlMb MB / $totMb MB from Hugging Face"
+                    binding.pbModelDownload.visibility = View.VISIBLE
+                    binding.pbModelDownload.isIndeterminate = false
+                    binding.pbModelDownload.progress = state.progressPercent
+                    binding.btnEnableDownloadModel.visibility = View.GONE
+                    binding.btnCancelDownload.visibility = View.VISIBLE
+                    binding.tvModelRibbon.text = "Downloading SmolLM2-1.7B: ${state.progressPercent}%"
+                }
+                is ModelDownloadState.Downloaded, is ModelDownloadState.LoadingModel -> {
+                    binding.cardModelStatusBanner.visibility = View.VISIBLE
+                    binding.tvModelStatusTitle.text = "Loading SmolLM2-1.7B Engine..."
+                    binding.tvModelStatusSubtitle.text = "Initializing llama.cpp (2048 context)"
+                    binding.pbModelDownload.visibility = View.VISIBLE
+                    binding.pbModelDownload.isIndeterminate = true
+                    binding.btnEnableDownloadModel.visibility = View.GONE
+                    binding.btnCancelDownload.visibility = View.GONE
+                    binding.tvModelRibbon.text = "Loading SmolLM2-1.7B into memory..."
+                }
+                is ModelDownloadState.ModelReady -> {
+                    binding.cardModelStatusBanner.visibility = View.GONE
+                    binding.tvModelRibbon.text = "SmolLM2-1.7B-Instruct (Q4_K_M) • On-Device • Ready"
+                }
+                is ModelDownloadState.Error -> {
+                    binding.cardModelStatusBanner.visibility = View.VISIBLE
+                    binding.tvModelStatusTitle.text = "SmolLM2 Setup Issue"
+                    binding.tvModelStatusSubtitle.text = state.message
+                    binding.pbModelDownload.visibility = View.GONE
+                    binding.btnCancelDownload.visibility = View.GONE
+                    binding.btnEnableDownloadModel.visibility = View.VISIBLE
+                    binding.btnEnableDownloadModel.text = "Retry"
+                    binding.btnEnableDownloadModel.setOnClickListener {
+                        if (ModelDownloadManager(requireContext()).isModelValid()) {
+                            viewModel.loadSmolLMModel()
+                        } else {
+                            promptDownloadConsent()
+                        }
+                    }
+                    binding.tvModelRibbon.text = "SmolLM2-1.7B • Action Required"
+                }
             }
         }
     }
 
+    private fun promptDownloadConsent() {
+        val networkNote = if (viewModel.isOnMeteredNetwork()) {
+            "You are currently on mobile data. Downloading ~1.06 GB may use your cellular data plan."
+        } else {
+            "You are connected to Wi-Fi. The model will be saved in app-private storage (~1.06 GB) and reused offline."
+        }
+        val freeMb = viewModel.getAvailableStorageMb()
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Download SmolLM2-1.7B-Instruct")
+            .setMessage(
+                "Model: ${ModelDownloadManager.MODEL_NAME}\n" +
+                    "File Size: ~1.06 GB\n" +
+                    "Available Storage: $freeMb MB\n\n" +
+                    "$networkNote\n\nProceed with download?"
+            )
+            .setPositiveButton("Download Now") { _, _ ->
+                viewModel.startModelDownload()
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
     private fun showModelInfoDialog() {
-        val info = viewModel.modelInfo.value
+        val stateLabel = when (viewModel.downloadState.value) {
+            is ModelDownloadState.ModelReady -> "Loaded & Ready (On-Device)"
+            is ModelDownloadState.Downloading -> "Downloading..."
+            is ModelDownloadState.LoadingModel -> "Loading..."
+            is ModelDownloadState.Downloaded -> "Downloaded (Pending Load)"
+            is ModelDownloadState.Error -> "Error"
+            else -> "Not Downloaded"
+        }
         val message = buildString {
-            append("• Name: 12THMAN GPT-1\n")
-            append("• Architecture: Decoder-Only Transformer (GPT)\n")
-            append("• Weights: Zero Pretrained (Initialized & Trained from Scratch)\n")
-            append("• Parameters: ${info?.parameters ?: 910464}\n")
-            append("• Transformer Layers: ${info?.nLayer ?: 4}\n")
-            append("• Attention Heads: ${info?.nHead ?: 4}\n")
-            append("• Embedding Dim: ${info?.nEmbd ?: 128}\n")
-            append("• Context Window: ${info?.blockSize ?: 128} tokens\n")
-            append("• Vocabulary: ${info?.vocabSize ?: 823} BPE tokens\n")
-            append("• Checkpoint: ${info?.checkpointFile ?: "12thman_gpt1_best.pt"}\n")
-            append("• Best Validation Loss: ${String.format("%.4f", info?.valLoss ?: 2.2984)}\n")
-            append("• Target Device: PyTorch Engine")
+            append("• Model: HuggingFaceTB/SmolLM2-1.7B-Instruct\n")
+            append("• Format: GGUF (Q4_K_M Quantization)\n")
+            append("• Runtime: llama.cpp (Android JNI)\n")
+            append("• Context Window: ${SmolLMModelManager.CONTEXT_SIZE} tokens\n")
+            append("• Max Generation: ${SmolLMInferenceEngine.MAX_GENERATION_TOKENS} tokens\n")
+            append("• Model Size: ~1.06 GB\n")
+            append("• Status: $stateLabel\n")
+            append("• System Info: ${SmolLMModelManager.getSystemInfoSafe()}")
         }
 
         AlertDialog.Builder(requireContext())
-            .setTitle("12THMAN GPT-1 Architecture")
+            .setTitle("12THMAN GPT-1 • SmolLM2 Engine")
             .setMessage(message)
-            .setPositiveButton("Awesome", null)
+            .setPositiveButton("Close", null)
             .show()
     }
 
