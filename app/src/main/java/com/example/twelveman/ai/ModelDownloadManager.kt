@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.StatFs
+import com.example.twelveman.data.api.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -122,7 +123,10 @@ class ModelDownloadManager(private val context: Context) {
         }
 
         try {
-            val requestBuilder = Request.Builder().url(MODEL_URL)
+            val lanModelUrl = "${RetrofitClient.getBaseUrl(context)}models/$MODEL_FILENAME"
+            val targetUrl = if (isLanUrlAvailable(lanModelUrl)) lanModelUrl else MODEL_URL
+
+            val requestBuilder = Request.Builder().url(targetUrl)
             if (existingPartBytes > 0L) {
                 requestBuilder.header("Range", "bytes=$existingPartBytes-")
             }
@@ -195,4 +199,19 @@ class ModelDownloadManager(private val context: Context) {
             emit(ModelDownloadState.Error("Download interrupted: ${e.localizedMessage ?: "Network error"}. Tap Retry to resume."))
         }
     }.flowOn(Dispatchers.IO)
+
+    private fun isLanUrlAvailable(url: String): Boolean {
+        return try {
+            val probeClient = OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.SECONDS)
+                .readTimeout(2, TimeUnit.SECONDS)
+                .build()
+            val req = Request.Builder().url(url).head().build()
+            probeClient.newCall(req).execute().use { resp ->
+                resp.isSuccessful
+            }
+        } catch (_: Exception) {
+            false
+        }
+    }
 }

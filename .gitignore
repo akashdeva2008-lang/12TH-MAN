@@ -14,6 +14,8 @@
 .cxx
 local.properties
 *.apk
+*.gguf
+12THMAN_BACKEND/models/
 
 # Python
 __pycache__/
