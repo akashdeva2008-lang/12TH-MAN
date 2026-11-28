@@ -134,7 +134,7 @@ try {
         "result"             => $matchRow['result'],
         "scoreA"             => $matchRow['score_a'],
         "scoreB"             => $matchRow['score_b'],
-        "totalOvers"         => 20,
+        "totalOvers"         => (int)($matchRow['overs'] ?? 20),
         "format"             => $matchRow['match_type'] ?? "T20",
         "ballType"           => "White Leather",
         "currentInnings"     => $currentInningsNum,

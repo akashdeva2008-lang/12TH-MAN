@@ -23,6 +23,7 @@ try {
                 m.match_time AS time,
                 m.venue,
                 m.match_type AS format,
+                COALESCE(m.overs, 20) AS totalOvers,
                 m.stage,
                 m.status,
                 m.result,

@@ -48,6 +48,8 @@ class MatchScoringFragment : Fragment() {
     private lateinit var commentaryAdapter: CommentaryAdapter
     private var isTossDialogOpen = false
     private var lastPromptedOverNumber = -1
+    private var isFirstInningsDialogShown = false
+    private var isMatchCompletedDialogShown = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,7 +96,7 @@ class MatchScoringFragment : Fragment() {
                 val activeRuns = m.activeRuns
                 val activeWickets = m.activeWickets
                 binding.tvCurrentScoreDisplay.text = "$activeRuns/$activeWickets"
-                binding.tvOversDisplay.text = "${m.activeOversDisplay} Overs (${m.totalOvers} ov)"
+                binding.tvOversDisplay.text = "${m.activeOversDisplay} / ${m.totalOvers} Overs"
 
                 // 3. Batting Team & Innings Indicator
                 val battingTeam = if (m.battingTeam.isNotBlank()) m.battingTeam else if (m.currentInnings == 1) m.teamA else m.teamB
@@ -105,18 +107,17 @@ class MatchScoringFragment : Fragment() {
                 val crr = if (legalBalls > 0) (activeRuns.toDouble() * 6.0 / legalBalls) else 0.0
                 binding.tvCRR.text = String.format(Locale.US, "CRR: %.2f", crr)
 
-                // Required Run Rate (RRR) and Target in 2nd Innings
+                // Required Run Rate (RRR), Target, & Legal Balls Remaining
+                val remainingBalls = m.remainingLegalBalls
                 if (m.currentInnings == 2 && m.target > 0) {
                     val needed = (m.target - m.runsB).coerceAtLeast(0)
-                    val totalBalls = m.totalOvers * 6
-                    val remainingBalls = (totalBalls - m.legalBallsB).coerceAtLeast(0)
-                    binding.tvInningsIndicator.text = "Need $needed runs in $remainingBalls balls (Target: ${m.target})"
+                    binding.tvInningsIndicator.text = "2nd Innings • Need $needed in $remainingBalls balls (Target: ${m.target})"
 
                     val rrr = if (remainingBalls > 0) (needed.toDouble() * 6.0 / remainingBalls) else 0.0
                     binding.tvRRR.visibility = View.VISIBLE
                     binding.tvRRR.text = String.format(Locale.US, "RRR: %.2f", rrr)
                 } else {
-                    binding.tvInningsIndicator.text = "1st Innings • $battingTeam Batting"
+                    binding.tvInningsIndicator.text = "1st Innings • $battingTeam Batting • Balls Remaining: $remainingBalls"
                     binding.tvRRR.visibility = View.GONE
                 }
 
@@ -158,17 +159,227 @@ class MatchScoringFragment : Fragment() {
                 // 8. Commentary Feed
                 commentaryAdapter.updateData(m.commentary)
 
-                // 9. Over Completed Trigger (Ask for next bowler)
-                val completedOvers = m.activeLegalBalls / 6
-                if (m.activeLegalBalls > 0 && m.activeLegalBalls % 6 == 0 && completedOvers != lastPromptedOverNumber && m.status == "LIVE") {
-                    lastPromptedOverNumber = completedOvers
-                    showOverCompletedDialog(m, completedOvers)
+                // 9. Innings / Match / Over Completion Triggers
+                val firstInningsDone = m.currentInnings == 1 && (
+                    m.isFirstInningsCompleted || m.legalBallsA >= m.maxLegalBalls || m.wicketsA >= 10
+                )
+                val secondInningsDone = m.currentInnings == 2 && (
+                    m.status.equals("COMPLETED", ignoreCase = true) ||
+                        m.legalBallsB >= m.maxLegalBalls ||
+                        m.wicketsB >= 10 ||
+                        (m.target > 0 && m.runsB >= m.target)
+                )
+
+                val scoringEnabled = !firstInningsDone && !secondInningsDone && !m.status.equals("COMPLETED", ignoreCase = true)
+                setScoringControlsEnabled(scoringEnabled)
+
+                if (firstInningsDone) {
+                    if (!isFirstInningsDialogShown) {
+                        isFirstInningsDialogShown = true
+                        showFirstInningsCompletedDialog(m)
+                    }
+                } else if (secondInningsDone || m.status.equals("COMPLETED", ignoreCase = true)) {
+                    if (!isMatchCompletedDialogShown) {
+                        isMatchCompletedDialogShown = true
+                        showMatchCompletedDialog(m)
+                    }
+                } else {
+                    isFirstInningsDialogShown = false
+                    val completedOvers = m.activeLegalBalls / 6
+                    if (m.activeLegalBalls > 0 &&
+                        m.activeLegalBalls % 6 == 0 &&
+                        m.activeLegalBalls < m.maxLegalBalls &&
+                        completedOvers != lastPromptedOverNumber &&
+                        m.status == "LIVE"
+                    ) {
+                        lastPromptedOverNumber = completedOvers
+                        showOverCompletedDialog(m, completedOvers)
+                    }
                 }
             }
         }
 
         setupKeypadListeners()
         setupTopActions()
+    }
+
+    private fun setScoringControlsEnabled(enabled: Boolean) {
+        val alpha = if (enabled) 1.0f else 0.45f
+        val buttons = listOf(
+            binding.btnRun0, binding.btnRun1, binding.btnRun2, binding.btnRun3,
+            binding.btnRun4, binding.btnRun5, binding.btnRun6,
+            binding.btnWide, binding.btnNoBall, binding.btnBye, binding.btnLegBye,
+            binding.btnWicket, binding.btnPenalty
+        )
+        buttons.forEach { btn ->
+            btn.isEnabled = enabled
+            btn.alpha = alpha
+        }
+    }
+
+    private fun showFirstInningsCompletedDialog(match: Match) {
+        val battingTeam = match.battingTeam.ifBlank { match.teamA }
+        val target = match.runsA + 1
+        val crr = if (match.legalBallsA > 0) (match.runsA.toDouble() * 6.0 / match.legalBallsA) else 0.0
+        val crrStr = String.format(Locale.US, "%.2f", crr)
+
+        val message = buildString {
+            append("Batting Team: $battingTeam\n")
+            append("Final Score: ${match.runsA}/${match.wicketsA}\n")
+            append("Overs Completed: ${match.oversADisplay} / ${match.totalOvers}\n")
+            append("Run Rate: $crrStr\n\n")
+            append("TARGET = $target runs")
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("FIRST INNINGS COMPLETED")
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("START SECOND INNINGS") { _, _ ->
+                showSecondInningsSetupDialog(match)
+            }
+            .setNeutralButton("View Scorecard") { _, _ ->
+                showFullScorecardDialog()
+            }
+            .show()
+    }
+
+    private fun showSecondInningsSetupDialog(match: Match) {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_toss_setup, null)
+        val tvSubtitle = dialogView.findViewById<TextView>(R.id.tvTossMatchSubtitle)
+        val rgWinner = dialogView.findViewById<RadioGroup>(R.id.rgTossWinner)
+        val rgDecision = dialogView.findViewById<RadioGroup>(R.id.rgTossDecision)
+        val etMatchOvers = dialogView.findViewById<EditText>(R.id.etMatchOvers)
+        val tvStriker = dialogView.findViewById<TextView>(R.id.tvSelectedStrikerName)
+        val btnChangeStriker = dialogView.findViewById<Button>(R.id.btnChangeStrikerToss)
+        val tvNonStriker = dialogView.findViewById<TextView>(R.id.tvSelectedNonStrikerName)
+        val btnChangeNonStriker = dialogView.findViewById<Button>(R.id.btnChangeNonStrikerToss)
+        val tvBowler = dialogView.findViewById<TextView>(R.id.tvSelectedBowlerName)
+        val btnChangeBowler = dialogView.findViewById<Button>(R.id.btnChangeBowlerToss)
+        val btnStart = dialogView.findViewById<Button>(R.id.btnConfirmTossStart)
+        val ivClose = dialogView.findViewById<ImageView?>(R.id.ivCloseTossDialog)
+
+        val firstBatting = match.battingTeam.ifBlank { match.teamA }
+        val chasingTeam = match.bowlingTeam.ifBlank {
+            if (firstBatting.equals(match.teamA, ignoreCase = true)) match.teamB else match.teamA
+        }
+        val target = match.runsA + 1
+
+        tvSubtitle?.text = "2nd Innings • Target: $target runs ($chasingTeam Batting)"
+        rgWinner?.visibility = View.GONE
+        rgDecision?.visibility = View.GONE
+        etMatchOvers?.setText(match.totalOvers.toString())
+        etMatchOvers?.isEnabled = false
+        btnStart?.text = "Start 2nd Innings"
+
+        var chosenStriker = ""
+        var chosenNonStriker = ""
+        var chosenBowler = ""
+
+        val chasingSquad = viewModel.getSquadForTeam(chasingTeam)
+        if (chasingSquad.isNotEmpty()) {
+            chosenStriker = chasingSquad[0].playerName
+            tvStriker.text = chosenStriker
+            if (chasingSquad.size > 1) {
+                chosenNonStriker = chasingSquad[1].playerName
+                tvNonStriker.text = chosenNonStriker
+            }
+        } else {
+            tvStriker.text = "Select Striker ($chasingTeam)"
+            tvNonStriker.text = "Select Non-Striker ($chasingTeam)"
+        }
+
+        val bowlingSquad = viewModel.getSquadForTeam(firstBatting)
+        if (bowlingSquad.isNotEmpty()) {
+            chosenBowler = bowlingSquad.last().playerName
+            tvBowler.text = chosenBowler
+        } else {
+            tvBowler.text = "Select Bowler ($firstBatting)"
+        }
+
+        val pickStriker = View.OnClickListener {
+            openPlayerSelectionDialog(
+                title = "Select 2nd Innings Striker",
+                teamName = chasingTeam,
+                excludedPlayerNames = listOf(chosenNonStriker),
+                initiallySelectedName = chosenStriker
+            ) { p ->
+                chosenStriker = p.playerName
+                tvStriker.text = p.playerName
+            }
+        }
+        tvStriker.setOnClickListener(pickStriker)
+        btnChangeStriker?.setOnClickListener(pickStriker)
+
+        val pickNonStriker = View.OnClickListener {
+            openPlayerSelectionDialog(
+                title = "Select 2nd Innings Non-Striker",
+                teamName = chasingTeam,
+                excludedPlayerNames = listOf(chosenStriker),
+                initiallySelectedName = chosenNonStriker
+            ) { p ->
+                chosenNonStriker = p.playerName
+                tvNonStriker.text = p.playerName
+            }
+        }
+        tvNonStriker.setOnClickListener(pickNonStriker)
+        btnChangeNonStriker?.setOnClickListener(pickNonStriker)
+
+        val pickBowler = View.OnClickListener {
+            openPlayerSelectionDialog(
+                title = "Select Opening Bowler",
+                teamName = firstBatting,
+                excludedPlayerNames = emptyList(),
+                initiallySelectedName = chosenBowler
+            ) { p ->
+                chosenBowler = p.playerName
+                tvBowler.text = p.playerName
+            }
+        }
+        tvBowler.setOnClickListener(pickBowler)
+        btnChangeBowler?.setOnClickListener(pickBowler)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        ivClose?.setOnClickListener { dialog.dismiss() }
+
+        btnStart?.setOnClickListener {
+            if (chosenStriker.isBlank() || chosenNonStriker.isBlank() || chosenBowler.isBlank()) {
+                Toast.makeText(requireContext(), "Please select Striker, Non-Striker, and Opening Bowler", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (chosenStriker.equals(chosenNonStriker, ignoreCase = true)) {
+                Toast.makeText(requireContext(), "Striker and Non-Striker must be different players", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            lastPromptedOverNumber = -1
+            isFirstInningsDialogShown = false
+            viewModel.startSecondInningsWithPlayers(matchId, chosenStriker, chosenNonStriker, chosenBowler)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showMatchCompletedDialog(match: Match) {
+        val resultText = match.result.ifBlank { "Match Completed" }
+        val msg = buildString {
+            append("${match.teamA}: ${match.scoreA}\n")
+            append("${match.teamB}: ${match.scoreB}\n\n")
+            append("Result: $resultText")
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("MATCH COMPLETED")
+            .setMessage(msg)
+            .setPositiveButton("View Full Scorecard") { _, _ ->
+                showFullScorecardDialog()
+            }
+            .setNegativeButton("Close", null)
+            .show()
     }
 
     private fun renderOverDeliveriesStrip(inn: InningsScorecard) {
@@ -608,12 +819,17 @@ class MatchScoringFragment : Fragment() {
 
         dialogView.findViewById<View>(R.id.actionSwitchInnings).setOnClickListener {
             dialog.dismiss()
+            if (match.currentInnings == 2) {
+                Toast.makeText(requireContext(), "Already in Second Innings", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             AlertDialog.Builder(requireContext())
-                .setTitle("Switch Innings")
-                .setMessage("Are you sure you want to conclude the current innings and start Innings 2?")
-                .setPositiveButton("Switch Now") { _, _ ->
-                    viewModel.switchInnings(matchId)
-                    Toast.makeText(requireContext(), "Innings 1 concluded. Target set!", Toast.LENGTH_SHORT).show()
+                .setTitle("Finish First Innings")
+                .setMessage("Are you sure you want to conclude the first innings and prepare Second Innings?")
+                .setPositiveButton("Finish Innings") { _, _ ->
+                    isFirstInningsDialogShown = true
+                    viewModel.finishFirstInningsManually(matchId)
+                    showFirstInningsCompletedDialog(match)
                 }
                 .setNegativeButton("Cancel", null)
                 .show()

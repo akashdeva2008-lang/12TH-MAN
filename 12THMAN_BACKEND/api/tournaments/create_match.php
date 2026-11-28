@@ -35,6 +35,8 @@ $matchDate       = trim($input['date'] ?? $input['match_date'] ?? 'Today');
 $matchTime       = trim($input['time'] ?? $input['match_time'] ?? '05:00 PM');
 $venue           = trim($input['venue'] ?? 'Green Park Stadium');
 $format          = trim($input['format'] ?? $input['match_type'] ?? 'T20');
+$overs           = (int)($input['totalOvers'] ?? $input['overs'] ?? $input['overs_limit'] ?? 20);
+if ($overs <= 0) $overs = 20;
 $stage           = trim($input['stage'] ?? 'League Match');
 $status          = trim($input['status'] ?? 'UPCOMING');
 
@@ -86,8 +88,8 @@ try {
     $nextNum = (int)($numStmt->fetch(PDO::FETCH_ASSOC)['next_num'] ?? 1);
 
     $insMatch = $db->prepare("INSERT INTO matches 
-        (tournament_id, match_number, team1_id, team2_id, team1_name, team2_name, match_date, match_time, venue, match_type, stage, status, result, score_a, score_b, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Scheduled', '0/0 (0.0)', '0/0 (0.0)', NOW())");
+        (tournament_id, match_number, team1_id, team2_id, team1_name, team2_name, match_date, match_time, venue, match_type, overs, stage, status, result, score_a, score_b, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Scheduled', '0/0 (0.0)', '0/0 (0.0)', NOW())");
     $insMatch->execute([
         $numericTournamentId,
         $nextNum,
@@ -99,6 +101,7 @@ try {
         $matchTime,
         $venue,
         $format,
+        $overs,
         $stage,
         $status
     ]);
@@ -122,6 +125,7 @@ try {
             "time" => $matchTime,
             "venue" => $venue,
             "format" => $format,
+            "totalOvers" => $overs,
             "stage" => $stage,
             "status" => $status,
             "result" => "Scheduled",

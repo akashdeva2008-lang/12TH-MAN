@@ -33,6 +33,8 @@ class CreateTournamentFragment : Fragment() {
 
     private var selectedTeam1: Team? = null
     private var selectedTeam2: Team? = null
+    private var selectedQuickOvers: Int = 20
+    private var selectedQuickFormat: String = "T20"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -272,6 +274,51 @@ class CreateTournamentFragment : Fragment() {
                 .show()
         }
 
+        // Overs Limit Selector
+        binding.rowMatchOversSelector.setOnClickListener {
+            val options = arrayOf(
+                "5 Overs (30 Balls)",
+                "10 Overs (T10 - 60 Balls)",
+                "15 Overs (90 Balls)",
+                "20 Overs (T20 - 120 Balls)",
+                "25 Overs (150 Balls)",
+                "50 Overs (ODI - 300 Balls)",
+                "Custom Overs..."
+            )
+            val oversMap = intArrayOf(5, 10, 15, 20, 25, 50)
+            val formatMap = arrayOf("5 Overs", "T10", "15 Overs", "T20", "25 Overs", "ODI")
+            AlertDialog.Builder(requireContext())
+                .setTitle("Select Overs Per Innings")
+                .setItems(options) { _, which ->
+                    if (which < oversMap.size) {
+                        selectedQuickOvers = oversMap[which]
+                        selectedQuickFormat = formatMap[which]
+                        binding.tvMatchOversValue.text = "Overs: $selectedQuickOvers Overs ($selectedQuickFormat)"
+                    } else {
+                        val etCustom = EditText(requireContext()).apply {
+                            inputType = android.text.InputType.TYPE_CLASS_NUMBER
+                            hint = "Enter overs (e.g. 8, 12, 30)"
+                        }
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Custom Overs")
+                            .setView(etCustom)
+                            .setPositiveButton("Set") { _, _ ->
+                                val custom = etCustom.text.toString().trim().toIntOrNull()
+                                if (custom != null && custom in 1..90) {
+                                    selectedQuickOvers = custom
+                                    selectedQuickFormat = "${custom} Overs"
+                                    binding.tvMatchOversValue.text = "Overs: $custom Overs (Custom)"
+                                } else {
+                                    Toast.makeText(requireContext(), "Enter valid overs between 1 and 90", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            .setNegativeButton("Cancel", null)
+                            .show()
+                    }
+                }
+                .show()
+        }
+
         // Primary Schedule Match Button
         binding.btnScheduleQuickMatch.setOnClickListener {
             val team1 = selectedTeam1
@@ -296,8 +343,8 @@ class CreateTournamentFragment : Fragment() {
             val match = viewModel.scheduleMatch(
                 teamA = team1.teamName,
                 teamB = team2.teamName,
-                format = "T20",
-                overs = 20,
+                format = selectedQuickFormat,
+                overs = selectedQuickOvers,
                 venue = location,
                 date = matchDate,
                 time = matchTime,

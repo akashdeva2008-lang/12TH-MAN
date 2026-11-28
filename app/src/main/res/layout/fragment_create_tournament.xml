@@ -1004,6 +1004,43 @@
                             app:tint="@color/text_secondary" />
                     </LinearLayout>
 
+                    <!-- Overs Limit Selector -->
+                    <LinearLayout
+                        android:id="@+id/rowMatchOversSelector"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_card_white"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="14dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_trophy"
+                            app:tint="@color/primary_red" />
+
+                        <TextView
+                            android:id="@+id/tvMatchOversValue"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:text="Overs: 20 Overs (T20)"
+                            android:textColor="@color/header_black"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
                     <!-- Schedule Single Match Button -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnScheduleQuickMatch"

@@ -132,6 +132,7 @@ class TournamentRepository {
                         time = remote.time,
                         venue = remote.venue,
                         format = remote.format.ifBlank { current.format },
+                        totalOvers = if (remote.totalOvers > 0) remote.totalOvers else current.totalOvers,
                         stage = remote.stage.ifBlank { current.stage },
                         scoreA = remote.scoreA,
                         scoreB = remote.scoreB,
@@ -242,6 +243,7 @@ class TournamentRepository {
                     "time" to time,
                     "venue" to venue,
                     "format" to format,
+                    "totalOvers" to overs,
                     "stage" to "League Match",
                     "status" to "UPCOMING"
                 )
@@ -287,7 +289,8 @@ class TournamentRepository {
                     "status" to match.status,
                     "result" to match.result,
                     "scoreA" to match.scoreA,
-                    "scoreB" to match.scoreB
+                    "scoreB" to match.scoreB,
+                    "totalOvers" to match.totalOvers
                 )
                 apiService.updateMatch(payload)
             } catch (ignored: Exception) { }

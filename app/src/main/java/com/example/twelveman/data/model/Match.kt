@@ -162,9 +162,22 @@ data class Match(
     var partnershipRuns: Int = 0,
     var partnershipBalls: Int = 0,
     var target: Int = 0,
+    var isFirstInningsCompleted: Boolean = false,
     var innings1: InningsScorecard = InningsScorecard(),
     var innings2: InningsScorecard = InningsScorecard()
 ) {
+    val maxLegalBalls: Int
+        get() = (if (totalOvers > 0) totalOvers else 20) * 6
+
+    val remainingLegalBalls: Int
+        get() = (maxLegalBalls - activeLegalBalls).coerceAtLeast(0)
+
+    val isFirstInningsOverLimitReached: Boolean
+        get() = currentInnings == 1 && legalBallsA >= maxLegalBalls
+
+    val isSecondInningsOverLimitReached: Boolean
+        get() = currentInnings == 2 && legalBallsB >= maxLegalBalls
+
     val activeInnings: InningsScorecard
         get() = if (currentInnings == 1) innings1 else innings2
 

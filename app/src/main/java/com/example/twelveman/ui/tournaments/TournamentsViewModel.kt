@@ -556,6 +556,9 @@ class TournamentsViewModel : ViewModel() {
         penaltyRuns: Int = 0
     ) {
         val match = repository.getMatchById(matchId) ?: return
+        if (match.status.equals("COMPLETED", ignoreCase = true)) return
+        if (match.currentInnings == 1 && (match.isFirstInningsCompleted || match.legalBallsA >= match.maxLegalBalls || match.wicketsA >= 10)) return
+        if (match.currentInnings == 2 && (match.legalBallsB >= match.maxLegalBalls || match.wicketsB >= 10 || (match.target > 0 && match.runsB >= match.target))) return
 
         // 1. Save deep snapshot for accurate Undo
         match.historyStack.add(
@@ -801,18 +804,51 @@ class TournamentsViewModel : ViewModel() {
             match.commentary.add(0, "End of Over ${activeLegalBalls / 6}. Strike rotated to ${match.strikerName}.")
         }
 
-        // Check Target Achieved in 2nd Innings
-        if (match.currentInnings == 2 && match.target > 0 && match.runsB >= match.target) {
-            val wicketsRemaining = 10 - match.wicketsB
-            match.status = "COMPLETED"
-            match.result = "${match.teamB} won by $wicketsRemaining wicket${if (wicketsRemaining > 1) "s" else ""}"
-            match.commentary.add(0, "MATCH COMPLETED: ${match.result}")
-        }
+        // Reusable Innings Completion Check (Dynamic Overs Limit, All Out, or Target Reached)
+        evaluateInningsCompletion(match)
 
         _selectedMatch.value = match
         repository.syncMatchUpdate(match)
         loadOrganizerDashboard(match.tournamentId)
         loadStandings(match.tournamentId)
+    }
+
+    private fun evaluateInningsCompletion(match: com.example.twelveman.data.model.Match) {
+        if (match.currentInnings == 1) {
+            if (match.legalBallsA >= match.maxLegalBalls || match.wicketsA >= 10) {
+                match.isFirstInningsCompleted = true
+                match.target = match.runsA + 1
+                match.status = "LIVE"
+                val firstTeam = match.battingTeam.ifBlank { match.teamA }
+                match.commentary.add(
+                    0,
+                    "FIRST INNINGS COMPLETED: $firstTeam scored ${match.runsA}/${match.wicketsA} in ${match.oversADisplay} overs. Target: ${match.target}."
+                )
+            }
+        } else if (match.currentInnings == 2) {
+            val chasingTeam = match.battingTeam.ifBlank { match.teamB }
+            val defendingTeam = match.bowlingTeam.ifBlank { match.teamA }
+            if (match.target > 0 && match.runsB >= match.target) {
+                val wicketsRemaining = (10 - match.wicketsB).coerceAtLeast(1)
+                match.status = "COMPLETED"
+                match.result = "$chasingTeam won by $wicketsRemaining wicket${if (wicketsRemaining > 1) "s" else ""}"
+                match.commentary.add(0, "MATCH COMPLETED: ${match.result}")
+            } else if (match.legalBallsB >= match.maxLegalBalls || match.wicketsB >= 10) {
+                match.status = "COMPLETED"
+                match.result = when {
+                    match.runsA > match.runsB -> {
+                        val margin = match.runsA - match.runsB
+                        "$defendingTeam won by $margin run${if (margin > 1) "s" else ""}"
+                    }
+                    match.runsB > match.runsA -> {
+                        val wicketsRemaining = (10 - match.wicketsB).coerceAtLeast(1)
+                        "$chasingTeam won by $wicketsRemaining wicket${if (wicketsRemaining > 1) "s" else ""}"
+                    }
+                    else -> "Match Tied"
+                }
+                match.commentary.add(0, "MATCH COMPLETED: ${match.result}")
+            }
+        }
     }
 
 
@@ -990,29 +1026,62 @@ class TournamentsViewModel : ViewModel() {
         return false
     }
 
-    fun switchInnings(matchId: String) {
+    fun finishFirstInningsManually(matchId: String) {
         val match = repository.getMatchById(matchId) ?: return
-        match.currentInnings = 2
+        if (match.currentInnings != 1) return
+        match.isFirstInningsCompleted = true
         match.target = match.runsA + 1
-        // Reset partnership and openers for 2nd innings
+        match.status = "LIVE"
+        val firstTeam = match.battingTeam.ifBlank { match.teamA }
+        match.commentary.add(0, "FIRST INNINGS COMPLETED: $firstTeam finished at ${match.runsA}/${match.wicketsA}. Target: ${match.target}.")
+        _selectedMatch.value = match
+        repository.syncMatchUpdate(match)
+    }
+
+    fun startSecondInningsWithPlayers(
+        matchId: String,
+        strikerName: String,
+        nonStrikerName: String,
+        bowlerName: String
+    ) {
+        val match = repository.getMatchById(matchId) ?: return
+        // Prevent duplicate second innings creation
+        if (match.currentInnings == 2) return
+
+        match.isFirstInningsCompleted = true
+        match.currentInnings = 2
+        match.status = "LIVE"
+        match.target = match.runsA + 1
+
+        // Reset second innings counters cleanly
+        match.runsB = 0
+        match.wicketsB = 0
+        match.legalBallsB = 0
+        match.oversB = 0.0
+        match.scoreB = "0/0 (0.0)"
         match.partnershipRuns = 0
         match.partnershipBalls = 0
-        val tempTeam = match.battingTeam
-        match.battingTeam = match.bowlingTeam
-        match.bowlingTeam = tempTeam
-        match.strikerName = "${match.battingTeam} Opener 1"
+
+        // Swap batting & bowling teams reliably
+        val firstBatting = match.battingTeam.ifBlank { match.teamA }
+        val firstBowling = match.bowlingTeam.ifBlank {
+            if (firstBatting.equals(match.teamA, ignoreCase = true)) match.teamB else match.teamA
+        }
+        match.battingTeam = firstBowling
+        match.bowlingTeam = firstBatting
+
+        match.strikerName = strikerName.ifBlank { "${match.battingTeam} Opener 1" }
         match.strikerRuns = 0
         match.strikerBalls = 0
-        match.nonStrikerName = "${match.battingTeam} Opener 2"
+        match.nonStrikerName = nonStrikerName.ifBlank { "${match.battingTeam} Opener 2" }
         match.nonStrikerRuns = 0
         match.nonStrikerBalls = 0
-        match.bowlerName = "${match.bowlingTeam} Bowler 1"
+        match.bowlerName = bowlerName.ifBlank { "${match.bowlingTeam} Bowler 1" }
         match.previousBowlerName = ""
         match.bowlerOvers = 0.0
         match.bowlerRunsConceded = 0
         match.bowlerWickets = 0
 
-        // Initialize 2nd innings scorecard
         val inn = match.innings2
         inn.battingList.clear()
         inn.bowlingList.clear()
@@ -1020,19 +1089,30 @@ class TournamentsViewModel : ViewModel() {
         inn.extras = com.example.twelveman.data.model.ExtrasBreakdown()
         inn.currentOverDeliveries.clear()
 
-        val sObj = com.example.twelveman.data.model.BatterScore(name = match.strikerName, isStriker = true)
-        val nsObj = com.example.twelveman.data.model.BatterScore(name = match.nonStrikerName, isStriker = false)
-        inn.battingList.add(sObj)
-        inn.battingList.add(nsObj)
+        inn.battingList.add(com.example.twelveman.data.model.BatterScore(name = match.strikerName, isStriker = true))
+        inn.battingList.add(com.example.twelveman.data.model.BatterScore(name = match.nonStrikerName, isStriker = false))
+        inn.bowlingList.add(com.example.twelveman.data.model.BowlerScore(name = match.bowlerName))
 
-        val bObj = com.example.twelveman.data.model.BowlerScore(name = match.bowlerName)
-        inn.bowlingList.add(bObj)
-
-        match.commentary.add(0, "Innings 1 concluded. Target: ${match.target} runs in ${match.totalOvers} overs. Innings 2 starts!")
+        match.commentary.add(0, "Innings 2 Started! ${match.battingTeam} need ${match.target} runs in ${match.totalOvers} overs.")
         _selectedMatch.value = match
         repository.syncMatchUpdate(match)
         loadOrganizerDashboard(match.tournamentId)
         loadStandings(match.tournamentId)
+    }
+
+    fun switchInnings(matchId: String) {
+        val match = repository.getMatchById(matchId) ?: return
+        if (match.currentInnings == 2) return
+        val firstBatting = match.battingTeam.ifBlank { match.teamA }
+        val firstBowling = match.bowlingTeam.ifBlank {
+            if (firstBatting.equals(match.teamA, ignoreCase = true)) match.teamB else match.teamA
+        }
+        startSecondInningsWithPlayers(
+            matchId = matchId,
+            strikerName = "$firstBowling Opener 1",
+            nonStrikerName = "$firstBowling Opener 2",
+            bowlerName = "$firstBatting Bowler 1"
+        )
     }
 
     fun completeMatch(matchId: String) {

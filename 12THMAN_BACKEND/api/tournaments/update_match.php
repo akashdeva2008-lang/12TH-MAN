@@ -33,6 +33,7 @@ $status     = trim($input['status'] ?? 'LIVE');
 $result     = trim($input['result'] ?? '');
 $scoreA     = trim($input['scoreA'] ?? $input['score_a'] ?? '');
 $scoreB     = trim($input['scoreB'] ?? $input['score_b'] ?? '');
+$totalOvers = isset($input['totalOvers']) ? (int)$input['totalOvers'] : (isset($input['overs']) ? (int)$input['overs'] : 0);
 
 $numericMatchId = preg_replace('/[^0-9]/', '', $matchIdRaw);
 if ((int)$numericMatchId > 500) {
@@ -63,6 +64,10 @@ try {
     if ($scoreB !== '') {
         $updateFields[] = "score_b = :score_b";
         $params[':score_b'] = $scoreB;
+    }
+    if ($totalOvers > 0) {
+        $updateFields[] = "overs = :overs";
+        $params[':overs'] = $totalOvers;
     }
 
     $sql = "UPDATE matches SET " . implode(", ", $updateFields) . " WHERE id = :id";
