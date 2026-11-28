@@ -20,6 +20,7 @@ open class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private var lastNavInsetsBottom = 0
+    private var lastImeInsetsBottom = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Ensure saved theme mode is applied before inflating views
@@ -59,6 +60,9 @@ open class MainActivity : AppCompatActivity() {
             val navigationBars = windowInsets.getInsets(
                 WindowInsetsCompat.Type.navigationBars()
             )
+            val imeInsets = windowInsets.getInsets(
+                WindowInsetsCompat.Type.ime()
+            )
 
             // 1. Safe Status Bar Handling:
             // Adjust statusBarScrim height to perfectly match status bar + cutout height
@@ -73,8 +77,9 @@ open class MainActivity : AppCompatActivity() {
                 right = statusBars.right
             )
 
-            // 3. Navigation bar insets:
+            // 3. Navigation bar & IME keyboard insets:
             lastNavInsetsBottom = navigationBars.bottom
+            lastImeInsetsBottom = imeInsets.bottom
             applyBottomInsets()
 
             windowInsets
@@ -82,15 +87,23 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun applyBottomInsets() {
+        val effectiveBottom = maxOf(lastNavInsetsBottom, lastImeInsetsBottom)
         if (binding.bottomNavigation.visibility == View.VISIBLE) {
-            // BottomNavigation receives padding for the gesture pill / nav bar
-            binding.bottomNavigation.updatePadding(bottom = lastNavInsetsBottom)
-            binding.navHostFragment.updatePadding(bottom = 0)
+            if (lastImeInsetsBottom > lastNavInsetsBottom) {
+                // Keyboard is open on a top-level tab: lift content above keyboard
+                binding.bottomNavigation.updatePadding(bottom = 0)
+                binding.navHostFragment.updatePadding(bottom = lastImeInsetsBottom)
+            } else {
+                // BottomNavigation receives padding for the gesture pill / nav bar
+                binding.bottomNavigation.updatePadding(bottom = lastNavInsetsBottom)
+                binding.navHostFragment.updatePadding(bottom = 0)
+            }
         } else {
-            // When bottomNavigation is hidden, navHostFragment receives the bottom insets
-            // so bottom buttons/content never hide behind the navigation bar
+            // When bottomNavigation is hidden (e.g. AI chat, scoring), navHostFragment
+            // receives the max of nav bar and IME keyboard insets so the input bar
+            // always stays directly above the keyboard.
             binding.bottomNavigation.updatePadding(bottom = 0)
-            binding.navHostFragment.updatePadding(bottom = lastNavInsetsBottom)
+            binding.navHostFragment.updatePadding(bottom = effectiveBottom)
         }
     }
 

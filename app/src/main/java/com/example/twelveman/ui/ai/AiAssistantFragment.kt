@@ -1,11 +1,15 @@
 package com.example.twelveman.ui.ai
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -20,6 +24,19 @@ class AiAssistantFragment : Fragment() {
     private val viewModel: AiAssistantViewModel by viewModels()
 
     private lateinit var chatAdapter: AiChatAdapter
+
+    private val speechLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val matches = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            val spokenText = matches?.firstOrNull()?.trim()
+            if (!spokenText.isNullOrEmpty() && _binding != null) {
+                binding.etChatInput.setText(spokenText)
+                binding.etChatInput.setSelection(spokenText.length)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +64,13 @@ class AiAssistantFragment : Fragment() {
             this.layoutManager = layoutManager
             adapter = chatAdapter
             itemAnimator = null
+            addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+                if (bottom < oldBottom && chatAdapter.itemCount > 0) {
+                    post {
+                        smoothScrollToPosition(chatAdapter.itemCount - 1)
+                    }
+                }
+            }
         }
     }
 
@@ -71,6 +95,47 @@ class AiAssistantFragment : Fragment() {
                 }
                 .setNegativeButton("Cancel", null)
                 .show()
+        }
+
+        // Multi-line wrapping while keeping IME Send action button
+        binding.etChatInput.setHorizontallyScrolling(false)
+        binding.etChatInput.maxLines = 4
+
+        // Plus (+) Quick Cricket Topics / Attachment Menu
+        binding.btnAttachPrompt.setOnClickListener {
+            val topics = arrayOf(
+                "Ask about MCC Cricket Rules & Laws",
+                "Ask about T20 Powerplay & Fielding Restrictions",
+                "Ask about Strike Rate & Economy Calculations",
+                "Ask about Captaincy & Field Placements"
+            )
+            val prompts = arrayOf(
+                "Explain the key MCC cricket laws every umpire should know.",
+                "What are the T20 Powerplay and fielding circle restrictions?",
+                "How are batting strike rate and bowling economy calculated?",
+                "Suggest attacking field placements for a fast bowler in Powerplay."
+            )
+            AlertDialog.Builder(requireContext())
+                .setTitle("Quick Cricket Topics")
+                .setItems(topics) { _, which ->
+                    binding.etChatInput.setText(prompts[which])
+                    binding.etChatInput.setSelection(prompts[which].length)
+                    binding.etChatInput.requestFocus()
+                }
+                .show()
+        }
+
+        // Microphone Voice Input
+        binding.btnVoiceInput.setOnClickListener {
+            try {
+                val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                    putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                    putExtra(RecognizerIntent.EXTRA_PROMPT, "Ask 12THMAN GPT-1 about cricket...")
+                }
+                speechLauncher.launch(intent)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Voice input not available on this device", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Send Message
